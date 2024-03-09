@@ -32,6 +32,11 @@ jobs:
 #        pylint *.py
 #        pylint tests/
 
+    - name: Setup SQLite
+      run: |
+        flask db_create
+        flask db_seed
+
     - name: Run Tests
       run: |
         python -m pytest
