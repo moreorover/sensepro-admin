@@ -39,12 +39,10 @@ jobs:
 
     - name: Run Tests and Generate Reports
       run: |
-        python -m pytest --junitxml=pytest_report.xml --html=pytest_report.html
+        python -m pytest --html=pytest_report.html
 
     - name: Upload Test Reports
       uses: actions/upload-artifact@v2
       with:
         name: pytest-reports
-        path: |
-          pytest_report.xml
-          pytest_report.html
+        path: pytest_report.html
