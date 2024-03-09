@@ -45,6 +45,6 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: pytest-reports
-        path:
-          - pytest_report.xml
-          - pytest_report.html
+        path: |
+          pytest_report.xml
+          pytest_report.html
