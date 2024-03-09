@@ -37,6 +37,14 @@ jobs:
         flask db_create
         flask db_seed
 
-    - name: Run Tests
+    - name: Run Tests and Generate Reports
       run: |
-        python -m pytest
+        python -m pytest --junitxml=pytest_report.xml --html=pytest_report.html
+
+    - name: Upload Test Reports
+      uses: actions/upload-artifact@v2
+      with:
+        name: pytest-reports
+        path:
+          - pytest_report.xml
+          - pytest_report.html
