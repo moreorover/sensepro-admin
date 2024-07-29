@@ -6,21 +6,35 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:up": "drizzle-kit up",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "bun ./scripts/migrate.ts",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@lucia-auth/adapter-drizzle": "^1.0.7",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "@t3-oss/env-nextjs": "^0.11.0",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.32.1",
+    "drizzle-zod": "^0.5.1",
+    "lucia": "^3.2.0",
+    "next": "14.2.5",
+    "pg": "^8.12.0",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.5"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "drizzle-kit": "^0.23.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.5",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.5"
+    "typescript": "^5"
   }
 }
