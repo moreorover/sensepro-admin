@@ -1,8 +1,8 @@
+import { Lucia, TimeSpan } from "lucia";
+import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
+import { env } from "@/env";
 import { db } from "@/db/drizzle";
 import { sessions, users, type User as DbUser } from "@/db/schema";
-import { env } from "@/env";
-import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
-import { Lucia, TimeSpan } from "lucia";
 
 // Uncomment the following lines if you are using nodejs 18 or lower. Not required in Node.js 20, CloudFlare Workers, Deno, Bun, and Vercel Edge Functions.
 // import { webcrypto } from "node:crypto";
