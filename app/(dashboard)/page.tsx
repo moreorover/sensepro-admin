@@ -8,5 +8,5 @@ export default async function Dashbboard() {
 
   if (!user) redirect(Paths.Home);
 
-  return <Button>Dasgboard: {user.email}</Button>;
+  return <Button>Home: {user.email}</Button>;
 }
