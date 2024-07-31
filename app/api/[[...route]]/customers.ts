@@ -37,9 +37,6 @@ const app = new Hono()
 
       const data = await db.query.customers.findFirst({
         where: eq(customers.id, id),
-        with: {
-          customerLocations: true,
-        },
       });
 
       if (!data) {

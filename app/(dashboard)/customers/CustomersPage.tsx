@@ -1,5 +1,6 @@
 "use client";
 
+import { DataTable } from "@/components/data-table";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,10 +11,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useNewCustomers } from "@/features/customers/hooks/use-new-customer";
+import { useGetCustomers } from "@/features/customers/useCustomersApi";
 import { Progress } from "@radix-ui/react-progress";
+import { Loader2 } from "lucide-react";
+import { columns } from "./columns";
 
 export default function CustomersPage() {
   const newCustomer = useNewCustomers();
+  const customersQuery = useGetCustomers();
+
+  const isDisabled = customersQuery.isLoading || customersQuery.isRefetching;
   return (
     <>
       <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-2 xl:grid-cols-2">
@@ -67,7 +74,28 @@ export default function CustomersPage() {
               <CardTitle>Customers</CardTitle>
               <CardDescription>Registered customers.</CardDescription>
             </CardHeader>
-            <CardContent>customers table</CardContent>
+            <CardContent>
+              {isDisabled ? (
+                <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
+                  <Card className="border-none drop-shadow-sm">
+                    <CardHeader className="h-8 w-48"></CardHeader>
+                    <CardContent>
+                      <div className="flex h-[500px] w-full items-center justify-center">
+                        <Loader2 className="size-6 animate-spin text-slate-300" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : (
+                <DataTable
+                  filterLabel="Name"
+                  filterKey="name"
+                  columns={columns}
+                  data={customersQuery.data}
+                  disabled={isDisabled}
+                />
+              )}
+            </CardContent>
           </Card>
         </div>
       </main>
