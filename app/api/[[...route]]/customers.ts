@@ -18,7 +18,7 @@ const app = new Hono()
 
     const data = await db.query.customers.findMany();
 
-    return c.json({ data });
+    return c.json(data);
   })
   .get(
     "/:id",
@@ -45,7 +45,7 @@ const app = new Hono()
       if (!data) {
         return c.json({ error: "Not found" }, 404);
       }
-      return c.json({ data });
+      return c.json(data);
     }
   )
   .post(
@@ -71,7 +71,7 @@ const app = new Hono()
         })
         .returning();
 
-      return c.json({ data });
+      return c.json(data );
     }
   )
   .patch(
@@ -110,7 +110,7 @@ const app = new Hono()
         return c.json({ error: "Not found" }, 404);
       }
 
-      return c.json({ data });
+      return c.json(data);
     }
   )
   .delete(
@@ -139,7 +139,7 @@ const app = new Hono()
         if (!data) {
           return c.json({ error: "Not found" }, 404);
         }
-        return c.json({ data });
+        return c.json(data);
       } catch (e) {
         console.log(e);
       }
