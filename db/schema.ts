@@ -56,7 +56,7 @@ export const customerRelations = relations(customers, ({ many }) => ({
 
 export const locations = pgTable("locations", {
   id: varchar("id", { length: 255 }).primaryKey(),
-  address: varchar("address", { length: 255 }).notNull().unique(),
+  address: varchar("address", { length: 255 }).notNull(),
   customerId: text("customer_id").references(() => customers.id, {
     onDelete: "cascade",
   }),
@@ -67,7 +67,9 @@ export const locations = pgTable("locations", {
 });
 
 export type Location = typeof locations.$inferSelect;
+export const locationSchema = createSelectSchema(locations);
 export type NewLocation = typeof locations.$inferInsert;
+export const newLocationSchema = createInsertSchema(locations);
 
 export const locationRelations = relations(locations, ({ many }) => ({
   locationSettings: many(settings, { relationName: "locationId" }),
@@ -86,4 +88,6 @@ export const settings = pgTable("location_settings", {
 });
 
 export type Settings = typeof settings.$inferSelect;
+export const settingchema = createSelectSchema(settings);
 export type NewSettings = typeof settings.$inferInsert;
+export const newSettingSchema = createInsertSchema(settings);

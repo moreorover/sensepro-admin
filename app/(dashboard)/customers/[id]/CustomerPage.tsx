@@ -1,5 +1,7 @@
 "use client";
 
+import { DataTable } from "@/components/data-table";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,10 +11,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useGetCustomer } from "@/features/customers/useCustomersApi";
+import { useNewLocations } from "@/features/locations/hooks/use-new-location";
+import { useGetLocations } from "@/features/locations/useLocationsApi";
 import { Paths } from "@/lib/constants";
 import { Progress } from "@radix-ui/react-progress";
 import { Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
+import { columns } from "./columns";
 
 type Props = {
   customerId: string;
@@ -20,8 +25,18 @@ type Props = {
 
 export const CustomerPage = ({ customerId }: Props) => {
   const customerQuery = useGetCustomer(customerId);
+  const locationsQuery = useGetLocations(customerId);
+  const newLocation = useNewLocations();
 
   const isDisabled = customerQuery.isLoading || customerQuery.isRefetching;
+
+  const locationsLoading =
+    locationsQuery.isLoading || locationsQuery.isRefetching;
+
+  const openNewLocation = () => {
+    newLocation.setCustomerId(customerId);
+    newLocation.onOpen();
+  };
 
   if (isDisabled) {
     return (
@@ -89,10 +104,34 @@ export const CustomerPage = ({ customerId }: Props) => {
           </div>
           <Card x-chunk="dashboard-05-chunk-3">
             <CardHeader className="px-7">
-              <CardTitle>Locations</CardTitle>
+              <div className="flex justify-between">
+                <CardTitle>Locations</CardTitle>
+                <Button onClick={openNewLocation}>Create New Location</Button>
+              </div>
               <CardDescription>Customer locations.</CardDescription>
             </CardHeader>
-            <CardContent>Card Content</CardContent>
+            <CardContent>
+              {locationsLoading ? (
+                <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
+                  <Card className="border-none drop-shadow-sm">
+                    <CardHeader className="h-8 w-48"></CardHeader>
+                    <CardContent>
+                      <div className="flex h-[500px] w-full items-center justify-center">
+                        <Loader2 className="size-6 animate-spin text-slate-300" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : (
+                <DataTable
+                  filterLabel="Address"
+                  filterKey="address"
+                  columns={columns}
+                  data={locationsQuery.data}
+                  disabled={locationsLoading}
+                />
+              )}
+            </CardContent>
           </Card>
         </div>
       </main>

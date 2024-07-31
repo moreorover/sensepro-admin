@@ -5,37 +5,37 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { newCustomerSchema } from "@/db/schema";
-import { useOpenCustomer } from "@/features/customers/hooks/use-open-customer";
+import { newLocationSchema } from "@/db/schema";
+import { useOpenLocation } from "@/features/locations/hooks/use-open-location";
 import {
-  useDeleteCustomer,
-  useGetCustomer,
-  useUpdateCustomer,
-} from "@/features/customers/useCustomersApi";
+  useDeleteLocation,
+  useGetLocation,
+  useUpdateLocation,
+} from "@/features/locations/useLocationsApi";
 import { useConfirm } from "@/hooks/use-confirm";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";
-import { CustomerForm } from "./customers-form";
+import { LocationForm } from "./locations-form";
 
-const formSchema = newCustomerSchema.pick({
-  name: true,
+const formSchema = newLocationSchema.pick({
+  address: true,
 });
 
 type FormValues = z.input<typeof formSchema>;
 
-export const EditCustomerSheet = () => {
-  const { isOpen, onClose, id } = useOpenCustomer();
+export const EditLocationSheet = () => {
+  const { isOpen, onClose, id } = useOpenLocation();
 
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure?",
-    "You are about to delete this customer"
+    "You are about to delete this location"
   );
 
-  const customerQuery = useGetCustomer(id);
-  const editMutation = useUpdateCustomer(id);
-  const deleteMutation = useDeleteCustomer(id);
+  const locationQuery = useGetLocation(id);
+  const editMutation = useUpdateLocation(id);
+  const deleteMutation = useDeleteLocation(id);
   const isPending = editMutation.isPending || deleteMutation.isPending;
-  const isLoading = customerQuery.isLoading;
+  const isLoading = locationQuery.isLoading;
   const onSubmit = (values: FormValues) => {
     editMutation.mutate(values, {
       onSuccess: () => {
@@ -56,12 +56,12 @@ export const EditCustomerSheet = () => {
     }
   };
 
-  const defaultValues = customerQuery.data
+  const defaultValues = locationQuery.data
     ? {
-        name: customerQuery.data.name,
+        address: locationQuery.data.address,
       }
     : {
-        name: "",
+        address: "",
       };
 
   return (
@@ -70,15 +70,15 @@ export const EditCustomerSheet = () => {
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent className="space-y-4">
           <SheetHeader>
-            <SheetTitle>Edit Customer</SheetTitle>
-            <SheetDescription>Edit an existing customer.</SheetDescription>
+            <SheetTitle>Edit Location</SheetTitle>
+            <SheetDescription>Edit an existing location.</SheetDescription>
           </SheetHeader>
           {isLoading ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <Loader2 className="size-4 animate-spin text-muted-foreground" />
             </div>
           ) : (
-            <CustomerForm
+            <LocationForm
               id={id}
               onSubmit={onSubmit}
               disabled={isPending}
