@@ -30,7 +30,7 @@ type Props = {
 const DashboardLayout = async ({ children }: Props) => {
   const { user } = await validateRequest();
 
-  if (!user) redirect(Paths.Home);
+  if (!user) redirect(Paths.Login);
 
   return (
     <>

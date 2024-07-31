@@ -97,3 +97,29 @@ export const useUpdateCustomer = (id?: string) => {
   });
   return mutation;
 };
+
+export const useDeleteCustomer = (id?: string) => {
+  type ResponseType = InferResponseType<
+    (typeof client.api.customers)[":id"]["$delete"]
+  >;
+  const queryClient = useQueryClient();
+  const mutation = useMutation<ResponseType, Error>({
+    mutationFn: async () => {
+      const response = await client.api.customers[":id"]["$delete"]({
+        param: { id },
+      });
+      if (!response.ok) {
+        throw new Error("Response not ok!");
+      }
+      return await response.json();
+    },
+    onSuccess: () => {
+      toast.success("Customer deleted");
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+    },
+    onError: () => {
+      toast.error("Failed to delete customer");
+    },
+  });
+  return mutation;
+};

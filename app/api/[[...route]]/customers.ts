@@ -71,7 +71,7 @@ const app = new Hono()
         })
         .returning();
 
-      return c.json(data );
+      return c.json(data);
     }
   )
   .patch(
@@ -129,21 +129,15 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      try {
-        const [data] = await db
-          .delete(customers)
-          .where(eq(customers.id, id))
-          // .where(and(eq(accounts.userId, auth.userId), eq(accounts.id, id)))
-          .returning({ id: customers.id });
+      const [data] = await db
+        .delete(customers)
+        .where(eq(customers.id, id))
+        .returning({ id: customers.id });
 
-        if (!data) {
-          return c.json({ error: "Not found" }, 404);
-        }
-        return c.json(data);
-      } catch (e) {
-        console.log(e);
+      if (!data) {
+        return c.json({ error: "Not found" }, 404);
       }
-      return c.json({ error: "Internal error" }, 404);
+      return c.json(data);
     }
   );
 
