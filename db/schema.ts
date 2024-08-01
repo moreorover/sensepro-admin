@@ -73,6 +73,60 @@ export const newLocationSchema = createInsertSchema(locations);
 
 export const locationRelations = relations(locations, ({ many }) => ({
   locationSettings: many(settings, { relationName: "locationId" }),
+  locationDevices: many(devices, { relationName: "locationId" }),
+}));
+
+export const deviceTypes = pgTable("device_types", {
+  id: varchar("id", { length: 255 }).primaryKey(),
+  name: varchar("name", { length: 255 }).notNull().unique(),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
+    () => new Date()
+  ),
+});
+
+export const deviceTypeSchema = createSelectSchema(deviceTypes);
+export const newDeviceTypeSchema = createInsertSchema(deviceTypes);
+
+export const deviceTypeRelations = relations(deviceTypes, ({ many }) => ({
+  devices: many(devices, { relationName: "deviceTypeId" }),
+}));
+
+export const devices = pgTable("location_devices", {
+  id: varchar("id", { length: 255 }).primaryKey(),
+  name: varchar("name", { length: 255 }).notNull().default(""),
+  macAddress: varchar("mac_address", { length: 255 }).notNull().default(""),
+  ip: varchar("ip", { length: 100 }).notNull().default(""),
+
+  deviceTypeId: text("device_type_id")
+    .notNull()
+    .default("")
+    .references(() => deviceTypes.id, {
+      onDelete: "set default",
+    }),
+
+  locationId: text("location_id").references(() => locations.id, {
+    onDelete: "cascade",
+  }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
+    () => new Date()
+  ),
+});
+
+export const deviceSchema = createSelectSchema(devices);
+export const newDeviceSchema = createInsertSchema(devices);
+
+export const devicesRelations = relations(devices, ({ one }) => ({
+  deviceType: one(deviceTypes, {
+    fields: [devices.deviceTypeId],
+    references: [deviceTypes.id],
+  }),
+  location: one(locations, {
+    fields: [devices.locationId],
+    references: [locations.id],
+  }),
 }));
 
 export const settings = pgTable("location_settings", {
@@ -86,6 +140,13 @@ export const settings = pgTable("location_settings", {
     () => new Date()
   ),
 });
+
+const settingsRelations = relations(settings, ({ one }) => ({
+  location: one(locations, {
+    fields: [settings.locationId],
+    references: [locations.id],
+  }),
+}));
 
 export type Settings = typeof settings.$inferSelect;
 export const settingchema = createSelectSchema(settings);

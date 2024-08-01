@@ -1,4 +1,14 @@
-import { customers, locations, sessions, settings, users } from "@/db/schema";
+import {
+  customers,
+  devices,
+  devicesRelations,
+  deviceTypeRelations,
+  deviceTypes,
+  locations,
+  sessions,
+  settings,
+  users,
+} from "@/db/schema";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
@@ -11,5 +21,9 @@ export const db = drizzle(pg, {
     customers,
     locations,
     settings,
+    deviceTypes,
+    devices,
+    deviceTypeRelations,
+    devicesRelations,
   },
 });

@@ -5,8 +5,8 @@ import { client } from "@/lib/hono";
 import { ColumnDef } from "@tanstack/react-table";
 import { InferResponseType } from "hono";
 import { ArrowUpDown } from "lucide-react";
-import { TitleColumn } from "./title-column";
 import { Actions } from "./actions";
+import { TitleColumn } from "./title-column";
 
 export type ResponseType = InferResponseType<
   typeof client.api.locations.$get,
@@ -29,7 +29,11 @@ export const columns: ColumnDef<ResponseType>[] = [
     },
     cell: ({ row }) => {
       return (
-        <TitleColumn locationId={row.original.id} address={row.original.address} />
+        <TitleColumn
+          locationId={row.original.id}
+          address={row.original.address}
+          customerId={row.original.customerId}
+        />
       );
     },
   },

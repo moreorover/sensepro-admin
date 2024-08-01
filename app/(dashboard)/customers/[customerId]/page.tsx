@@ -6,7 +6,7 @@ import { CustomerPage } from "./CustomerPage";
 export default async function Customers({
   params,
 }: {
-  params: { id: string };
+  params: { customerId: string };
 }) {
   const { user } = await validateRequest();
 
@@ -14,7 +14,7 @@ export default async function Customers({
 
   return (
     <>
-      <CustomerPage customerId={params.id} />
+      <CustomerPage customerId={params.customerId} />
     </>
   );
 }

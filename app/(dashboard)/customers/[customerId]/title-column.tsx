@@ -4,13 +4,14 @@ import { useRouter } from "next/navigation";
 type Props = {
   locationId: string;
   address: string;
+  customerId?: string | null;
 };
 
-export const TitleColumn = ({ locationId, address }: Props) => {
+export const TitleColumn = ({ locationId, address, customerId }: Props) => {
   const router = useRouter();
 
   const onClick = () => {
-    router.push(`/locations/${locationId}`);
+    router.push(`/customers/${customerId}/locations/${locationId}`);
   };
 
   return (
