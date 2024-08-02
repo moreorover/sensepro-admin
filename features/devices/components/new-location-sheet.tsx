@@ -16,9 +16,10 @@ import { DeviceForm } from "./devices-form";
 
 const formSchema = newDeviceSchema.pick({
   name: true,
-  macAddress: true,
+  mac: true,
   ip: true,
   deviceTypeId: true,
+  pin: true,
 });
 
 type FormValues = z.input<typeof formSchema>;
@@ -72,8 +73,9 @@ export const NewDeviceSheet = () => {
           disabled={mutation.isPending}
           defaultValues={{
             name: "",
-            macAddress: "",
+            mac: "",
             ip: "",
+            pin: 0,
           }}
           deviceTypesOptions={deviceTypeQuery.data}
         />

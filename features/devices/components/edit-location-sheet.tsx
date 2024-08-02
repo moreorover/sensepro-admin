@@ -21,8 +21,9 @@ import { DeviceForm } from "./devices-form";
 
 const formSchema = newDeviceSchema.pick({
   name: true,
-  macAddress: true,
+  mac: true,
   ip: true,
+  pin: true,
 });
 
 type FormValues = z.input<typeof formSchema>;
@@ -66,15 +67,17 @@ export const EditDeviceSheet = () => {
   const defaultValues = deviceQuery.data
     ? {
         name: deviceQuery.data.name,
-        macAddress: deviceQuery.data.macAddress,
+        mac: deviceQuery.data.mac,
         ip: deviceQuery.data.ip,
         deviceTypeId: deviceQuery.data.deviceTypeId,
+        pin: deviceQuery.data.pin,
       }
     : {
         name: "",
-        macAddress: "",
+        mac: "",
         ip: "",
         deviceTypeId: "",
+        pin: 0,
       };
 
   if (!deviceTypeQuery.data) {

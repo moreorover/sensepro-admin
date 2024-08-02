@@ -89,14 +89,16 @@ export const CustomerLocationPage = ({ customerId, locationId }: Props) => {
             </Card>
             <Card x-chunk="dashboard-05-chunk-1">
               <CardHeader className="pb-2">
-                <CardDescription>This Week</CardDescription>
-                <CardTitle className="text-4xl">+1</CardTitle>
+                <CardDescription>Total devices</CardDescription>
+                <CardTitle className="text-4xl">
+                  {devicesQuery.data?.length}
+                </CardTitle>
               </CardHeader>
-              <CardContent>
+              {/* <CardContent>
                 <div className="text-xs text-muted-foreground">
                   +25% from last week
                 </div>
-              </CardContent>
+              </CardContent> */}
               <CardFooter>
                 <Progress value={25} aria-label="25% increase" />
               </CardFooter>

@@ -23,8 +23,9 @@ import { z } from "zod";
 
 const formSchema = newDeviceSchema.pick({
   name: true,
-  macAddress: true,
+  mac: true,
   ip: true,
+  pin: true,
   deviceTypeId: true,
 });
 
@@ -79,7 +80,7 @@ export const DeviceForm = ({
           )}
         />
         <FormField
-          name="macAddress"
+          name="mac"
           control={form.control}
           render={({ field }) => (
             <FormItem>
@@ -89,6 +90,26 @@ export const DeviceForm = ({
                   disabled={disabled}
                   placeholder="MAC Address"
                   {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="pin"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Pin Number</FormLabel>
+              <FormControl>
+                <Input
+                  disabled={disabled}
+                  placeholder="Pin number"
+                  type="number"
+                  min="0"
+                  {...field}
+                  onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
                 />
               </FormControl>
               <FormMessage />

@@ -48,7 +48,7 @@ export const columns: ColumnDef<ResponseType>[] = [
     },
   },
   {
-    accessorKey: "macAddress",
+    accessorKey: "mac",
     header: ({ column }) => {
       return (
         <Button
@@ -61,7 +61,7 @@ export const columns: ColumnDef<ResponseType>[] = [
       );
     },
     cell: ({ row }) => {
-      return <p>{row.original.macAddress}</p>;
+      return <p>{row.original.mac}</p>;
     },
   },
   {
@@ -79,6 +79,23 @@ export const columns: ColumnDef<ResponseType>[] = [
     },
     cell: ({ row }) => {
       return <p>{row.original.ip}</p>;
+    },
+  },
+  {
+    accessorKey: "pin",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Pin Number
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      return <p>{row.original.pin}</p>;
     },
   },
   {

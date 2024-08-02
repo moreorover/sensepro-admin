@@ -22,10 +22,12 @@ const main = async () => {
         { id: createId(), name: "Network Video Recorder" },
         { id: createId(), name: "CCTV Camera" },
         { id: createId(), name: "Raspberry Pi" },
+        { id: createId(), name: "Detector" },
+        { id: createId(), name: "LED Lights" },
       ])
       .onConflictDoNothing();
 
-    // console.log("Completed seeding.");
+    console.log("Completed seeding.");
   } catch (error) {
     console.error("Error during migration: ", error);
     process.exit(1);

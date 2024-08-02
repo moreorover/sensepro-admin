@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm";
-import { index, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import {
+  index,
+  integer,
+  pgTable,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const users = pgTable(
@@ -96,8 +103,9 @@ export const deviceTypeRelations = relations(deviceTypes, ({ many }) => ({
 export const devices = pgTable("location_devices", {
   id: varchar("id", { length: 255 }).primaryKey(),
   name: varchar("name", { length: 255 }).notNull().default(""),
-  macAddress: varchar("mac_address", { length: 255 }).notNull().default(""),
+  mac: varchar("mac", { length: 255 }).notNull().default(""),
   ip: varchar("ip", { length: 100 }).notNull().default(""),
+  pin: integer("pin").notNull().default(0),
 
   deviceTypeId: text("device_type_id")
     .notNull()
