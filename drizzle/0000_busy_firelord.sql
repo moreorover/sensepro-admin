@@ -20,7 +20,16 @@ CREATE TABLE IF NOT EXISTS "location_devices" (
 	"mac" varchar(255) DEFAULT '' NOT NULL,
 	"ip" varchar(100) DEFAULT '' NOT NULL,
 	"pin" integer DEFAULT 0 NOT NULL,
-	"device_type_id" text DEFAULT '' NOT NULL,
+	"device_type_id" text,
+	"group_id" text,
+	"location_id" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "groups" (
+	"id" varchar(255) PRIMARY KEY NOT NULL,
+	"name" varchar(255) NOT NULL,
 	"location_id" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp
@@ -57,13 +66,25 @@ CREATE TABLE IF NOT EXISTS "users" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "location_devices" ADD CONSTRAINT "location_devices_device_type_id_device_types_id_fk" FOREIGN KEY ("device_type_id") REFERENCES "public"."device_types"("id") ON DELETE set default ON UPDATE no action;
+ ALTER TABLE "location_devices" ADD CONSTRAINT "location_devices_device_type_id_device_types_id_fk" FOREIGN KEY ("device_type_id") REFERENCES "public"."device_types"("id") ON DELETE set null ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "location_devices" ADD CONSTRAINT "location_devices_group_id_groups_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."groups"("id") ON DELETE set null ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "location_devices" ADD CONSTRAINT "location_devices_location_id_locations_id_fk" FOREIGN KEY ("location_id") REFERENCES "public"."locations"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "groups" ADD CONSTRAINT "groups_location_id_locations_id_fk" FOREIGN KEY ("location_id") REFERENCES "public"."locations"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

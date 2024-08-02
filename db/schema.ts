@@ -100,6 +100,31 @@ export const deviceTypeRelations = relations(deviceTypes, ({ many }) => ({
   devices: many(devices, { relationName: "deviceTypeId" }),
 }));
 
+export const groups = pgTable("groups", {
+  id: varchar("id", { length: 255 }).primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+
+  locationId: text("location_id").references(() => locations.id, {
+    onDelete: "cascade",
+  }),
+
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).$onUpdate(
+    () => new Date()
+  ),
+});
+
+export const groupSchema = createSelectSchema(groups);
+export const newGroupSchema = createInsertSchema(groups);
+
+export const groupRelations = relations(groups, ({ many, one }) => ({
+  devices: many(devices),
+  location: one(locations, {
+    fields: [groups.locationId],
+    references: [locations.id],
+  }),
+}));
+
 export const devices = pgTable("location_devices", {
   id: varchar("id", { length: 255 }).primaryKey(),
   name: varchar("name", { length: 255 }).notNull().default(""),
@@ -107,12 +132,13 @@ export const devices = pgTable("location_devices", {
   ip: varchar("ip", { length: 100 }).notNull().default(""),
   pin: integer("pin").notNull().default(0),
 
-  deviceTypeId: text("device_type_id")
-    .notNull()
-    .default("")
-    .references(() => deviceTypes.id, {
-      onDelete: "set default",
-    }),
+  deviceTypeId: text("device_type_id").references(() => deviceTypes.id, {
+    onDelete: "set null",
+  }),
+
+  groupId: text("group_id").references(() => groups.id, {
+    onDelete: "set null",
+  }),
 
   locationId: text("location_id").references(() => locations.id, {
     onDelete: "cascade",
@@ -130,6 +156,10 @@ export const devicesRelations = relations(devices, ({ one }) => ({
   deviceType: one(deviceTypes, {
     fields: [devices.deviceTypeId],
     references: [deviceTypes.id],
+  }),
+  group: one(groups, {
+    fields: [devices.groupId],
+    references: [groups.id],
   }),
   location: one(locations, {
     fields: [devices.locationId],
@@ -149,7 +179,7 @@ export const settings = pgTable("location_settings", {
   ),
 });
 
-const settingsRelations = relations(settings, ({ one }) => ({
+export const settingsRelations = relations(settings, ({ one }) => ({
   location: one(locations, {
     fields: [settings.locationId],
     references: [locations.id],

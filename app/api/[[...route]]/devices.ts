@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 
 import { db } from "@/db/drizzle";
-import { devices, newDeviceSchema } from "@/db/schema";
+import { devices, groups, newDeviceSchema } from "@/db/schema";
 import { validateRequest } from "@/lib/auth/validate-request";
 import { zValidator } from "@hono/zod-validator";
 import { createId } from "@paralleldrive/cuid2";
@@ -26,12 +26,29 @@ const app = new Hono()
 
       const { locationId } = c.req.valid("query");
 
+      const x = await db.query.groups.findMany({
+        where: locationId ? eq(groups.locationId, locationId) : undefined,
+        with: {
+          devices: true,
+          location: true,
+        },
+      });
+
+      console.log("x2");
+
+      console.log({ x });
+      console.log({ loc: x[0].location });
+      console.log({ devices: x[0].devices });
+
       const data = await db.query.devices.findMany({
         where: locationId ? eq(devices.locationId, locationId) : undefined,
         with: {
           deviceType: true,
+          group: true,
         },
       });
+
+      console.log({ devicesx: { ...data } });
 
       return c.json(data);
     }

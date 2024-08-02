@@ -1,5 +1,5 @@
 {
-  "id": "44856932-2435-41d1-8f9b-364f1e9a6f2e",
+  "id": "80671ede-0f8c-4ef4-adfb-d6d1a999fd3f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -132,8 +132,13 @@
           "name": "device_type_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "''"
+          "notNull": false
+        },
+        "group_id": {
+          "name": "group_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "location_id": {
           "name": "location_id",
@@ -167,12 +172,80 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set default",
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "location_devices_group_id_groups_id_fk": {
+          "name": "location_devices_group_id_groups_id_fk",
+          "tableFrom": "location_devices",
+          "tableTo": "groups",
+          "columnsFrom": [
+            "group_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
           "onUpdate": "no action"
         },
         "location_devices_location_id_locations_id_fk": {
           "name": "location_devices_location_id_locations_id_fk",
           "tableFrom": "location_devices",
+          "tableTo": "locations",
+          "columnsFrom": [
+            "location_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.groups": {
+      "name": "groups",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "location_id": {
+          "name": "location_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "groups_location_id_locations_id_fk": {
+          "name": "groups_location_id_locations_id_fk",
+          "tableFrom": "groups",
           "tableTo": "locations",
           "columnsFrom": [
             "location_id"

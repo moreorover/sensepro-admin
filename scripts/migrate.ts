@@ -4,6 +4,7 @@ import {
   devicesRelations,
   deviceTypeRelations,
   deviceTypes,
+  groups,
   locations,
   sessions,
   settings,
@@ -53,6 +54,7 @@ const main = async () => {
       .returning()
       .onConflictDoNothing();
 
+    console.log("Inserting device types");
     const deviceTypesDb = await db
       .insert(deviceTypes)
       .values([
@@ -66,18 +68,27 @@ const main = async () => {
       .onConflictDoNothing();
 
     const customerId = createId();
+    console.log("Inserting customer");
     const [customer] = await db
       .insert(customers)
       .values([{ id: customerId, name: `Test ${customerId}` }])
       .returning()
       .onConflictDoNothing();
 
+    console.log("Inserting location");
     const [location] = await db
       .insert(locations)
       .values([{ id: createId(), address: "PE1", customerId: customer.id }])
       .returning()
       .onConflictDoNothing();
 
+    const [group] = await db
+      .insert(groups)
+      .values([{ id: createId(), name: "Group 1", locationId: location.id }])
+      .returning()
+      .onConflictDoNothing();
+
+    console.log("Inserting device");
     const device = await db
       .insert(devices)
       .values([
@@ -86,6 +97,14 @@ const main = async () => {
           name: "Device 1",
           deviceTypeId: deviceTypesDb[0].id,
           locationId: location.id,
+          groupId: group.id,
+        },
+        {
+          id: createId(),
+          name: "Device 2",
+          // deviceTypeId: deviceTypesDb[0].id,
+          locationId: location.id,
+          groupId: group.id,
         },
       ])
       .returning()
