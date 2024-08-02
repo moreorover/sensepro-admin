@@ -16,10 +16,11 @@ CREATE TABLE IF NOT EXISTS "device_types" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "location_devices" (
 	"id" varchar(255) PRIMARY KEY NOT NULL,
-	"name" varchar(255),
-	"mac_address" varchar(255),
-	"ip" varchar(100),
-	"device_type_id" text,
+	"name" varchar(255) DEFAULT '' NOT NULL,
+	"mac" varchar(255) DEFAULT '' NOT NULL,
+	"ip" varchar(100) DEFAULT '' NOT NULL,
+	"pin" integer DEFAULT 0 NOT NULL,
+	"device_type_id" text DEFAULT '' NOT NULL,
 	"location_id" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp
@@ -56,7 +57,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "location_devices" ADD CONSTRAINT "location_devices_device_type_id_device_types_id_fk" FOREIGN KEY ("device_type_id") REFERENCES "public"."device_types"("id") ON DELETE set null ON UPDATE no action;
+ ALTER TABLE "location_devices" ADD CONSTRAINT "location_devices_device_type_id_device_types_id_fk" FOREIGN KEY ("device_type_id") REFERENCES "public"."device_types"("id") ON DELETE set default ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

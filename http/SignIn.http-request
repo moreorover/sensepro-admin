@@ -1,0 +1,11 @@
+{
+  "body": {
+    "content": "ewogICJlbWFpbCI6ICJ0QHQuY29tIiwKICAicGFzc3dvcmQiOiAicGFzc3dvcmQiCn0=",
+    "file": false,
+    "fileSize": false
+  },
+  "headers": {},
+  "method": "POST",
+  "title": "Sign In",
+  "url": "http://localhost:3000/api/auth/signin"
+}

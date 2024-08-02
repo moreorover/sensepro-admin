@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1722535872127,
-      "tag": "0000_slim_thunderbird",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1722612725746,
-      "tag": "0001_nappy_loners",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1722612964183,
-      "tag": "0002_noisy_madame_masque",
+      "when": 1722624742948,
+      "tag": "0000_demonic_callisto",
       "breakpoints": true
     }
   ]
