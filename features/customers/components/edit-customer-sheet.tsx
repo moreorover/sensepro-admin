@@ -5,7 +5,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { newCustomerSchema } from "@/db/schema";
 import { useOpenCustomer } from "@/features/customers/hooks/use-open-customer";
 import {
   useDeleteCustomer,
@@ -13,15 +12,12 @@ import {
   useUpdateCustomer,
 } from "@/features/customers/useCustomersApi";
 import { useConfirm } from "@/hooks/use-confirm";
+import { createCustomer } from "@/lib/apiSchema";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import { CustomerForm } from "./customers-form";
 
-const formSchema = newCustomerSchema.pick({
-  name: true,
-});
-
-type FormValues = z.input<typeof formSchema>;
+type FormValues = z.input<typeof createCustomer>;
 
 export const EditCustomerSheet = () => {
   const { isOpen, onClose, id } = useOpenCustomer();

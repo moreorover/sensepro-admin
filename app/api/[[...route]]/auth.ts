@@ -1,12 +1,11 @@
 import { Hono } from "hono";
 
-import { db } from "@/db/drizzle";
-import { users } from "@/db/schema";
-import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
-import { validateRequest } from "@/lib/auth/validate-request";
 import { lucia } from "@/lib/auth/lucia";
+import { validateRequest } from "@/lib/auth/validate-request";
+import prisma from "@/lib/prisma";
+import { zValidator } from "@hono/zod-validator";
 import { generateId, Scrypt } from "lucia";
+import { z } from "zod";
 
 const app = new Hono()
   .get("/", async (c) => {
@@ -25,7 +24,7 @@ const app = new Hono()
       z.object({
         email: z.string(),
         password: z.string().min(6),
-      }),
+      })
     ),
     async (c) => {
       const values = c.req.valid("json");
@@ -36,9 +35,10 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const existingUser = await db.query.users.findFirst({
-        where: (table, { eq }) => eq(table.email, values.email),
-        columns: { email: true },
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          email: values.email,
+        },
       });
 
       if (existingUser) {
@@ -49,14 +49,13 @@ const app = new Hono()
 
       const userId = generateId(21);
 
-      const [data] = await db
-        .insert(users)
-        .values({
+      const data = await prisma.user.create({
+        data: {
           id: userId,
           email: values.email,
           hashedPassword: passwordHash,
-        })
-        .returning();
+        },
+      });
 
       const session = await lucia.createSession(userId, {});
       // const sessionCookie = lucia.createSessionCookie(session.id);
@@ -68,11 +67,11 @@ const app = new Hono()
 
       c.res.headers.set(
         "Set-Cookie",
-        lucia.createSessionCookie(session.id).serialize(),
+        lucia.createSessionCookie(session.id).serialize()
       );
 
       return c.json({ id: data.id, email: data.email });
-    },
+    }
   )
   .post(
     "/signin",
@@ -81,7 +80,7 @@ const app = new Hono()
       z.object({
         email: z.string(),
         password: z.string().min(6),
-      }),
+      })
     ),
     async (c) => {
       const values = c.req.valid("json");
@@ -92,9 +91,10 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const existingUser = await db.query.users.findFirst({
-        where: (table, { eq }) => eq(table.email, values.email),
-        columns: { id: true, email: true, hashedPassword: true },
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          email: values.email,
+        },
       });
 
       if (!existingUser) {
@@ -103,7 +103,7 @@ const app = new Hono()
 
       const validPassword = await new Scrypt().verify(
         existingUser.hashedPassword || "",
-        values.password,
+        values.password
       );
 
       if (!validPassword) {
@@ -120,11 +120,11 @@ const app = new Hono()
 
       c.res.headers.set(
         "Set-Cookie",
-        lucia.createSessionCookie(session.id).serialize(),
+        lucia.createSessionCookie(session.id).serialize()
       );
 
       return c.json({ id: existingUser.id, email: existingUser.email });
-    },
+    }
   );
 
 export default app;

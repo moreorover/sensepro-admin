@@ -6,7 +6,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { newDeviceSchema } from "@/db/schema";
 import { useOpenDevice } from "@/features/devices/hooks/use-open-device";
 import {
   useDeleteDevice,
@@ -15,18 +14,12 @@ import {
 } from "@/features/devices/useDevicesApi";
 import { useGetDeviceTypes } from "@/features/deviceTypes/useDeviceTypesApi";
 import { useConfirm } from "@/hooks/use-confirm";
+import { updateDevice } from "@/lib/apiSchema";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import { DeviceForm } from "./devices-form";
 
-const formSchema = newDeviceSchema.pick({
-  name: true,
-  mac: true,
-  ip: true,
-  pin: true,
-});
-
-type FormValues = z.input<typeof formSchema>;
+type FormValues = z.input<typeof updateDevice>;
 
 export const EditDeviceSheet = () => {
   const { isOpen, onClose, id } = useOpenDevice();
@@ -76,7 +69,7 @@ export const EditDeviceSheet = () => {
         name: "",
         mac: "",
         ip: "",
-        deviceTypeId: "",
+        deviceTypeId: null,
         pin: 0,
       };
 

@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id
+  email          String    @unique
+  hashedPassword String
+  sessions       Session[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+
+  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Customers {
+  id        String      @id
+  name      String      @unique
+  createdAt DateTime    @default(now())
+  updatedAt DateTime?   @updatedAt
+  locations Locations[]
+}
+
+model Locations {
+  id         String     @id
+  address    String
+  customerId String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime?  @updatedAt
+  groups     Groups[]
+  devices    Devices[]
+  customer   Customers? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+}
+
+model Groups {
+  id               String     @id
+  name             String
+  locationId       String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime?  @updatedAt
+  location         Locations? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  location_devices Devices[]
+}
+
+model DeviceType {
+  id        String    @id
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  devices   Devices[]
+}
+
+model Devices {
+  id           String      @id
+  name         String
+  mac          String
+  ip           String
+  pin          Int
+  deviceTypeId String?
+  groupId      String?
+  locationId   String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime?   @updatedAt
+  deviceType   DeviceType? @relation(fields: [deviceTypeId], references: [id], onDelete: SetNull)
+  group        Groups?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  location     Locations?  @relation(fields: [locationId], references: [id], onDelete: Cascade)
+}

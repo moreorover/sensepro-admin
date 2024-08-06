@@ -7,16 +7,20 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:up": "drizzle-kit up",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "bun ./scripts/migrate.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed/seed.ts"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.2.2",
     "@hookform/resolvers": "^3.9.0",
-    "@lucia-auth/adapter-drizzle": "^1.0.7",
+    "@lucia-auth/adapter-prisma": "^4.0.1",
     "@paralleldrive/cuid2": "^2.2.2",
+    "@prisma/client": "5.17.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-aspect-ratio": "^1.1.0",
@@ -53,8 +57,6 @@
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.32.1",
-    "drizzle-zod": "^0.5.1",
     "embla-carousel-react": "^8.1.7",
     "hono": "^4.5.3",
     "input-otp": "^1.2.4",
@@ -63,6 +65,7 @@
     "next": "14.2.5",
     "next-themes": "^0.3.0",
     "postgres": "^3.4.4",
+    "prisma": "^5.17.0",
     "react": "^18",
     "react-day-picker": "8.10.1",
     "react-dom": "^18",
@@ -78,14 +81,20 @@
     "zustand": "^4.5.4"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@snaplet/copycat": "^5.0.0",
+    "@snaplet/seed": "0.98.0",
+    "@types/node": "^22.1.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "drizzle-kit": "^0.23.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.16.5",
+    "typescript": "^5.5.4"
+  },
+  "@snaplet/seed": {
+    "config": "prisma/seed/seed.config.ts"
   }
 }

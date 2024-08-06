@@ -5,7 +5,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { newLocationSchema } from "@/db/schema";
 import { useOpenLocation } from "@/features/locations/hooks/use-open-location";
 import {
   useDeleteLocation,
@@ -13,15 +12,12 @@ import {
   useUpdateLocation,
 } from "@/features/locations/useLocationsApi";
 import { useConfirm } from "@/hooks/use-confirm";
+import { createLocationType } from "@/lib/apiSchema";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import { LocationForm } from "./locations-form";
 
-const formSchema = newLocationSchema.pick({
-  address: true,
-});
-
-type FormValues = z.input<typeof formSchema>;
+type FormValues = z.input<typeof createLocationType>;
 
 export const EditLocationSheet = () => {
   const { isOpen, onClose, id } = useOpenLocation();
