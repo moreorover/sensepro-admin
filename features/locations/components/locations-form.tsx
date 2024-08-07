@@ -8,17 +8,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { newLocationSchema } from "@/db/schema";
+import { createLocationType } from "@/lib/apiSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const formSchema = newLocationSchema.pick({
-  address: true,
-});
-
-type FormValues = z.input<typeof formSchema>;
+type FormValues = z.input<typeof createLocationType>;
 
 type Props = {
   id?: string;
@@ -36,7 +32,7 @@ export const LocationForm = ({
   disabled,
 }: Props) => {
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(createLocationType),
     defaultValues: defaultValues,
   });
 

@@ -1,11 +1,10 @@
 import { Hono } from "hono";
 
-import { db } from "@/db/drizzle";
-import { deviceTypes, newDeviceTypeSchema } from "@/db/schema";
+import { createDeviceType, updateDeviceType } from "@/lib/apiSchema";
 import { validateRequest } from "@/lib/auth/validate-request";
+import prisma from "@/lib/prisma";
 import { zValidator } from "@hono/zod-validator";
 import { createId } from "@paralleldrive/cuid2";
-import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 const app = new Hono()
@@ -16,7 +15,7 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    const data = await db.query.deviceTypes.findMany();
+    const data = await prisma.deviceType.findMany();
 
     return c.json(data);
   })
@@ -35,8 +34,8 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = await db.query.deviceTypes.findFirst({
-        where: eq(deviceTypes.id, id),
+      const data = await prisma.deviceType.findUnique({
+        where: { id: id },
       });
 
       if (!data) {
@@ -45,32 +44,24 @@ const app = new Hono()
       return c.json(data);
     }
   )
-  .post(
-    "/",
-    zValidator(
-      "json",
-      newDeviceTypeSchema.omit({ id: true, createdAt: true, updatedAt: true })
-    ),
-    async (c) => {
-      const values = c.req.valid("json");
+  .post("/", zValidator("json", createDeviceType), async (c) => {
+    const values = c.req.valid("json");
 
-      const { user } = await validateRequest();
+    const { user } = await validateRequest();
 
-      if (!user) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
-
-      const [data] = await db
-        .insert(deviceTypes)
-        .values({
-          id: createId(),
-          ...values,
-        })
-        .returning();
-
-      return c.json(data);
+    if (!user) {
+      return c.json({ error: "Unauthorized" }, 401);
     }
-  )
+
+    const data = await prisma.deviceType.create({
+      data: {
+        id: createId(),
+        ...values,
+      },
+    });
+
+    return c.json(data);
+  })
   .patch(
     "/:id",
     zValidator(
@@ -79,10 +70,7 @@ const app = new Hono()
         id: z.string().optional(),
       })
     ),
-    zValidator(
-      "json",
-      newDeviceTypeSchema.omit({ id: true, createdAt: true, updatedAt: true })
-    ),
+    zValidator("json", updateDeviceType),
     async (c) => {
       const { id } = c.req.valid("param");
       const values = c.req.valid("json");
@@ -97,11 +85,10 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const [data] = await db
-        .update(deviceTypes)
-        .set({ ...values })
-        .where(eq(deviceTypes.id, id))
-        .returning();
+      const data = await prisma.deviceType.update({
+        where: { id: id },
+        data: { ...values },
+      });
 
       if (!data) {
         return c.json({ error: "Not found" }, 404);
@@ -126,15 +113,14 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const [data] = await db
-        .delete(deviceTypes)
-        .where(eq(deviceTypes.id, id))
-        .returning({ id: deviceTypes.id });
+      const data = await prisma.deviceType.delete({
+        where: { id: id },
+      });
 
       if (!data) {
         return c.json({ error: "Not found" }, 404);
       }
-      return c.json(data);
+      return c.json({ id: data.id });
     }
   );
 

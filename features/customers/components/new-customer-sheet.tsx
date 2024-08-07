@@ -5,17 +5,13 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { newCustomerSchema } from "@/db/schema";
 import * as useNewCustomer from "@/features/customers/hooks/use-new-customer";
 import { useCreateCustomer } from "@/features/customers/useCustomersApi";
+import { updateCustomer } from "@/lib/apiSchema";
 import { z } from "zod";
 import { CustomerForm } from "./customers-form";
 
-const formSchema = newCustomerSchema.pick({
-  name: true,
-});
-
-type FormValues = z.input<typeof formSchema>;
+type FormValues = z.input<typeof updateCustomer>;
 
 export const NewCustomerSheet = () => {
   const { isOpen, onClose } = useNewCustomer.useNewCustomers();

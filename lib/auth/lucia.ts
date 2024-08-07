@@ -1,14 +1,16 @@
-import { Lucia, TimeSpan } from "lucia";
-import { DrizzlePostgreSQLAdapter } from "@lucia-auth/adapter-drizzle";
 import { env } from "@/env";
-import { db } from "@/db/drizzle";
-import { sessions, users, type User as DbUser } from "@/db/schema";
+import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
+import { Lucia, TimeSpan } from "lucia";
 
 // Uncomment the following lines if you are using nodejs 18 or lower. Not required in Node.js 20, CloudFlare Workers, Deno, Bun, and Vercel Edge Functions.
 // import { webcrypto } from "node:crypto";
 // globalThis.crypto = webcrypto as Crypto;
 
-const adapter = new DrizzlePostgreSQLAdapter(db, sessions, users);
+import { PrismaClient, User } from "@prisma/client";
+
+const client = new PrismaClient();
+
+const adapter = new PrismaAdapter(client.session, client.user);
 
 export const lucia = new Lucia(adapter, {
   getSessionAttributes: (/* attributes */) => {
@@ -42,4 +44,4 @@ declare module "lucia" {
 }
 
 interface DatabaseSessionAttributes {}
-interface DatabaseUserAttributes extends Omit<DbUser, "hashedPassword"> {}
+interface DatabaseUserAttributes extends Omit<User, "hashedPassword"> {}

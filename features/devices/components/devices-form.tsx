@@ -15,21 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { newDeviceSchema } from "@/db/schema";
+import { createDevice } from "@/lib/apiSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const formSchema = newDeviceSchema.pick({
-  name: true,
-  mac: true,
-  ip: true,
-  pin: true,
-  deviceTypeId: true,
-});
-
-type FormValues = z.input<typeof formSchema>;
+type FormValues = z.input<typeof createDevice>;
 
 type Props = {
   id?: string;
@@ -49,7 +41,7 @@ export const DeviceForm = ({
   deviceTypesOptions,
 }: Props) => {
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(createDevice),
     defaultValues: defaultValues,
   });
 

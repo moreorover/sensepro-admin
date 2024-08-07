@@ -1,11 +1,10 @@
 import { Hono } from "hono";
 
-import { db } from "@/db/drizzle";
-import { devices, groups, newDeviceSchema } from "@/db/schema";
+import { createDevice, updateDevice } from "@/lib/apiSchema";
 import { validateRequest } from "@/lib/auth/validate-request";
+import prisma from "@/lib/prisma";
 import { zValidator } from "@hono/zod-validator";
 import { createId } from "@paralleldrive/cuid2";
-import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 const app = new Hono()
@@ -26,29 +25,15 @@ const app = new Hono()
 
       const { locationId } = c.req.valid("query");
 
-      const x = await db.query.groups.findMany({
-        where: locationId ? eq(groups.locationId, locationId) : undefined,
-        with: {
-          devices: true,
-          location: true,
+      const data = await prisma.devices.findMany({
+        where: {
+          locationId: locationId ? locationId : undefined,
         },
-      });
-
-      console.log("x2");
-
-      console.log({ x });
-      console.log({ loc: x[0].location });
-      console.log({ devices: x[0].devices });
-
-      const data = await db.query.devices.findMany({
-        where: locationId ? eq(devices.locationId, locationId) : undefined,
-        with: {
+        include: {
           deviceType: true,
           group: true,
         },
       });
-
-      console.log({ devicesx: { ...data } });
 
       return c.json(data);
     }
@@ -68,8 +53,8 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = await db.query.devices.findFirst({
-        where: eq(devices.id, id),
+      const data = await prisma.devices.findUnique({
+        where: { id: id },
       });
 
       if (!data) {
@@ -78,32 +63,24 @@ const app = new Hono()
       return c.json(data);
     }
   )
-  .post(
-    "/",
-    zValidator(
-      "json",
-      newDeviceSchema.omit({ id: true, createdAt: true, updatedAt: true })
-    ),
-    async (c) => {
-      const values = c.req.valid("json");
+  .post("/", zValidator("json", createDevice), async (c) => {
+    const values = c.req.valid("json");
 
-      const { user } = await validateRequest();
+    const { user } = await validateRequest();
 
-      if (!user) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
-
-      const [data] = await db
-        .insert(devices)
-        .values({
-          id: createId(),
-          ...values,
-        })
-        .returning();
-
-      return c.json(data);
+    if (!user) {
+      return c.json({ error: "Unauthorized" }, 401);
     }
-  )
+
+    const data = await prisma.devices.create({
+      data: {
+        ...values,
+        id: createId(),
+      },
+    });
+
+    return c.json(data);
+  })
   .patch(
     "/:id",
     zValidator(
@@ -112,10 +89,7 @@ const app = new Hono()
         id: z.string().optional(),
       })
     ),
-    zValidator(
-      "json",
-      newDeviceSchema.omit({ id: true, createdAt: true, updatedAt: true })
-    ),
+    zValidator("json", updateDevice),
     async (c) => {
       const { id } = c.req.valid("param");
       const values = c.req.valid("json");
@@ -130,11 +104,10 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const [data] = await db
-        .update(devices)
-        .set({ ...values })
-        .where(eq(devices.id, id))
-        .returning();
+      const data = prisma.devices.update({
+        where: { id: id },
+        data: { ...values },
+      });
 
       if (!data) {
         return c.json({ error: "Not found" }, 404);
@@ -159,15 +132,14 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const [data] = await db
-        .delete(devices)
-        .where(eq(devices.id, id))
-        .returning({ id: devices.id });
+      const data = await prisma.devices.delete({
+        where: { id: id },
+      });
 
       if (!data) {
         return c.json({ error: "Not found" }, 404);
       }
-      return c.json(data);
+      return c.json({ id: data.id });
     }
   );
 

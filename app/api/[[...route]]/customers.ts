@@ -1,11 +1,10 @@
 import { Hono } from "hono";
 
-import { db } from "@/db/drizzle";
-import { customers, newCustomerSchema } from "@/db/schema";
+import { createCustomer, updateCustomer } from "@/lib/apiSchema";
 import { validateRequest } from "@/lib/auth/validate-request";
+import prisma from "@/lib/prisma";
 import { zValidator } from "@hono/zod-validator";
 import { createId } from "@paralleldrive/cuid2";
-import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 const app = new Hono()
@@ -16,7 +15,7 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    const data = await db.query.customers.findMany();
+    const data = await prisma.customers.findMany();
 
     return c.json(data);
   })
@@ -35,8 +34,10 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = await db.query.customers.findFirst({
-        where: eq(customers.id, id),
+      const data = await prisma.customers.findUnique({
+        where: {
+          id: id,
+        },
       });
 
       if (!data) {
@@ -45,32 +46,24 @@ const app = new Hono()
       return c.json(data);
     }
   )
-  .post(
-    "/",
-    zValidator(
-      "json",
-      newCustomerSchema.omit({ id: true, createdAt: true, updatedAt: true })
-    ),
-    async (c) => {
-      const values = c.req.valid("json");
+  .post("/", zValidator("json", createCustomer), async (c) => {
+    const values = await c.req.json();
 
-      const { user } = await validateRequest();
+    const { user } = await validateRequest();
 
-      if (!user) {
-        return c.json({ error: "Unauthorized" }, 401);
-      }
-
-      const [data] = await db
-        .insert(customers)
-        .values({
-          id: createId(),
-          ...values,
-        })
-        .returning();
-
-      return c.json(data);
+    if (!user) {
+      return c.json({ error: "Unauthorized" }, 401);
     }
-  )
+
+    const data = await prisma.customers.create({
+      data: {
+        id: createId(),
+        ...values,
+      },
+    });
+
+    return c.json(data);
+  })
   .patch(
     "/:id",
     zValidator(
@@ -79,10 +72,7 @@ const app = new Hono()
         id: z.string().optional(),
       })
     ),
-    zValidator(
-      "json",
-      newCustomerSchema.omit({ id: true, createdAt: true, updatedAt: true })
-    ),
+    zValidator("json", updateCustomer),
     async (c) => {
       const { id } = c.req.valid("param");
       const values = c.req.valid("json");
@@ -97,11 +87,12 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const [data] = await db
-        .update(customers)
-        .set({ ...values })
-        .where(eq(customers.id, id))
-        .returning();
+      const data = await prisma.customers.update({
+        where: { id: id },
+        data: {
+          ...values,
+        },
+      });
 
       if (!data) {
         return c.json({ error: "Not found" }, 404);
@@ -126,15 +117,16 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const [data] = await db
-        .delete(customers)
-        .where(eq(customers.id, id))
-        .returning({ id: customers.id });
+      const data = await prisma.customers.delete({
+        where: {
+          id: id,
+        },
+      });
 
       if (!data) {
         return c.json({ error: "Not found" }, 404);
       }
-      return c.json(data);
+      return c.json({ id: data.id });
     }
   );
 

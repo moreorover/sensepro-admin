@@ -8,17 +8,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { newCustomerSchema } from "@/db/schema";
+import { createCustomer } from "@/lib/apiSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const formSchema = newCustomerSchema.pick({
-  name: true,
-});
-
-type FormValues = z.input<typeof formSchema>;
+type FormValues = z.input<typeof createCustomer>;
 
 type Props = {
   id?: string;
@@ -36,7 +32,7 @@ export const CustomerForm = ({
   disabled,
 }: Props) => {
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(createCustomer),
     defaultValues: defaultValues,
   });
 

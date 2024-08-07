@@ -5,17 +5,13 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { newLocationSchema } from "@/db/schema";
 import * as useNewLocation from "@/features/locations/hooks/use-new-location";
+import { updateLocationType } from "@/lib/apiSchema";
 import { z } from "zod";
 import { useCreateLocation } from "../useLocationsApi";
 import { LocationForm } from "./locations-form";
 
-const formSchema = newLocationSchema.pick({
-  address: true,
-});
-
-type FormValues = z.input<typeof formSchema>;
+type FormValues = z.input<typeof updateLocationType>;
 
 export const NewLocationSheet = () => {
   const { isOpen, onClose, customerId } = useNewLocation.useNewLocations();
