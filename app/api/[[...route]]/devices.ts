@@ -25,7 +25,7 @@ const app = new Hono()
 
       const { locationId } = c.req.valid("query");
 
-      const data = await prisma.devices.findMany({
+      const data = await prisma.device.findMany({
         where: {
           locationId: locationId ? locationId : undefined,
         },
@@ -53,7 +53,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = await prisma.devices.findUnique({
+      const data = await prisma.device.findUnique({
         where: { id: id },
       });
 
@@ -72,7 +72,7 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    const data = await prisma.devices.create({
+    const data = await prisma.device.create({
       data: {
         ...values,
         id: createId(),
@@ -104,7 +104,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = prisma.devices.update({
+      const data = prisma.device.update({
         where: { id: id },
         data: { ...values },
       });
@@ -132,7 +132,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = await prisma.devices.delete({
+      const data = await prisma.device.delete({
         where: { id: id },
       });
 

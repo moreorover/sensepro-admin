@@ -25,33 +25,33 @@ model Session {
   user User @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
-model Customers {
-  id        String      @id
-  name      String      @unique
-  createdAt DateTime    @default(now())
-  updatedAt DateTime?   @updatedAt
-  locations Locations[]
+model Customer {
+  id        String     @id
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime?  @updatedAt
+  locations Location[]
 }
 
-model Locations {
-  id         String     @id
+model Location {
+  id         String    @id
   address    String
   customerId String?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime?  @updatedAt
-  groups     Groups[]
-  devices    Devices[]
-  customer   Customers? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+  groups     Group[]
+  devices    Device[]
+  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
 }
 
-model Groups {
-  id               String     @id
-  name             String
-  locationId       String?
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime?  @updatedAt
-  location         Locations? @relation(fields: [locationId], references: [id], onDelete: Cascade)
-  location_devices Devices[]
+model Group {
+  id         String    @id
+  name       String
+  locationId String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime? @updatedAt
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  devices    Device[]
 }
 
 model DeviceType {
@@ -59,10 +59,10 @@ model DeviceType {
   name      String    @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
-  devices   Devices[]
+  devices   Device[]
 }
 
-model Devices {
+model Device {
   id           String      @id
   name         String
   mac          String
@@ -74,6 +74,6 @@ model Devices {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime?   @updatedAt
   deviceType   DeviceType? @relation(fields: [deviceTypeId], references: [id], onDelete: SetNull)
-  group        Groups?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
-  location     Locations?  @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  group        Group?      @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  location     Location?   @relation(fields: [locationId], references: [id], onDelete: Cascade)
 }

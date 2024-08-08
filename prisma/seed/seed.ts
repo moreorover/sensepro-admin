@@ -42,7 +42,7 @@ const main = async () => {
     })
   );
 
-  const { customers } = await seed.customers(
+  const { customer } = await seed.customer(
     (x) =>
       x(10, {
         id: (ctx) => copycat.uuid(ctx.seed),
@@ -55,7 +55,7 @@ const main = async () => {
               x(10, {
                 id: (ctx) => copycat.uuid(ctx.seed),
                 mac: (ctx) => copycat.mac(ctx.seed),
-                ip: (ctx) => copycat.ipv4(ctx.seed),
+                ip: "",
                 pin: (ctx) => copycat.int(ctx.seed, { min: 1, max: 12 }),
                 name: (ctx) => copycat.word(ctx.seed),
               }),

@@ -25,7 +25,7 @@ const app = new Hono()
 
       const { customerId } = c.req.valid("query");
 
-      const data = await prisma.locations.findMany({
+      const data = await prisma.location.findMany({
         where: {
           customerId: customerId ? customerId : undefined,
         },
@@ -49,7 +49,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = await prisma.locations.findFirst({
+      const data = await prisma.location.findFirst({
         where: { id: id },
       });
 
@@ -68,7 +68,7 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    const data = await prisma.locations.create({
+    const data = await prisma.location.create({
       data: {
         id: createId(),
         ...values,
@@ -100,7 +100,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = await prisma.locations.update({
+      const data = await prisma.location.update({
         where: {
           id: id,
         },
@@ -132,7 +132,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = await prisma.locations.delete({
+      const data = await prisma.location.delete({
         where: {
           id: id,
         },

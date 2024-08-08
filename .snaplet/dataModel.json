@@ -93,99 +93,6 @@
         }
       ]
     },
-    "DeviceType": {
-      "id": "public.DeviceType",
-      "schemaName": "public",
-      "tableName": "DeviceType",
-      "fields": [
-        {
-          "id": "public.DeviceType.id",
-          "name": "id",
-          "columnName": "id",
-          "type": "text",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": false,
-          "isId": true,
-          "maxLength": null
-        },
-        {
-          "id": "public.DeviceType.name",
-          "name": "name",
-          "columnName": "name",
-          "type": "text",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": false,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public.DeviceType.createdAt",
-          "name": "createdAt",
-          "columnName": "createdAt",
-          "type": "timestamp",
-          "isRequired": true,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": true,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public.DeviceType.updatedAt",
-          "name": "updatedAt",
-          "columnName": "updatedAt",
-          "type": "timestamp",
-          "isRequired": false,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": false,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "name": "Device",
-          "type": "Device",
-          "isRequired": false,
-          "kind": "object",
-          "relationName": "DeviceToDeviceType",
-          "relationFromFields": [],
-          "relationToFields": [],
-          "isList": true,
-          "isId": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": false
-        }
-      ],
-      "uniqueConstraints": [
-        {
-          "name": "DeviceType_pkey",
-          "fields": [
-            "id"
-          ],
-          "nullNotDistinct": false
-        },
-        {
-          "name": "DeviceType_name_key",
-          "fields": [
-            "name"
-          ],
-          "nullNotDistinct": false
-        }
-      ]
-    },
     "Device": {
       "id": "public.Device",
       "schemaName": "public",
@@ -350,11 +257,11 @@
           "hasDefaultValue": false
         },
         {
-          "name": "Groups",
-          "type": "Groups",
+          "name": "Group",
+          "type": "Group",
           "isRequired": false,
           "kind": "object",
-          "relationName": "DeviceToGroups",
+          "relationName": "DeviceToGroup",
           "relationFromFields": [
             "groupId"
           ],
@@ -396,13 +303,13 @@
         }
       ]
     },
-    "Groups": {
-      "id": "public.Groups",
+    "DeviceType": {
+      "id": "public.DeviceType",
       "schemaName": "public",
-      "tableName": "Groups",
+      "tableName": "DeviceType",
       "fields": [
         {
-          "id": "public.Groups.id",
+          "id": "public.DeviceType.id",
           "name": "id",
           "columnName": "id",
           "type": "text",
@@ -416,7 +323,7 @@
           "maxLength": null
         },
         {
-          "id": "public.Groups.name",
+          "id": "public.DeviceType.name",
           "name": "name",
           "columnName": "name",
           "type": "text",
@@ -430,21 +337,7 @@
           "maxLength": null
         },
         {
-          "id": "public.Groups.locationId",
-          "name": "locationId",
-          "columnName": "locationId",
-          "type": "text",
-          "isRequired": false,
-          "kind": "scalar",
-          "isList": false,
-          "isGenerated": false,
-          "sequence": false,
-          "hasDefaultValue": false,
-          "isId": false,
-          "maxLength": null
-        },
-        {
-          "id": "public.Groups.createdAt",
+          "id": "public.DeviceType.createdAt",
           "name": "createdAt",
           "columnName": "createdAt",
           "type": "timestamp",
@@ -458,7 +351,114 @@
           "maxLength": null
         },
         {
-          "id": "public.Groups.updatedAt",
+          "id": "public.DeviceType.updatedAt",
+          "name": "updatedAt",
+          "columnName": "updatedAt",
+          "type": "timestamp",
+          "isRequired": false,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "name": "Device",
+          "type": "Device",
+          "isRequired": false,
+          "kind": "object",
+          "relationName": "DeviceToDeviceType",
+          "relationFromFields": [],
+          "relationToFields": [],
+          "isList": true,
+          "isId": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false
+        }
+      ],
+      "uniqueConstraints": [
+        {
+          "name": "DeviceType_pkey",
+          "fields": [
+            "id"
+          ],
+          "nullNotDistinct": false
+        },
+        {
+          "name": "DeviceType_name_key",
+          "fields": [
+            "name"
+          ],
+          "nullNotDistinct": false
+        }
+      ]
+    },
+    "Group": {
+      "id": "public.Group",
+      "schemaName": "public",
+      "tableName": "Group",
+      "fields": [
+        {
+          "id": "public.Group.id",
+          "name": "id",
+          "columnName": "id",
+          "type": "text",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": true,
+          "maxLength": null
+        },
+        {
+          "id": "public.Group.name",
+          "name": "name",
+          "columnName": "name",
+          "type": "text",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.Group.locationId",
+          "name": "locationId",
+          "columnName": "locationId",
+          "type": "text",
+          "isRequired": false,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.Group.createdAt",
+          "name": "createdAt",
+          "columnName": "createdAt",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.Group.updatedAt",
           "name": "updatedAt",
           "columnName": "updatedAt",
           "type": "timestamp",
@@ -476,7 +476,7 @@
           "type": "Location",
           "isRequired": false,
           "kind": "object",
-          "relationName": "GroupsToLocation",
+          "relationName": "GroupToLocation",
           "relationFromFields": [
             "locationId"
           ],
@@ -494,7 +494,7 @@
           "type": "Device",
           "isRequired": false,
           "kind": "object",
-          "relationName": "DeviceToGroups",
+          "relationName": "DeviceToGroup",
           "relationFromFields": [],
           "relationToFields": [],
           "isList": true,
@@ -506,7 +506,7 @@
       ],
       "uniqueConstraints": [
         {
-          "name": "Groups_pkey",
+          "name": "Group_pkey",
           "fields": [
             "id"
           ],
@@ -622,11 +622,11 @@
           "hasDefaultValue": false
         },
         {
-          "name": "Groups",
-          "type": "Groups",
+          "name": "Group",
+          "type": "Group",
           "isRequired": false,
           "kind": "object",
-          "relationName": "GroupsToLocation",
+          "relationName": "GroupToLocation",
           "relationFromFields": [],
           "relationToFields": [],
           "isList": true,
@@ -761,6 +761,34 @@
           "columnName": "hashedPassword",
           "type": "text",
           "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": false,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.User.createdAt",
+          "name": "createdAt",
+          "columnName": "createdAt",
+          "type": "timestamp",
+          "isRequired": true,
+          "kind": "scalar",
+          "isList": false,
+          "isGenerated": false,
+          "sequence": false,
+          "hasDefaultValue": true,
+          "isId": false,
+          "maxLength": null
+        },
+        {
+          "id": "public.User.updatedAt",
+          "name": "updatedAt",
+          "columnName": "updatedAt",
+          "type": "timestamp",
+          "isRequired": false,
           "kind": "scalar",
           "isList": false,
           "isGenerated": false,

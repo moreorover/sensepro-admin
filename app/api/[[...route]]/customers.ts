@@ -15,7 +15,7 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    const data = await prisma.customers.findMany();
+    const data = await prisma.customer.findMany();
 
     return c.json(data);
   })
@@ -34,7 +34,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = await prisma.customers.findUnique({
+      const data = await prisma.customer.findUnique({
         where: {
           id: id,
         },
@@ -55,7 +55,7 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    const data = await prisma.customers.create({
+    const data = await prisma.customer.create({
       data: {
         id: createId(),
         ...values,
@@ -87,7 +87,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = await prisma.customers.update({
+      const data = await prisma.customer.update({
         where: { id: id },
         data: {
           ...values,
@@ -117,7 +117,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = await prisma.customers.delete({
+      const data = await prisma.customer.delete({
         where: {
           id: id,
         },
