@@ -39,19 +39,8 @@ model Location {
   customerId String?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime? @updatedAt
-  groups     Group[]
   devices    Device[]
   customer   Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
-}
-
-model Group {
-  id         String    @id
-  name       String
-  locationId String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime? @updatedAt
-  location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
-  devices    Device[]
 }
 
 model DeviceType {
@@ -74,6 +63,5 @@ model Device {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime?   @updatedAt
   deviceType   DeviceType? @relation(fields: [deviceTypeId], references: [id], onDelete: SetNull)
-  group        Group?      @relation(fields: [groupId], references: [id], onDelete: Cascade)
   location     Location?   @relation(fields: [locationId], references: [id], onDelete: Cascade)
 }

@@ -1,74 +1,55 @@
-/**
- * ! Executing this script will delete all data in your database and seed it with 10 user.
- * ! Make sure to adjust the script to your needs.
- * Use any TypeScript runner to run this script, for example: `npx tsx seed.ts`
- * Learn more about the Seed Client by following our guide: https://docs.snaplet.dev/seed/getting-started
- */
-import { copycat } from "@snaplet/copycat";
-import { createSeedClient } from "@snaplet/seed";
-import { Scrypt } from "lucia";
+import { createId } from "@paralleldrive/cuid2";
+import { PrismaClient } from "@prisma/client";
+import { customers, deviceTypes, locations } from "./data";
 
-const main = async () => {
-  const seed = await createSeedClient();
+const prisma = new PrismaClient();
 
-  // Truncate all tables in the database
-  await seed.$resetDatabase();
+await prisma.user.upsert({
+  where: {
+    email: "t@t.com",
+  },
+  create: {
+    id: createId(),
+    email: "t@t.com",
+    hashedPassword: "password",
+  },
+  update: {
+    email: "t@t.com",
+    hashedPassword:
+      "26c8aa91b05fe486256f00bca556d635:5d84e5a4972548c97dd8853245b76719fd19c665ed8441d5cdf35e7eb1f47264ee4a84f80a7eb21201b3814005a89b71ea5a50dd9970a10e884cc45716d4ccca",
+  },
+});
 
-  const passwordHash = await new Scrypt().hash("password");
+await prisma.deviceType.deleteMany({
+  where: {},
+});
 
-  const { user } = await seed.user((x) =>
-    x(1, {
-      id: (ctx) => copycat.uuid(ctx.seed),
-      email: "t@t.com",
-      hashedPassword: passwordHash,
-    })
-  );
+for (const deviceType of deviceTypes) {
+  await prisma.deviceType.create({
+    data: {
+      ...deviceType,
+    },
+  });
+}
 
-  // Seed the database with 10 user
-  await seed.user((x) =>
-    x(10, {
-      id: (ctx) => copycat.uuid(ctx.seed),
-      email: (ctx) =>
-        copycat.email(ctx.seed, {
-          domain: "t.com",
-        }),
-    })
-  );
+await prisma.customer.deleteMany({
+  where: {},
+});
 
-  const { deviceType } = await seed.deviceType((createManyAndReturn) =>
-    createManyAndReturn(5, {
-      id: (ctx) => copycat.uuid(ctx.seed),
-      name: (ctx) => copycat.word(ctx.seed),
-    })
-  );
+for (const customer of customers) {
+  await prisma.customer.create({
+    data: {
+      ...customer,
+    },
+  });
 
-  const { customer } = await seed.customer(
-    (x) =>
-      x(10, {
-        id: (ctx) => copycat.uuid(ctx.seed),
-        name: (ctx) => copycat.fullName(ctx.seed),
-        locations: (x) =>
-          x(10, {
-            id: (ctx) => copycat.uuid(ctx.seed),
-            address: (ctx) => copycat.city(ctx.seed),
-            devices: (x) =>
-              x(10, {
-                id: (ctx) => copycat.uuid(ctx.seed),
-                mac: (ctx) => copycat.mac(ctx.seed),
-                ip: "",
-                pin: (ctx) => copycat.int(ctx.seed, { min: 1, max: 12 }),
-                name: (ctx) => copycat.word(ctx.seed),
-              }),
-          }),
-      }),
-    { connect: { deviceType } }
-  );
-
-  // Type completion not working? You might want to reload your TypeScript Server to pick up the changes
-
-  console.log("Database seeded successfully!");
-
-  process.exit();
-};
-
-main();
+  for (const location of locations) {
+    await prisma.location.create({
+      data: {
+        id: createId(),
+        address: location.address,
+        customerId: customer.id,
+      },
+    });
+  }
+}
