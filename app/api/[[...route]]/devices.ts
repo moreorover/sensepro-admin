@@ -29,10 +29,6 @@ const app = new Hono()
         where: {
           locationId: locationId ? locationId : undefined,
         },
-        include: {
-          deviceType: true,
-          group: true,
-        },
       });
 
       return c.json(data);

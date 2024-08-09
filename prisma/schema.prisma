@@ -41,27 +41,37 @@ model Location {
   updatedAt  DateTime? @updatedAt
   devices    Device[]
   customer   Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  Group      Group[]
 }
 
-model DeviceType {
-  id        String    @id
-  name      String    @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
-  devices   Device[]
+model Group {
+  id   String @id
+  name String
+
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+
+  devices Device[]
+}
+
+enum DeviceType {
+  Controller
+  NVR
+  CCTV_Camera
+  Detector
 }
 
 model Device {
-  id           String      @id
-  name         String
-  mac          String
-  ip           String
-  pin          Int
-  deviceTypeId String?
-  groupId      String?
-  locationId   String?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime?   @updatedAt
-  deviceType   DeviceType? @relation(fields: [deviceTypeId], references: [id], onDelete: SetNull)
-  location     Location?   @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  id         String     @id
+  name       String
+  mac        String
+  ip         String
+  pin        Int
+  deviceType DeviceType
+  groupId    String?
+  locationId String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime?  @updatedAt
+  location   Location?  @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  group      Group?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
 }

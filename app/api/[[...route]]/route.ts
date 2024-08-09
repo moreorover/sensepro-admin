@@ -4,7 +4,7 @@ import { handle } from "hono/vercel";
 import auth from "./auth";
 import customers from "./customers";
 import devices from "./devices";
-import deviceTypes from "./deviceTypes";
+import groups from "./groups";
 import locations from "./locations";
 
 // export const runtime = "edge";
@@ -16,7 +16,7 @@ const routes = app
   .route("/customers", customers)
   .route("/locations", locations)
   .route("/devices", devices)
-  .route("/deviceTypes", deviceTypes);
+  .route("/groups", groups);
 
 export const GET = handle(app);
 export const POST = handle(app);

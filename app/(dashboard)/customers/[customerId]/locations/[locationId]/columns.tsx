@@ -27,7 +27,7 @@ export const columns: ColumnDef<ResponseType>[] = [
       );
     },
     cell: ({ row }) => {
-      return <p>{row.original.deviceType?.name || ""}</p>;
+      return <p>{row.original.deviceType}</p>;
     },
   },
   {

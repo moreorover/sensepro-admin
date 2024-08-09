@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Sheet,
   SheetContent,
@@ -12,14 +11,14 @@ import {
   useGetDevice,
   useUpdateDevice,
 } from "@/features/devices/useDevicesApi";
-import { useGetDeviceTypes } from "@/features/deviceTypes/useDeviceTypesApi";
 import { useConfirm } from "@/hooks/use-confirm";
-import { updateDevice } from "@/lib/apiSchema";
+import { deviceForm } from "@/lib/apiSchema";
+import { DeviceType } from "@prisma/client";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import { DeviceForm } from "./devices-form";
 
-type FormValues = z.input<typeof updateDevice>;
+type FormValues = z.input<typeof deviceForm>;
 
 export const EditDeviceSheet = () => {
   const { isOpen, onClose, id } = useOpenDevice();
@@ -34,8 +33,6 @@ export const EditDeviceSheet = () => {
   const deleteMutation = useDeleteDevice(id);
   const isPending = editMutation.isPending || deleteMutation.isPending;
   const isLoading = deviceQuery.isLoading;
-
-  const deviceTypeQuery = useGetDeviceTypes();
 
   const onSubmit = (values: FormValues) => {
     editMutation.mutate(values, {
@@ -62,31 +59,16 @@ export const EditDeviceSheet = () => {
         name: deviceQuery.data.name,
         mac: deviceQuery.data.mac,
         ip: deviceQuery.data.ip,
-        deviceTypeId: deviceQuery.data.deviceTypeId,
+        deviceType: deviceQuery.data.deviceType,
         pin: deviceQuery.data.pin,
       }
     : {
         name: "",
         mac: "",
         ip: "",
-        deviceTypeId: null,
+        deviceType: DeviceType.Controller,
         pin: 0,
       };
-
-  if (!deviceTypeQuery.data) {
-    return (
-      <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
-        <Card className="border-none drop-shadow-sm">
-          <CardHeader className="h-8 w-48"></CardHeader>
-          <CardContent>
-            <div className="flex h-[500px] w-full items-center justify-center">
-              <Loader2 className="size-6 animate-spin text-slate-300" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <>
@@ -106,9 +88,8 @@ export const EditDeviceSheet = () => {
               id={id}
               onSubmit={onSubmit}
               disabled={isPending}
-              defaultValues={defaultValues}
               onDelete={() => onDelete()}
-              deviceTypesOptions={deviceTypeQuery.data}
+              defaultValues={defaultValues}
             />
           )}
         </SheetContent>

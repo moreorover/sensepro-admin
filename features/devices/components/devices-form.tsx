@@ -15,13 +15,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createDevice } from "@/lib/apiSchema";
+import { deviceForm } from "@/lib/apiSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { DeviceType } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-type FormValues = z.input<typeof createDevice>;
+type FormValues = z.input<typeof deviceForm>;
 
 type Props = {
   id?: string;
@@ -29,7 +30,6 @@ type Props = {
   onSubmit: (values: FormValues) => void;
   onDelete?: () => void;
   disabled?: boolean;
-  deviceTypesOptions: { id: string; name: string }[];
 };
 
 export const DeviceForm = ({
@@ -38,10 +38,9 @@ export const DeviceForm = ({
   onSubmit,
   onDelete,
   disabled,
-  deviceTypesOptions,
 }: Props) => {
   const form = useForm<FormValues>({
-    resolver: zodResolver(createDevice),
+    resolver: zodResolver(deviceForm),
     defaultValues: defaultValues,
   });
 
@@ -109,7 +108,7 @@ export const DeviceForm = ({
           )}
         />
         <FormField
-          name="deviceTypeId"
+          name="deviceType"
           control={form.control}
           render={({ field }) => (
             <FormItem>
@@ -123,12 +122,12 @@ export const DeviceForm = ({
                     <SelectValue placeholder="Select device type" />
                   </SelectTrigger>
                   <SelectContent>
-                    {deviceTypesOptions.map((deviceTypeOption) => (
+                    {Object.values(DeviceType).map((deviceTypeOption) => (
                       <SelectItem
-                        key={deviceTypeOption.id}
-                        value={deviceTypeOption.id.toString()}
+                        key={deviceTypeOption}
+                        value={deviceTypeOption}
                       >
-                        {deviceTypeOption.name}
+                        {deviceTypeOption}
                       </SelectItem>
                     ))}
                   </SelectContent>

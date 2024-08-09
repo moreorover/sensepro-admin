@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable } from "@/components/data-table";
+import { DeviceCard } from "@/components/device-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,16 +10,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useGetCustomer } from "@/features/customers/useCustomersApi";
 import { useNewDevice } from "@/features/devices/hooks/use-new-device";
-import { useGetDevices } from "@/features/devices/useDevicesApi";
-import { useGetDeviceTypes } from "@/features/deviceTypes/useDeviceTypesApi";
+import { useNewGroup } from "@/features/groups/hooks/use-new-group";
+import { useGetGroups } from "@/features/groups/useDevicesApi";
 import { useGetLocation } from "@/features/locations/useLocationsApi";
 import { Paths } from "@/lib/constants";
 import { Progress } from "@radix-ui/react-progress";
-import { Loader2 } from "lucide-react";
+import {
+  Cctv,
+  ChevronRightIcon,
+  Group,
+  Loader2,
+  MoreHorizontal,
+  Radar,
+  TowerControl,
+} from "lucide-react";
 import { redirect } from "next/navigation";
-import { columns } from "./columns";
 
 type Props = {
   customerId: string;
@@ -29,25 +42,31 @@ type Props = {
 export const CustomerLocationPage = ({ customerId, locationId }: Props) => {
   const customerQuery = useGetCustomer(customerId);
   const locationQuery = useGetLocation(locationId);
-  const devicesQuery = useGetDevices(locationId);
-  const devicesTypesQuery = useGetDeviceTypes();
+  const groupsQuery = useGetGroups(locationId);
   const newDevice = useNewDevice();
+  const newGroup = useNewGroup();
 
   const isDisabled =
     customerQuery.isLoading ||
     customerQuery.isRefetching ||
     locationQuery.isLoading ||
     locationQuery.isRefetching ||
-    devicesQuery.isLoading ||
-    devicesQuery.isRefetching ||
-    devicesTypesQuery.isLoading ||
-    devicesTypesQuery.isRefetching;
+    groupsQuery.isLoading ||
+    groupsQuery.isRefetching;
 
-  const devicesLoading = devicesQuery.isLoading || devicesQuery.isRefetching;
+  const groupsLoading = groupsQuery.isLoading || groupsQuery.isRefetching;
 
-  const openNewDevice = () => {
+  const groups = groupsQuery.data || [];
+
+  const openNewDevice = (groupId: string) => {
     newDevice.setLocationId(locationId);
+    newDevice.setGroupId(groupId);
     newDevice.onOpen();
+  };
+
+  const openNewGroup = () => {
+    newGroup.setLocationId(locationId);
+    newGroup.onOpen();
   };
 
   if (isDisabled) {
@@ -91,64 +110,106 @@ export const CustomerLocationPage = ({ customerId, locationId }: Props) => {
               <CardHeader className="pb-2">
                 <CardDescription>Total devices</CardDescription>
                 <CardTitle className="text-4xl">
-                  {devicesQuery.data?.length}
+                  {groupsQuery.data?.reduce(
+                    (total, group) => total + group.devices.length,
+                    0
+                  )}
                 </CardTitle>
               </CardHeader>
-              {/* <CardContent>
-                <div className="text-xs text-muted-foreground">
-                  +25% from last week
-                </div>
-              </CardContent> */}
               <CardFooter>
                 <Progress value={25} aria-label="25% increase" />
               </CardFooter>
             </Card>
             <Card x-chunk="dashboard-05-chunk-2">
               <CardHeader className="pb-2">
-                <CardDescription>This Month</CardDescription>
-                <CardTitle className="text-4xl">+10</CardTitle>
+                <CardDescription>Manage Location</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="text-xs text-muted-foreground">
-                  +10% from last month
-                </div>
+              <CardContent className="grid gap-4">
+                <Button
+                  onClick={openNewGroup}
+                  variant="outline"
+                  className="flex items-center justify-between rounded-md bg-muted p-4 hover:bg-accent hover:text-accent-foreground"
+                >
+                  <div className="flex items-center gap-4">
+                    <Group className="size-4" />
+                    <span className="font-medium">Group</span>
+                  </div>
+                  <ChevronRightIcon className="size-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex items-center justify-between rounded-md bg-muted p-4 hover:bg-accent hover:text-accent-foreground"
+                >
+                  <div className="flex items-center gap-4">
+                    <TowerControl className="size-4" />
+                    <span className="font-medium">Controller</span>
+                  </div>
+                  <ChevronRightIcon className="size-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex items-center justify-between rounded-md bg-muted p-4 hover:bg-accent hover:text-accent-foreground"
+                >
+                  <div className="flex items-center gap-4">
+                    <Cctv className="size-4" />
+                    <span className="font-medium">CCTV Camera</span>
+                  </div>
+                  <ChevronRightIcon className="size-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex items-center justify-between rounded-md bg-muted p-4 hover:bg-accent hover:text-accent-foreground"
+                >
+                  <div className="flex items-center gap-4">
+                    <Radar className="size-4" />
+                    <span className="font-medium">Detector</span>
+                  </div>
+                  <ChevronRightIcon className="size-4" />
+                </Button>
               </CardContent>
-              <CardFooter>
-                <Progress value={12} aria-label="12% increase" />
-              </CardFooter>
             </Card>
+            {groups.map((group) => (
+              <Card key={group.id} className="col-span-4">
+                <CardHeader className="flex flex-row items-start bg-muted/50">
+                  <div className="grid gap-0.5">
+                    <CardTitle className="group flex items-center gap-2 text-lg">
+                      {group.name}
+                    </CardTitle>
+                    <CardDescription>
+                      Updated: November 23, 2023
+                    </CardDescription>
+                  </div>
+                  <div className="ml-auto flex items-center gap-1">
+                    <Button size="sm" onClick={() => openNewDevice(group.id)}>
+                      Add Device
+                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          className="h-8 w-8"
+                        >
+                          {/* <MoveVerticalIcon className="h-3.5 w-3.5" /> */}
+                          <MoreHorizontal className="size-4" />
+                          <span className="sr-only">More</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem>Delete</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </CardHeader>
+                <CardContent className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
+                  {group.devices.map((device) => (
+                    <DeviceCard key={device.id} {...device} />
+                  ))}
+                </CardContent>
+              </Card>
+            ))}
           </div>
-          <Card x-chunk="dashboard-05-chunk-3">
-            <CardHeader className="px-7">
-              <div className="flex justify-between">
-                <CardTitle>Devices</CardTitle>
-                <Button onClick={openNewDevice}>Create New Device</Button>
-              </div>
-              <CardDescription>Location devices.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {devicesLoading ? (
-                <div className="mx-auto -mt-24 w-full max-w-screen-2xl pb-10">
-                  <Card className="border-none drop-shadow-sm">
-                    <CardHeader className="h-8 w-48"></CardHeader>
-                    <CardContent>
-                      <div className="flex h-[500px] w-full items-center justify-center">
-                        <Loader2 className="size-6 animate-spin text-slate-300" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              ) : (
-                <DataTable
-                  filterLabel="Name"
-                  filterKey="name"
-                  columns={columns}
-                  data={devicesQuery.data}
-                  disabled={devicesLoading}
-                />
-              )}
-            </CardContent>
-          </Card>
         </div>
       </main>
     </>
