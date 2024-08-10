@@ -8,7 +8,7 @@ import {
 import { groupForm } from "@/lib/apiSchema";
 import { z } from "zod";
 import { useNewGroup } from "../hooks/use-new-group";
-import { useCreateGroup } from "../useDevicesApi";
+import { useCreateGroup } from "../useGroupsApi";
 import { GroupForm } from "./group-form";
 
 type FormValues = z.input<typeof groupForm>;

@@ -6,15 +6,16 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import * as useNewDevice from "@/features/devices/hooks/use-new-device";
-import { updateDevice } from "@/lib/apiSchema";
+import { deviceForm } from "@/lib/apiSchema";
 import { z } from "zod";
 import { useCreateDevice } from "../useDevicesApi";
 import { DeviceForm } from "./devices-form";
 
-type FormValues = z.input<typeof updateDevice>;
+type FormValues = z.input<typeof deviceForm>;
 
 export const NewDeviceSheet = () => {
-  const { isOpen, onClose, locationId, groupId } = useNewDevice.useNewDevice();
+  const { isOpen, onClose, locationId, groupId, deviceType } =
+    useNewDevice.useNewDevice();
   const mutation = useCreateDevice();
 
   const onSubmit = (values: FormValues) => {
@@ -23,6 +24,7 @@ export const NewDeviceSheet = () => {
         ...values,
         locationId,
         groupId,
+        deviceType,
       },
       {
         onSuccess: () => {
@@ -49,7 +51,6 @@ export const NewDeviceSheet = () => {
             mac: "",
             ip: "",
             pin: 0,
-            deviceType: "Controller",
           }}
         />
       </SheetContent>

@@ -10,7 +10,7 @@ import { groupForm } from "@/lib/apiSchema";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";
 import { useOpenGroup } from "../hooks/use-open-group";
-import { useDeleteGroup, useGetGroup, useUpdateGroup } from "../useDevicesApi";
+import { useDeleteGroup, useGetGroup, useUpdateGroup } from "../useGroupsApi";
 import { GroupForm } from "./group-form";
 
 type FormValues = z.input<typeof groupForm>;
@@ -23,22 +23,21 @@ export const EditGroupSheet = () => {
     "You are about to delete this group"
   );
 
-  const deviceQuery = useGetGroup(id);
+  const groupQuery = useGetGroup(id);
   const editMutation = useUpdateGroup(id);
   const deleteMutation = useDeleteGroup(id);
   const isPending = editMutation.isPending || deleteMutation.isPending;
-  const isLoading = deviceQuery.isLoading;
+  const isLoading = groupQuery.isLoading;
 
   const onSubmit = (values: FormValues) => {
-    deviceQuery.data &&
-      editMutation.mutate(
-        { ...values },
-        {
-          onSuccess: () => {
-            onClose();
-          },
-        }
-      );
+    editMutation.mutate(
+      { ...values },
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      }
+    );
   };
 
   const onDelete = async () => {
@@ -53,9 +52,9 @@ export const EditGroupSheet = () => {
     }
   };
 
-  const defaultValues = deviceQuery.data
+  const defaultValues = groupQuery.data
     ? {
-        name: deviceQuery.data.name,
+        name: groupQuery.data.name,
       }
     : {
         name: "",

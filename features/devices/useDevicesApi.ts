@@ -52,9 +52,7 @@ export const useGetDevice = (id?: string) => {
 
 export const useCreateDevice = () => {
   type ResponseType = InferResponseType<typeof client.api.devices.$post>;
-  type RequestType = InferRequestType<
-    typeof client.api.devices.$post
-  >["json"];
+  type RequestType = InferRequestType<typeof client.api.devices.$post>["json"];
 
   const queryClient = useQueryClient();
   const mutation = useMutation<ResponseType, Error, RequestType>({
@@ -65,9 +63,12 @@ export const useCreateDevice = () => {
       }
       return await response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data, variables, context) => {
       toast.success("Device created");
       queryClient.invalidateQueries({ queryKey: ["devices"] });
+      queryClient.invalidateQueries({
+        queryKey: ["groups", { locationId: variables.locationId }],
+      });
     },
     onError: () => {
       toast.error("Failed to create device");

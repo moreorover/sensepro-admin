@@ -1,6 +1,6 @@
 "use client";
 
-import { DeviceCard } from "@/components/device-card";
+import { GroupCard } from "@/components/group-card";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,28 +10,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useGetCustomer } from "@/features/customers/useCustomersApi";
 import { useNewDevice } from "@/features/devices/hooks/use-new-device";
 import { useNewGroup } from "@/features/groups/hooks/use-new-group";
-import { useGetGroups } from "@/features/groups/useDevicesApi";
+import { useOpenGroup } from "@/features/groups/hooks/use-open-group";
+import { useDeleteGroup, useGetGroups } from "@/features/groups/useGroupsApi";
 import { useGetLocation } from "@/features/locations/useLocationsApi";
+import { useConfirm } from "@/hooks/use-confirm";
 import { Paths } from "@/lib/constants";
+import { DeviceType } from "@prisma/client";
 import { Progress } from "@radix-ui/react-progress";
-import {
-  Cctv,
-  ChevronRightIcon,
-  Group,
-  Loader2,
-  MoreHorizontal,
-  Radar,
-  TowerControl,
-} from "lucide-react";
+import { ChevronRightIcon, Group, Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
 
 type Props = {
@@ -45,6 +34,12 @@ export const CustomerLocationPage = ({ customerId, locationId }: Props) => {
   const groupsQuery = useGetGroups(locationId);
   const newDevice = useNewDevice();
   const newGroup = useNewGroup();
+  const openGroupEdit = useOpenGroup();
+
+  const [ConfirmDialog, confirm] = useConfirm(
+    "Are you sure?",
+    "You are about to delete this customer"
+  );
 
   const isDisabled =
     customerQuery.isLoading ||
@@ -58,15 +53,25 @@ export const CustomerLocationPage = ({ customerId, locationId }: Props) => {
 
   const groups = groupsQuery.data || [];
 
-  const openNewDevice = (groupId: string) => {
+  const openNewDevice = (groupId: string, deviceType: DeviceType) => {
     newDevice.setLocationId(locationId);
     newDevice.setGroupId(groupId);
+    newDevice.setDeviceType(deviceType);
     newDevice.onOpen();
   };
 
   const openNewGroup = () => {
     newGroup.setLocationId(locationId);
     newGroup.onOpen();
+  };
+
+  const handleGroupDelete = async (groupId: string) => {
+    const deleteMutation = useDeleteGroup(groupId);
+    const ok = await confirm();
+
+    if (ok) {
+      deleteMutation.mutate();
+    }
   };
 
   if (isDisabled) {
@@ -132,82 +137,14 @@ export const CustomerLocationPage = ({ customerId, locationId }: Props) => {
                 >
                   <div className="flex items-center gap-4">
                     <Group className="size-4" />
-                    <span className="font-medium">Group</span>
-                  </div>
-                  <ChevronRightIcon className="size-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex items-center justify-between rounded-md bg-muted p-4 hover:bg-accent hover:text-accent-foreground"
-                >
-                  <div className="flex items-center gap-4">
-                    <TowerControl className="size-4" />
-                    <span className="font-medium">Controller</span>
-                  </div>
-                  <ChevronRightIcon className="size-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex items-center justify-between rounded-md bg-muted p-4 hover:bg-accent hover:text-accent-foreground"
-                >
-                  <div className="flex items-center gap-4">
-                    <Cctv className="size-4" />
-                    <span className="font-medium">CCTV Camera</span>
-                  </div>
-                  <ChevronRightIcon className="size-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex items-center justify-between rounded-md bg-muted p-4 hover:bg-accent hover:text-accent-foreground"
-                >
-                  <div className="flex items-center gap-4">
-                    <Radar className="size-4" />
-                    <span className="font-medium">Detector</span>
+                    <span className="font-medium">New Group</span>
                   </div>
                   <ChevronRightIcon className="size-4" />
                 </Button>
               </CardContent>
             </Card>
             {groups.map((group) => (
-              <Card key={group.id} className="col-span-4">
-                <CardHeader className="flex flex-row items-start bg-muted/50">
-                  <div className="grid gap-0.5">
-                    <CardTitle className="group flex items-center gap-2 text-lg">
-                      {group.name}
-                    </CardTitle>
-                    <CardDescription>
-                      Updated: November 23, 2023
-                    </CardDescription>
-                  </div>
-                  <div className="ml-auto flex items-center gap-1">
-                    <Button size="sm" onClick={() => openNewDevice(group.id)}>
-                      Add Device
-                    </Button>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          size="icon"
-                          variant="outline"
-                          className="h-8 w-8"
-                        >
-                          {/* <MoveVerticalIcon className="h-3.5 w-3.5" /> */}
-                          <MoreHorizontal className="size-4" />
-                          <span className="sr-only">More</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>Delete</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </CardHeader>
-                <CardContent className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 pt-4">
-                  {group.devices.map((device) => (
-                    <DeviceCard key={device.id} {...device} />
-                  ))}
-                </CardContent>
-              </Card>
+              <GroupCard {...group} />
             ))}
           </div>
         </div>

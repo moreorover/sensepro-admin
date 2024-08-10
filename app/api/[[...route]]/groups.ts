@@ -103,7 +103,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = prisma.group.update({
+      const data = await prisma.group.update({
         where: { id: id },
         data: { ...values },
       });

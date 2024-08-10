@@ -8,16 +8,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { deviceForm } from "@/lib/apiSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DeviceType } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -107,7 +99,7 @@ export const DeviceForm = ({
             </FormItem>
           )}
         />
-        <FormField
+        {/* <FormField
           name="deviceType"
           control={form.control}
           render={({ field }) => (
@@ -135,7 +127,7 @@ export const DeviceForm = ({
               </FormControl>
             </FormItem>
           )}
-        />
+        /> */}
         <Button className="w-full" disabled={disabled}>
           {id ? "Save changes" : "Create customer location device"}
         </Button>

@@ -52,6 +52,9 @@ model Group {
   location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
 
   devices Device[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 }
 
 enum DeviceType {
