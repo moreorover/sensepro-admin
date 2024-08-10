@@ -126,9 +126,12 @@ export const useDeleteDevice = (id?: string) => {
       }
       return await response.json();
     },
-    onSuccess: () => {
+    onSuccess: (data, variables, context) => {
       toast.success("Device deleted");
       queryClient.invalidateQueries({ queryKey: ["devices"] });
+      queryClient.invalidateQueries({
+        queryKey: ["groups", { locationId: data.locationId }],
+      });
     },
     onError: () => {
       toast.error("Failed to delete device");

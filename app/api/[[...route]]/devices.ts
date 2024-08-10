@@ -135,7 +135,7 @@ const app = new Hono()
       if (!data) {
         return c.json({ error: "Not found" }, 404);
       }
-      return c.json({ id: data.id });
+      return c.json(data);
     }
   );
 
