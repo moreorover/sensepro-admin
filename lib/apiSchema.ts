@@ -15,6 +15,7 @@ const device = z.object({
   mac: z.string().length(17),
   ip: z.string(),
   pin: z.number().default(0),
+  serialNumber: z.string(),
 
   deviceType: z.nativeEnum(DeviceType),
   locationId: z.string().optional().nullable(),

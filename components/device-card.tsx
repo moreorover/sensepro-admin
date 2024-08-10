@@ -1,8 +1,3 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/fmCCuPJH4ig
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -75,15 +70,15 @@ export const DeviceCard = (props: DeviceShemaType) => {
             </li>
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">IP Address</span>
-              <span>192.168.1.100</span>
+              <span>{props.ip}</span>
             </li>
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">MAC Address</span>
-              <span>00:11:22:33:44:55</span>
+              <span>{props.mac}</span>
             </li>
             <li className="flex items-center justify-between">
               <span className="text-muted-foreground">Serial Number</span>
-              <span>ABC123456789</span>
+              <span>{props.serialNumber}</span>
             </li>
           </ul>
           <Separator className="my-2" />

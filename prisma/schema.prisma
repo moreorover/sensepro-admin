@@ -65,16 +65,17 @@ enum DeviceType {
 }
 
 model Device {
-  id         String     @id
-  name       String
-  mac        String
-  ip         String
-  pin        Int
-  deviceType DeviceType
-  groupId    String?
-  locationId String?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime?  @updatedAt
-  location   Location?  @relation(fields: [locationId], references: [id], onDelete: Cascade)
-  group      Group?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  id           String     @id
+  name         String
+  mac          String
+  ip           String
+  pin          Int
+  serialNumber String
+  deviceType   DeviceType
+  groupId      String?
+  locationId   String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?  @updatedAt
+  location     Location?  @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  group        Group?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
 }

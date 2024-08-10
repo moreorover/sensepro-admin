@@ -80,6 +80,23 @@ export const DeviceForm = ({
           )}
         />
         <FormField
+          name="serialNumber"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Serial Number</FormLabel>
+              <FormControl>
+                <Input
+                  disabled={disabled}
+                  placeholder="Serial Number"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
           name="pin"
           control={form.control}
           render={({ field }) => (
