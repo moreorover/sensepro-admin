@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,20 +6,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { DeviceCard } from "@/features/devices/components/device-card";
-import { useNewDevice } from "@/features/devices/hooks/use-new-device";
 import { GroupShemaType } from "@/lib/apiSchema";
 import { DeviceType } from "@prisma/client";
+import { GroupAddDeviceButton } from "./group-add-device-button";
 import { GroupEditButton } from "./group-edit-button";
 
 export const GroupCard = (props: GroupShemaType) => {
-  const newDevice = useNewDevice();
-
-  const openNewDevice = (groupId: string, deviceType: DeviceType) => {
-    newDevice.setLocationId(props.locationId);
-    newDevice.setGroupId(groupId);
-    newDevice.setDeviceType(deviceType);
-    newDevice.onOpen();
-  };
   return (
     <Card className="col-span-4">
       <CardHeader className="flex flex-row items-start bg-muted/50">
@@ -31,48 +22,44 @@ export const GroupCard = (props: GroupShemaType) => {
           <CardDescription>Updated: November 23, 2023</CardDescription>
         </div>
         <div className="ml-auto flex items-center gap-1">
-          <Button
-            size="sm"
-            onClick={() => openNewDevice(props.id, DeviceType.Controller)}
+          <GroupAddDeviceButton
+            groupId={props.id}
+            locationId={props.locationId}
+            deviceType={DeviceType.Controller}
             disabled={props.devices.some(
               (device) => device.deviceType === DeviceType.Controller
             )}
-          >
-            Add Controller
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => openNewDevice(props.id, DeviceType.CCTV_Camera)}
+          />
+          <GroupAddDeviceButton
+            groupId={props.id}
+            locationId={props.locationId}
+            deviceType={DeviceType.NVR}
             disabled={
               !props.devices.some(
                 (device) => device.deviceType === DeviceType.Controller
               )
             }
-          >
-            Add CCTV
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => openNewDevice(props.id, DeviceType.NVR)}
+          />
+          <GroupAddDeviceButton
+            groupId={props.id}
+            locationId={props.locationId}
+            deviceType={DeviceType.CCTV_Camera}
             disabled={
               !props.devices.some(
                 (device) => device.deviceType === DeviceType.Controller
               )
             }
-          >
-            Add NVR
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => openNewDevice(props.id, DeviceType.Detector)}
+          />
+          <GroupAddDeviceButton
+            groupId={props.id}
+            locationId={props.locationId}
+            deviceType={DeviceType.Detector}
             disabled={
               !props.devices.some(
                 (device) => device.deviceType === DeviceType.Controller
               )
             }
-          >
-            Add Detector
-          </Button>
+          />
           <GroupEditButton
             id={props.id}
             deleteDisabled={props.devices.length > 0}
