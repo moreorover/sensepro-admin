@@ -7,39 +7,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { useOpenDevice } from "@/features/devices/hooks/use-open-device";
-import { useDeleteDevice } from "@/features/devices/useDevicesApi";
-import { useConfirm } from "@/hooks/use-confirm";
 import { DeviceShemaType } from "@/lib/apiSchema";
-import { Copy, MoreHorizontal } from "lucide-react";
+import { Copy } from "lucide-react";
+import { DeviceEditButton } from "./device-edit-button";
 
 export const DeviceCard = (props: DeviceShemaType) => {
-  const openDeviceEdit = useOpenDevice();
-  const deleteMutation = useDeleteDevice(props.id);
-
-  const [ConfirmDialog, confirm] = useConfirm(
-    "Are you sure?",
-    "You are about to delete this customer"
-  );
-
-  const handleDeviceDelete = async () => {
-    const ok = await confirm();
-
-    if (ok) {
-      deleteMutation.mutate();
-    }
-  };
-
   return (
     <>
-      <ConfirmDialog />
       <Card className="overflow-hidden">
         <CardHeader className="flex flex-row items-start bg-muted/50">
           <div className="grid gap-0.5">
@@ -63,28 +38,7 @@ export const DeviceCard = (props: DeviceShemaType) => {
             Refresh
             </span>
             </Button> */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="icon" variant="outline" className="h-8 w-8">
-                  {/* <MoveVerticalIcon className="h-3.5 w-3.5" /> */}
-                  <MoreHorizontal className="size-4" />
-                  <span className="sr-only">More</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => openDeviceEdit.onOpen(props.id)}
-                >
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleDeviceDelete()}>
-                  Delete
-                </DropdownMenuItem>
-                {/* <DropdownMenuItem>Export</DropdownMenuItem> */}
-                {/* <DropdownMenuSeparator /> */}
-                {/* <DropdownMenuItem>Decommission</DropdownMenuItem> */}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <DeviceEditButton deviceId={props.id} />
           </div>
         </CardHeader>
         <CardContent className="p-6 text-sm">
