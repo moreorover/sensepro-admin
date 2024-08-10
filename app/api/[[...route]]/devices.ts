@@ -100,7 +100,7 @@ const app = new Hono()
         return c.json({ error: "Unauthorized" }, 401);
       }
 
-      const data = prisma.device.update({
+      const data = await prisma.device.update({
         where: { id: id },
         data: { ...values },
       });

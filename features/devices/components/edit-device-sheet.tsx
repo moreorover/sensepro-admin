@@ -61,6 +61,7 @@ export const EditDeviceSheet = () => {
         ip: deviceQuery.data.ip,
         deviceType: deviceQuery.data.deviceType,
         pin: deviceQuery.data.pin,
+        serialNumber: deviceQuery.data.serialNumber,
       }
     : {
         name: "",
@@ -68,6 +69,7 @@ export const EditDeviceSheet = () => {
         ip: "",
         deviceType: DeviceType.Controller,
         pin: 0,
+        serialNumber: "",
       };
 
   return (

@@ -51,6 +51,7 @@ export const NewDeviceSheet = () => {
             mac: "",
             ip: "",
             pin: 0,
+            serialNumber: "",
           }}
         />
       </SheetContent>
