@@ -101,7 +101,8 @@ export const useUpdateDevice = (id?: string) => {
       queryClient.invalidateQueries({ queryKey: ["device", { id }] });
       queryClient.invalidateQueries({ queryKey: ["devices"] });
       queryClient.invalidateQueries({
-        queryKey: ["groups", { locationId: data.locationId }],
+        // queryKey: ["groups", { locationId: data.locationId }],
+        queryKey: ["groups"],
       });
     },
     onError: () => {
@@ -130,7 +131,8 @@ export const useDeleteDevice = (id?: string) => {
       toast.success("Device deleted");
       queryClient.invalidateQueries({ queryKey: ["devices"] });
       queryClient.invalidateQueries({
-        queryKey: ["groups", { locationId: data.locationId }],
+        // queryKey: ["groups", { locationId: data.locationId }],
+        queryKey: ["groups"],
       });
     },
     onError: () => {
