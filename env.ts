@@ -17,10 +17,6 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
-    PGHOST: z.string(),
-    PGDATABASE: z.string(),
-    PGUSER: z.string(),
-    PGPASSWORD: z.string(),
   },
 
   /**
@@ -40,10 +36,6 @@ export const env = createEnv({
   runtimeEnv: {
     // Server-side env vars
     DATABASE_URL: process.env.DATABASE_URL,
-    PGHOST: process.env.PGHOST,
-    PGDATABASE: process.env.PGDATABASE,
-    PGUSER: process.env.PGUSER,
-    PGPASSWORD: process.env.PGPASSWORD,
     NODE_ENV: process.env.NODE_ENV,
     // Client-side env vars
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
