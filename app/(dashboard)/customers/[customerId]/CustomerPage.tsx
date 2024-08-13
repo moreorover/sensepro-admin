@@ -28,6 +28,8 @@ export const CustomerPage = ({ customerId }: Props) => {
   const locationsQuery = useGetLocations(customerId);
   const newLocation = useNewLocations();
 
+  const locationsData = locationsQuery.data ? locationsQuery.data : [];
+
   const isDisabled = customerQuery.isLoading || customerQuery.isRefetching;
 
   const locationsLoading =
@@ -127,7 +129,7 @@ export const CustomerPage = ({ customerId }: Props) => {
                   filterLabel="Address"
                   filterKey="address"
                   columns={columns}
-                  data={locationsQuery.data}
+                  data={locationsData}
                   disabled={locationsLoading}
                 />
               )}
