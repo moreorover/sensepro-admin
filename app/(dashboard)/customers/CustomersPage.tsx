@@ -20,6 +20,8 @@ export default function CustomersPage() {
   const newCustomer = useNewCustomers();
   const customersQuery = useGetCustomers();
 
+  const customersData = customersQuery.data ? customersQuery.data : [];
+
   const isDisabled = customersQuery.isLoading || customersQuery.isRefetching;
   return (
     <>
@@ -91,7 +93,7 @@ export default function CustomersPage() {
                   filterLabel="Name"
                   filterKey="name"
                   columns={columns}
-                  data={customersQuery.data}
+                  data={customersData}
                   disabled={isDisabled}
                 />
               )}
