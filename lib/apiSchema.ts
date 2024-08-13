@@ -77,3 +77,8 @@ export const groupForm = groupType.omit({
   locationId: true,
   devices: true,
 });
+
+export const ruleSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+})

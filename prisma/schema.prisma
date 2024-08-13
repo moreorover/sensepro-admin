@@ -53,8 +53,10 @@ model Group {
 
   devices Device[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime?     @updatedAt
+  rules       Rule[]
+  DeviceRules DeviceRules[]
 }
 
 enum DeviceType {
@@ -67,10 +69,10 @@ enum DeviceType {
 model Device {
   id           String     @id
   name         String
-  mac          String
+  mac          String     @unique
   ip           String
   pin          Int
-  serialNumber String
+  serialNumber String     @unique
   deviceType   DeviceType
   groupId      String?
   locationId   String?
@@ -78,4 +80,30 @@ model Device {
   updatedAt    DateTime?  @updatedAt
   location     Location?  @relation(fields: [locationId], references: [id], onDelete: Cascade)
   group        Group?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  rules DeviceRules[]
+}
+
+enum RuleType {
+  AND
+  OR
+}
+
+model Rule {
+  id      String        @id
+  name    String
+  groupId String
+  group   Group         @relation(fields: [groupId], references: [id])
+  devices DeviceRules[]
+}
+
+model DeviceRules {
+  device   Device  @relation(fields: [deviceId], references: [id])
+  deviceId String
+  rule     Rule    @relation(fields: [ruleId], references: [id])
+  ruleId   String
+  Group    Group?  @relation(fields: [groupId], references: [id])
+  groupId  String?
+
+  @@id([deviceId, ruleId])
 }
