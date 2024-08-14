@@ -29,7 +29,6 @@ const app = new Hono()
     async (c) => {
       console.log("/api/signup start");
       const values = c.req.valid("json");
-      console.log({ values });
 
       const { user } = await validateRequest();
 
@@ -59,8 +58,6 @@ const app = new Hono()
         },
       });
 
-      console.log({ data });
-
       const session = await lucia.createSession(userId, {});
       // const sessionCookie = lucia.createSessionCookie(session.id);
       // cookies().set(
@@ -68,8 +65,6 @@ const app = new Hono()
       //   sessionCookie.value,
       //   sessionCookie.attributes,
       // );
-
-      console.log({ session });
 
       c.res.headers.set(
         "Set-Cookie",
