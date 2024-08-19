@@ -115,10 +115,10 @@ export const CustomerLocationPage = ({ customerId, locationId }: Props) => {
               </Button>
             </CardContent>
           </Card>
-          {groups.map((group) => (
-            <GroupCard key={group.id} {...group} />
-          ))}
         </div>
+        {groups.map((group) => (
+          <GroupCard key={group.id} {...group} />
+        ))}
       </div>
     </main>
   );
