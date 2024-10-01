@@ -14,6 +14,13 @@ export const env = createEnv({
         (str) => !str.includes("YOUR_DATABASE_URL_HERE"),
         "You forgot to change the default URL"
       ),
+    MQ_URL: z
+      .string()
+      .url()
+      .refine(
+        (str) => !str.includes("YOUR_MQ_URL_HERE"),
+        "You forgot to change the default MQ URL"
+      ),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -36,6 +43,7 @@ export const env = createEnv({
   runtimeEnv: {
     // Server-side env vars
     DATABASE_URL: process.env.DATABASE_URL,
+    MQ_URL: process.env.MQ_URL,
     NODE_ENV: process.env.NODE_ENV,
     // Client-side env vars
     // NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,

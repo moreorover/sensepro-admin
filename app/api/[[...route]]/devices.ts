@@ -3,9 +3,57 @@ import { Hono } from "hono";
 import { createDevice, updateDevice } from "@/lib/apiSchema";
 import { validateRequest } from "@/lib/auth/validate-request";
 import prisma from "@/lib/prisma";
+import { notifyRaspberryPi } from "@/lib/rabbitmq";
 import { zValidator } from "@hono/zod-validator";
 import { createId } from "@paralleldrive/cuid2";
+import { Device } from "@prisma/client";
 import { z } from "zod";
+
+const sendUpdateConfigMessage = async (groupId: string | null | undefined) => {
+  if (groupId) {
+    const groupDevices = await prisma.group.findFirst({
+      where: { id: groupId },
+      include: { devices: true },
+    });
+
+    let controller: Device | undefined;
+    let nvr: Device | undefined = undefined;
+    const cctv: Device[] = [];
+    const detectors: Device[] = [];
+
+    if (groupDevices) {
+      groupDevices.devices.forEach((device) => {
+        switch (device.deviceType) {
+          case "Controller":
+            controller = device;
+          case "CCTV_Camera":
+            cctv.push(device);
+            break;
+          case "Detector":
+            detectors.push(device);
+            break;
+          case "NVR":
+            nvr = device;
+        }
+      });
+    }
+
+    const devices = {
+      controller: controller,
+      nvr: nvr,
+      cctv: cctv,
+      detectors: detectors,
+    };
+
+    if (controller?.mac) {
+      await notifyRaspberryPi(
+        controller.mac,
+        "update-configuration",
+        JSON.stringify(devices)
+      );
+    }
+  }
+};
 
 const app = new Hono()
   .get(
@@ -75,6 +123,8 @@ const app = new Hono()
       },
     });
 
+    sendUpdateConfigMessage(values.groupId);
+
     return c.json(data);
   })
   .patch(
@@ -109,6 +159,8 @@ const app = new Hono()
         return c.json({ error: "Not found" }, 404);
       }
 
+      sendUpdateConfigMessage(values.groupId);
+
       return c.json(data);
     }
   )
@@ -135,6 +187,9 @@ const app = new Hono()
       if (!data) {
         return c.json({ error: "Not found" }, 404);
       }
+
+      sendUpdateConfigMessage(data.groupId);
+
       return c.json(data);
     }
   );

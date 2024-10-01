@@ -30,7 +30,6 @@ export const createDevice = device.omit({
 export const updateDevice = device.omit({
   id: true,
   locationId: true,
-  groupId: true,
   deviceType: true,
 });
 export const deviceForm = device.omit({
@@ -81,4 +80,4 @@ export const groupForm = groupType.omit({
 export const ruleSchema = z.object({
   id: z.string(),
   name: z.string(),
-})
+});
