@@ -34,3 +34,61 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+# Ubuntu Server Initial Setup Guide
+
+This guide will walk you through setting up a new user, configuring SSH for improved security, and disabling root and password-based SSH login.
+
+## Generating SSH key
+
+```
+ssh-keygen -t rsa -b 4096 -C "sensepro-martin" -f ~/.ssh/id_rsa_sensepro-dev-digitalocean-martin
+```
+
+## Steps
+
+### 1. Update and Upgrade the System
+
+Start by updating the package list and upgrading any out-of-date packages:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+### 2. Add user
+
+```bash
+sudo adduser <username>
+```
+
+### 3. Add the New User to the Sudo Group
+
+To allow the new user administrative privileges, add them to the sudo group:
+
+```bash
+sudo usermod -aG sudo <username>
+```
+
+### 4. Configure SSH for Security
+
+To enhance SSH security, we’ll disable root login and password authentication.
+
+#### Backup SSH configuration
+
+```bash
+cp /etc/ssh/sshd_config "/etc/ssh/sshd_config.bak"
+```
+
+#### Disable root login and password authentication
+
+```bash
+sed -i 's/^#?PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+sed -i 's/^#?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sed -i 's/^#?UsePAM.*/UsePAM no/' /etc/ssh/sshd_config
+```
+
+#### Restart SSH service
+
+```bash
+sudo systemctl restart ssh
+```
