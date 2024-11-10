@@ -1,40 +1,50 @@
-name: Build and Push Docker Image on Release
+name: Build and Push Docker Image on Merge to Main
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
 
 jobs:
-  build-and-push:
+  release:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
+      # Step 1: Checkout the code
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Fetches the full history to make sure all tags and branches are available
 
-      # Set up Docker Buildx (optional but recommended for multi-platform builds)
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      # Step 2: Configure Git user details for commits (if needed)
+      - name: git config
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-      # Log in to GitHub Container Registry
+      # Step 3: Install NPM dependencies
+      - run: npm install
+
+      # Step 4: Run your release script (e.g., release-it)
+      - run: npm run release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # Token for NPM registry (if needed)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Token for GitHub (for releases, tags, etc.)
+
+      # Step 5: Log in to GitHub Container Registry (GHCR)
       - name: Log in to GitHub Container Registry
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-      # Build the Docker image
+      # Step 6: Build Docker image
       - name: Build Docker image
-        env:
-          TAG: ${{ github.event.release.tag_name }}
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:$TAG .
-          docker tag ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:$TAG ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:latest
+          docker build -t ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:latest .
+          docker tag ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:latest ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:${{ github.sha }}
 
-      # Push the Docker image
-      - name: Push Docker image
-        env:
-          TAG: ${{ github.event.release.tag_name }}
+      # Step 7: Push Docker image to GHCR
+      - name: Push Docker image to GHCR
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:$TAG
           docker push ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:latest
+          docker push ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:${{ github.sha }}
