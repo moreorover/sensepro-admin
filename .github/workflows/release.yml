@@ -28,7 +28,6 @@ jobs:
       # Step 4: Run your release script (e.g., release-it)
       - run: npm run release
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }} # Token for NPM registry (if needed)
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Token for GitHub (for releases, tags, etc.)
 
       # Step 5: Log in to GitHub Container Registry (GHCR)
