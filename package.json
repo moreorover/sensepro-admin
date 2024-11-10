@@ -12,10 +12,21 @@
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
     "db:seed": "prisma db seed",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "release": "release-it"
   },
   "prisma": {
     "seed": "tsx prisma/seed/seed.ts"
+  },
+  "release-it": {
+    "git": {
+      "requireBranch": "main",
+      "tag": true
+    },
+    "github": {
+      "release": true,
+      "token": "${GITHUB_TOKEN}"
+    }
   },
   "dependencies": {
     "@hono/zod-validator": "^0.2.2",
@@ -77,6 +88,7 @@
     "react-resizable-panels": "^2.0.22",
     "react-use": "^17.5.1",
     "recharts": "^2.12.7",
+    "release-it": "^17.10.0",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
