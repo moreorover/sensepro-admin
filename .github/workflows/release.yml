@@ -3,9 +3,9 @@ name: Release and Build Docker Image
 on:
   push:
     branches:
-      - main # Trigger on push to main for `release-it` tagging
+      - main
   release:
-    types: [published] # Trigger on a published release to build and push Docker image
+    types: [published]
 
 jobs:
   release-it:
@@ -18,10 +18,16 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
+
+      # Configure Git user information
+      - name: Set up Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Run release-it
         env:
@@ -29,7 +35,7 @@ jobs:
         run: npx release-it
 
   build-and-push:
-    needs: release-it # Ensures this job runs after the `release-it` job
+    needs: release-it
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
 
