@@ -1,6 +1,6 @@
 {
   "name": "sensepro",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "private": true,
   "type": "module",
   "scripts": {
@@ -28,7 +28,9 @@
       "commitMessage": "chore: release ${version}"
     },
     "hooks": {
-      "before:init": ["git pull"],
+      "before:init": [
+        "git pull"
+      ],
       "after:bump": "npx auto-changelog -p"
     }
   },
