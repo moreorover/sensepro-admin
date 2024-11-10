@@ -49,6 +49,10 @@ ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED=1
 
+# Set the required environment variables here for runtime only
+ENV DATABASE_URL="${DATABASE_URL:-}"
+ENV MQ_URL="${MQ_URL:-}"
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
