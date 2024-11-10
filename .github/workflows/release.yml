@@ -30,6 +30,8 @@ jobs:
         run: echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
       - name: Build Docker image
+        env:
+          SKIP_ENV_VALIDATION: true
         run: |
           docker build -t ghcr.io/${{ github.repository_owner }}/sensepro-admin-panel:latest .
           docker tag ghcr.io/${{ github.repository_owner }}/sensepro-admin-panel:latest ghcr.io/${{ github.repository_owner }}/sensepro-admin-panel:${{ github.sha }}
@@ -38,4 +40,3 @@ jobs:
         run: |
           docker push ghcr.io/${{ github.repository_owner }}/sensepro-admin-panel:latest
           docker push ghcr.io/${{ github.repository_owner }}/sensepro-admin-panel:${{ github.sha }}
-

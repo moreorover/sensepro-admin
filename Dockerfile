@@ -2,6 +2,9 @@
 
 FROM node:18-alpine AS base
 
+# Set build argument for SKIP_ENV_VALIDATION
+ARG SKIP_ENV_VALIDATION=false
+
 # Install dependencies only when needed
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
@@ -45,13 +48,10 @@ RUN \
 FROM base AS runner
 WORKDIR /app
 
+# Set environment to production
 ENV NODE_ENV=production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED=1
-
-# Set the required environment variables here for runtime only
-ENV DATABASE_URL="${DATABASE_URL:-}"
-ENV MQ_URL="${MQ_URL:-}"
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -76,4 +76,6 @@ ENV PORT=3000
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 ENV HOSTNAME="0.0.0.0"
+
+# Run the app
 CMD ["node", "server.js"]
