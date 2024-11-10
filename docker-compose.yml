@@ -35,9 +35,10 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
 
   web:
-    build:
-      context: .  # Path to the directory containing the Dockerfile
-      dockerfile: Dockerfile  # Dockerfile name (if it's named Dockerfile, you can omit this line)
+    image: ghcr.io/moreorover/sensepro-admin-panel:latest
+#    build:
+#      context: .  # Path to the directory containing the Dockerfile
+#      dockerfile: Dockerfile  # Dockerfile name (if it's named Dockerfile, you can omit this line)
     container_name: nextjs_app
     restart: always
     environment:
