@@ -10,39 +10,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
       - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Fetches the full history to make sure all tags and branches are available
+        uses: actions/checkout@v3
 
-      # Step 2: Configure Git user details for commits (if needed)
       - name: git config
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-      # Step 3: Install NPM dependencies
       - run: npm install
 
-      # Step 4: Run your release script (e.g., release-it)
       - run: npm run release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Token for GitHub (for releases, tags, etc.)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 5: Log in to GitHub Container Registry (GHCR)
       - name: Log in to GitHub Container Registry
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-      # Step 6: Build Docker image
       - name: Build Docker image
         run: |
           docker build -t ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:latest .
           docker tag ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:latest ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:${{ github.sha }}
 
-      # Step 7: Push Docker image to GHCR
       - name: Push Docker image to GHCR
         run: |
           docker push ghcr.io/${{ github.repository_owner }}/SensePro-admin-panel:latest
