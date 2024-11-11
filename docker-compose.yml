@@ -67,8 +67,6 @@ services:
     deploy:
       mode: replicated
       replicas: 3
-    ports:
-      - "3000:3000"
     depends_on:
       - db
       - rabbitmq
