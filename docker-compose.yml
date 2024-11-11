@@ -1,4 +1,21 @@
 services:
+  reverse-proxy:
+    image: traefik:v3.1.7
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.websecure.adress=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=admin@moreorover.dev"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+      - letsencrypt:/letsencrypt
   db:
     image: postgres:16.4
     container_name: sense_pro_pg
@@ -16,7 +33,7 @@ services:
     image: adminer:latest
     restart: always
     ports:
-      - 8080:8080
+      - 7070:8080
     depends_on:
       - db
 
@@ -32,17 +49,25 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
-  web:
+  sensepro:
     image: ghcr.io/moreorover/sensepro-admin-panel:latest
 #    build:
 #      context: .  # Path to the directory containing the Dockerfile
 #      dockerfile: Dockerfile  # Dockerfile name (if it's named Dockerfile, you can omit this line)
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sensepro.rule=Host(`moreorover.dev`)"
+      - "traefik.http.routers.sensepro.entrypoints=websecure"
+      - "traefik.http.routers.sensepro.tls.certresolver=myresolver"
     container_name: nextjs_app
     restart: always
     environment:
       DATABASE_URL: "postgresql://admin:admin@db:5432/sensepro"
       RABBITMQ_URL: "amqp://user:password@rabbitmq:5672"
       MQ_URL: "amqp://user:password@rabbitmq:5672"
+    deploy:
+      mode: replicated
+      replicas: 3
     ports:
       - "3000:3000"
     depends_on:
@@ -50,6 +75,7 @@ services:
       - rabbitmq
 
 volumes:
+  letsencrypt:
   rabbitmq_data:
   postgres_data:
     driver: local
