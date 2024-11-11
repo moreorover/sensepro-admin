@@ -7,6 +7,8 @@ import { zValidator } from "@hono/zod-validator";
 import { generateId, Scrypt } from "lucia";
 import { z } from "zod";
 
+import { getConnInfo } from 'hono/vercel'
+
 const app = new Hono()
   .get("/", async (c) => {
     const { user } = await validateRequest();
@@ -86,6 +88,9 @@ const app = new Hono()
     ),
     async (c) => {
       const values = c.req.valid("json");
+
+      const info = getConnInfo(c) // info is `ConnInfo`
+      console.log({info})
 
       const { user } = await validateRequest();
 
