@@ -24,7 +24,6 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
-    VERSION: z.string().default("0.0.1")
   },
 
   /**
@@ -46,7 +45,6 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     MQ_URL: process.env.MQ_URL,
     NODE_ENV: process.env.NODE_ENV,
-    VERSION: process.env.VERSION,
     // Client-side env vars
     // NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
