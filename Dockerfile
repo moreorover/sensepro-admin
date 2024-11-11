@@ -2,6 +2,8 @@
 
 FROM node:18-alpine AS base
 
+ARG VERSION
+
 # Set build argument for SKIP_ENV_VALIDATION
 ARG SKIP_ENV_VALIDATION=false
 
@@ -47,6 +49,9 @@ RUN \
 # Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
+
+# Set app version
+ENV VERSION=$VERSION
 
 # Set environment to production
 ENV NODE_ENV=production

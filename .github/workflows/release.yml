@@ -25,6 +25,8 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v6
+        env:
+          VERSION: ${{ github.ref_name }}
         with:
           platforms: linux/amd64,linux/arm64
           push: true
