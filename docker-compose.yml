@@ -5,13 +5,14 @@ services:
       - "--api.insecure=true"
       - "--providers.docker"
       - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
       - "--entryPoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       - "--certificatesresolvers.myresolver.acme.email=admin@salon.rocks"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
-      - "80:80"
-      - "8080:8080"
+      - "80:80"   # HTTP port, needed for HTTP challenge
+      - "443:443" # HTTPS port
     volumes:
       # So that Traefik can listen to Docker events
       - /var/run/docker.sock:/var/run/docker.sock
