@@ -2,6 +2,7 @@ import { SheetProvider } from "@/providers/sheet-provider";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { Home, PanelLeft, Settings, Users2 } from "lucide-react";
 import Link from "next/link";
+import { env } from "@/env";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -130,6 +131,8 @@ const DashboardLayout = async ({ children }: Props) => {
                   <DropdownMenuItem>Support</DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Logout</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>{env.APP_VERSION}</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </header>
