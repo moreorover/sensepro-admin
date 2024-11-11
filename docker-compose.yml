@@ -5,7 +5,7 @@ services:
       - "--api.insecure=true"
       - "--providers.docker"
       - "--providers.docker.exposedbydefault=false"
-      - "--entryPoints.websecure.adress=:443"
+      - "--entryPoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
       - "--certificatesresolvers.myresolver.acme.email=admin@moreorover.dev"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
