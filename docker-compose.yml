@@ -11,6 +11,7 @@ services:
       - "--certificatesresolvers.myresolver.acme.email=admin@salon.rocks"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
+      - "8080:8080" # Traefik panel
       - "80:80"   # HTTP port, needed for HTTP challenge
       - "443:443" # HTTPS port
     volumes:
