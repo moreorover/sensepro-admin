@@ -1,33 +1,33 @@
-name: Build and Push Docker Image on Merge to Main
+name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - release # Trigger only when changes are pushed to the 'release' branch
 
 jobs:
   release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Log in to GitHub Container Registry
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Adjust the version as needed
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run release-it
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+        run: |
+          npx release-it --ci
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          platforms: linux/amd64,linux/arm64
-          build-args: |
-            TAG=${{ github.ref_name }}
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/sensepro-admin-panel:latest,ghcr.io/${{ github.repository_owner }}/sensepro-admin-panel:${{ github.sha }}
+      # Optional step to push tags created by release-it
+      - name: Push tags to origin
+        run: |
+          git push --tags

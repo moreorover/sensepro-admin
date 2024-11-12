@@ -20,18 +20,23 @@
   },
   "release-it": {
     "git": {
-      "requireBranch": "main",
-      "tag": true
+      "requireCleanWorkingDir": true,
+      "tagName": "${version}",
+      "commitMessage": "chore: release ${version}",
+      "tagAnnotation": "Release ${version}",
+      "push": true
     },
     "github": {
       "release": true,
-      "commitMessage": "chore: release ${version}"
+      "releaseName": "Release ${version}"
     },
     "hooks": {
-      "before:init": [
-        "git pull"
-      ],
-      "after:bump": "npx auto-changelog -p"
+      "after:release": "echo Successfully released ${version} to GitHub"
+    },
+    "plugins": {
+      "@release-it/keep-a-changelog": {
+        "filename": "CHANGELOG.md"
+      }
     }
   },
   "dependencies": {
