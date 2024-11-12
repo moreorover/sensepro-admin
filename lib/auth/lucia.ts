@@ -1,12 +1,11 @@
-import { env } from "@/env";
-import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
-import { Lucia, TimeSpan } from "lucia";
+import {env} from "@/env.mjs";
+import {PrismaAdapter} from "@lucia-auth/adapter-prisma";
+import {Lucia, TimeSpan} from "lucia";
 
 // Uncomment the following lines if you are using nodejs 18 or lower. Not required in Node.js 20, CloudFlare Workers, Deno, Bun, and Vercel Edge Functions.
 // import { webcrypto } from "node:crypto";
 // globalThis.crypto = webcrypto as Crypto;
-
-import { PrismaClient, User } from "@prisma/client";
+import {PrismaClient, User} from "@prisma/client";
 
 const client = new PrismaClient();
 
