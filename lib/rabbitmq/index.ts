@@ -1,6 +1,6 @@
-import {env} from "@/env.mjs";
+import { env } from "@/env";
 import amqp from "amqplib";
-import {v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export async function notifyRaspberryPi(
   deviceId: string,

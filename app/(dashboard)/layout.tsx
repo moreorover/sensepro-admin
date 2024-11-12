@@ -1,11 +1,11 @@
-import {SheetProvider} from "@/providers/sheet-provider";
-import {TooltipProvider} from "@radix-ui/react-tooltip";
-import {Home, PanelLeft, Settings, Users2} from "lucide-react";
+import { SheetProvider } from "@/providers/sheet-provider";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { Home, PanelLeft, Settings, Users2 } from "lucide-react";
 import Link from "next/link";
-import {env} from "@/env.mjs";
+import { env } from "@/env";
 
-import {Avatar, AvatarFallback} from "@/components/ui/avatar";
-import {Button} from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,11 +14,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
-import {Tooltip, TooltipContent, TooltipTrigger,} from "@/components/ui/tooltip";
-import {validateRequest} from "@/lib/auth/validate-request";
-import {Paths} from "@/lib/constants";
-import {redirect} from "next/navigation";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { validateRequest } from "@/lib/auth/validate-request";
+import { Paths } from "@/lib/constants";
+import { redirect } from "next/navigation";
 
 type Props = {
   children: React.ReactNode;
