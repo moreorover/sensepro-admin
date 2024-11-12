@@ -5,7 +5,7 @@
     "commitMessage": "chore: release ${version}"
   },
   "hooks": {
-    "before:init": ["git fetch --prune --prune-tags origin"],
+    "before:init": ["git pull"],
     "after:bump": "npx auto-changelog -p"
   },
   "github": {
