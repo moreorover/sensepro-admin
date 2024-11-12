@@ -1,9 +1,6 @@
 name: Release
 
-on:
-  push:
-    branches:
-      - release # Trigger only when changes are pushed to the 'release' branch
+on: workflow_dispatch
 
 jobs:
   release:
@@ -16,23 +13,18 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Adjust the version as needed
-
-      - name: Install dependencies
-        run: npm install
+          node-version: '20'
 
       - name: git config
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Run release-it
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npx release-it --ci
-
-      # Optional step to push tags created by release-it
-      - name: Push tags to origin
-        run: |
-          git push --tags
+          npm run release
