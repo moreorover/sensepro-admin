@@ -18,19 +18,6 @@
   "prisma": {
     "seed": "tsx prisma/seed/seed.ts"
   },
-  "release-it": {
-    "git": {
-      "requireCleanWorkingDir": true,
-      "tagName": "${version}",
-      "commitMessage": "chore: release ${version}",
-      "tagAnnotation": "Release ${version}",
-      "push": true
-    },
-    "github": {
-      "release": true,
-      "releaseName": "Release ${version}"
-    }
-  },
   "dependencies": {
     "@hono/zod-validator": "^0.2.2",
     "@hookform/resolvers": "^3.9.0",
