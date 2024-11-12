@@ -37,7 +37,7 @@ services:
     image: adminer:latest
     restart: always
     ports:
-      - 7070:8080
+      - "7070:8080"
     depends_on:
       - db
 
@@ -67,7 +67,6 @@ services:
     environment:
       DATABASE_URL: "postgresql://admin:admin@db:5432/sensepro"
       RABBITMQ_URL: "amqp://user:password@rabbitmq:5672"
-      MQ_URL: "amqp://user:password@rabbitmq:5672"
       NEXT_PUBLIC_APP_URL: "https://salon.rocks"
     deploy:
       mode: replicated

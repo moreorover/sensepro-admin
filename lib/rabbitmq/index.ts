@@ -7,7 +7,7 @@ export async function notifyRaspberryPi(
   action: string,
   payload: string
 ) {
-  const connection = await amqp.connect(env.MQ_URL);
+  const connection = await amqp.connect(env.RABBITMQ_URL);
   const channel = await connection.createConfirmChannel(); // Create confirm channel
   const queue = `raspberry-pi-${deviceId}`;
 
