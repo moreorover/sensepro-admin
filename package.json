@@ -29,14 +29,6 @@
     "github": {
       "release": true,
       "releaseName": "Release ${version}"
-    },
-    "hooks": {
-      "after:release": "echo Successfully released ${version} to GitHub"
-    },
-    "plugins": {
-      "@release-it/keep-a-changelog": {
-        "filename": "CHANGELOG.md"
-      }
     }
   },
   "dependencies": {
@@ -73,7 +65,6 @@
     "@radix-ui/react-toggle": "^1.1.0",
     "@radix-ui/react-toggle-group": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
-    "@release-it/keep-a-changelog": "^5.0.0",
     "@t3-oss/env-nextjs": "^0.11.0",
     "@tanstack/react-query": "^5.51.15",
     "@tanstack/react-table": "^8.19.3",
