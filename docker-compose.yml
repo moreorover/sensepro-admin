@@ -67,7 +67,7 @@ services:
     environment:
       DATABASE_URL: "postgresql://admin:admin@db:5432/sensepro"
       RABBITMQ_URL: "amqp://user:password@rabbitmq:5672"
-      APP_URL: "https://salon.rocks"
+      NEXT_PUBLIC_APP_URL: "https://salon.rocks"
     deploy:
       mode: replicated
       replicas: 3
