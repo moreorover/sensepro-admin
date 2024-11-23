@@ -30,4 +30,6 @@ jobs:
           build-args: |
             TAG=${{ github.ref_name }}
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/sensepro-admin-panel:latest,ghcr.io/${{ github.repository_owner }}/sensepro-admin-panel:${{ github.sha }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/sensepro-admin-panel:latest
+            ghcr.io/${{ github.repository_owner }}/sensepro-admin-panel:${{ github.ref_name }}
