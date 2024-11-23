@@ -25,7 +25,7 @@ const app = new Hono()
       return c.json({ user });
     })
     .post(
-        "/auth/signup",
+        "/signup",
         zValidator(
             "json",
             z.object({
@@ -96,7 +96,7 @@ const app = new Hono()
         }
     )
     .post(
-        "/auth/signin",
+        "/signin",
         zValidator(
             "json",
             z.object({
