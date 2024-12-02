@@ -1,18 +1,22 @@
 import { faker } from "@faker-js/faker";
-import { createId } from "@paralleldrive/cuid2";
+
+faker.seed(628533);
+
+export const deviceBrands = [{ name: "Dahua" }, { name: "Raspberry Pi" }];
 
 export const deviceTypes = [
-  { id: createId(), name: "Controller" },
-  { id: createId(), name: "Network Video Recorder" },
-  { id: createId(), name: "CCTV Camera" },
-  { id: createId(), name: "Detector" },
+  { name: "Controller" },
+  { name: "Network Video Recorder" },
+  { name: "CCTV Camera" },
+  { name: "Detector" },
+  { name: "Light Strip" },
 ];
 
 export const customers = [
-  { id: createId(), name: faker.person.fullName() },
-  { id: createId(), name: faker.person.fullName() },
-  { id: createId(), name: faker.person.fullName() },
-  { id: createId(), name: faker.person.fullName() },
+  { name: faker.person.fullName() },
+  { name: faker.person.fullName() },
+  { name: faker.person.fullName() },
+  { name: faker.person.fullName() },
 ];
 
 export const locations = [
