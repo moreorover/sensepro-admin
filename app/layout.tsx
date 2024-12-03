@@ -1,3 +1,4 @@
+import { ScreenSize } from "@/components/screensize";
 import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -20,6 +21,7 @@ export default function RootLayout({
         {children}
         {modal}
         <Toaster />
+        {process.env.NODE_ENV === "development" && <ScreenSize />}
       </body>
     </html>
   );
