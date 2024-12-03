@@ -1,4 +1,4 @@
-import { NextBreadcrumb } from "@/app/dashboard/breacrumb";
+import { NextBreadcrumb } from "@/components/next-breacrumb";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import {
