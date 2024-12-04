@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Customer } from "@/lib/schemas";
-import { Pencil } from "lucide-react";
+import { MapPin, Pencil } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
@@ -30,13 +30,23 @@ export function CustomerCard({ customer }: Props) {
         {/* {customer.status} */}
         {/* </Badge> */}
       </CardContent>
-      <CardFooter className="mt-auto">
+      <CardFooter className="flex flex-col sm:flex-row gap-2 sm:gap-4">
         <Link
-          className={buttonVariants()}
+          className={buttonVariants({ className: "w-full sm:w-auto" })}
           href={`/customers/edit/${customer.id}`}
         >
           <Pencil className="mr-2 h-4 w-4" />
           Update
+        </Link>
+        <Link
+          className={buttonVariants({
+            variant: "secondary",
+            className: "w-full sm:w-auto",
+          })}
+          href={`/locations/new/${customer.id}`}
+        >
+          <MapPin className="mr-2 h-4 w-4" />
+          New Location
         </Link>
       </CardFooter>
     </Card>

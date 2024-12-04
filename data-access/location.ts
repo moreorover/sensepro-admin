@@ -7,9 +7,9 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { ActionResponse, Customer, customerSchema } from "@/lib/schemas";
+import { ActionResponse, Location, locationSchema } from "@/lib/schemas";
 
-export async function getCustomers() {
+export async function getLocations() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -18,10 +18,10 @@ export async function getCustomers() {
     return redirect("/");
   }
 
-  return prisma.customer.findMany();
+  return prisma.location.findMany();
 }
 
-export async function getCustomer(id: string) {
+export async function getLocation(id: string) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -30,11 +30,11 @@ export async function getCustomer(id: string) {
     return redirect("/");
   }
 
-  return prisma.customer.findFirst({ where: { id } });
+  return prisma.location.findFirst({ where: { id } });
 }
 
-export async function createCustomer(
-  customer: Customer,
+export async function createLocation(
+  location: Location,
 ): Promise<ActionResponse> {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -45,7 +45,7 @@ export async function createCustomer(
   }
 
   try {
-    const parse = customerSchema.safeParse(customer);
+    const parse = locationSchema.safeParse(location);
 
     if (!parse.success) {
       return {
@@ -53,12 +53,12 @@ export async function createCustomer(
         message: "Incorrect data received.",
       };
     }
-    const c = await prisma.customer.create({
-      data: { name: parse.data.name },
+    const c = await prisma.location.create({
+      data: { name: parse.data.name, customerId: parse.data.customerId },
     });
-    revalidatePath("/customers");
+    revalidatePath("/locations");
     return {
-      message: `Created customer: ${c.name}`,
+      message: `Created Location: ${c.name}`,
       type: "SUCCESS",
     };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -70,8 +70,8 @@ export async function createCustomer(
   }
 }
 
-export async function updateCustomer(
-  customer: Customer,
+export async function updateLocation(
+  location: Location,
 ): Promise<ActionResponse> {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -82,7 +82,7 @@ export async function updateCustomer(
   }
 
   try {
-    const parse = customerSchema.safeParse(customer);
+    const parse = locationSchema.safeParse(location);
 
     if (!parse.success) {
       return {
@@ -90,13 +90,13 @@ export async function updateCustomer(
         message: "Incorrect data received.",
       };
     }
-    const c = await prisma.customer.update({
+    const c = await prisma.location.update({
       data: { name: parse.data.name },
       where: { id: parse.data.id },
     });
-    revalidatePath("/customers");
+    revalidatePath("/locations");
     return {
-      message: `Updated customer: ${c.name}`,
+      message: `Updated Location: ${c.name}`,
       type: "SUCCESS",
     };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -108,8 +108,8 @@ export async function updateCustomer(
   }
 }
 
-export async function deleteCustomer(
-  customer: Customer,
+export async function deleteLocation(
+  location: Location,
 ): Promise<ActionResponse> {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -120,7 +120,7 @@ export async function deleteCustomer(
   }
 
   try {
-    const parse = customerSchema.safeParse(customer);
+    const parse = locationSchema.safeParse(location);
 
     if (!parse.success) {
       return {
@@ -128,12 +128,12 @@ export async function deleteCustomer(
         message: "Incorrect data received.",
       };
     }
-    const c = await prisma.customer.delete({
+    const c = await prisma.location.delete({
       where: { id: parse.data.id },
     });
-    revalidatePath("/customers");
+    revalidatePath("/locations");
     return {
-      message: `Deleted customer: ${c.name}`,
+      message: `Deleted Location: ${c.name}`,
       type: "SUCCESS",
     };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
