@@ -30,9 +30,9 @@ export function CustomerCard({ customer }: Props) {
         {/* {customer.status} */}
         {/* </Badge> */}
       </CardContent>
-      <CardFooter className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+      <CardFooter className="flex flex-col mt-auto">
         <Link
-          className={buttonVariants({ className: "w-full sm:w-auto" })}
+          className={buttonVariants({ className: "w-full mb-2" })}
           href={`/customers/edit/${customer.id}`}
         >
           <Pencil className="mr-2 h-4 w-4" />
@@ -41,7 +41,7 @@ export function CustomerCard({ customer }: Props) {
         <Link
           className={buttonVariants({
             variant: "secondary",
-            className: "w-full sm:w-auto",
+            className: "w-full",
           })}
           href={`/locations/new/${customer.id}`}
         >
