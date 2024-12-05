@@ -36,3 +36,22 @@ export const deviceTypeSchema = z.object({
 // }));
 
 export type DeviceType = z.infer<typeof deviceTypeSchema>;
+
+const macAddressRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+const ipv4Regex =
+  /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+
+export const deviceSchema = z.object({
+  id: z.string().cuid().optional(),
+  name: z.string().min(1),
+  mac: z.string().min(1).regex(macAddressRegex, "Invalid MAC address format"),
+  ip: z.string().min(1).regex(ipv4Regex, "Invalid IP address format"),
+  serialNumber: z.string().min(1),
+  locationId: z.string().cuid().optional().nullable(),
+  deviceTypeId: z.string(),
+  controllerId: z.string().cuid().optional().nullable(),
+  createdAt: z.date().optional().nullable(),
+  updatedAt: z.date().optional().nullable(),
+});
+
+export type Device = z.infer<typeof deviceSchema>;
