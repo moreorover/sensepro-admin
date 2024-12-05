@@ -27,3 +27,37 @@ export const locations = [
   { name: faker.location.city() },
   { name: faker.location.city() },
 ];
+
+export const controllers = [
+  {
+    name: "Raspberry Pi 1",
+    mac: faker.internet.mac(),
+    ip: faker.internet.ipv4(),
+    serialNumber: faker.string.numeric(9),
+    deviceTypeId: "controller",
+  },
+  {
+    name: "Raspberry Pi 2",
+    mac: faker.internet.mac(),
+    ip: faker.internet.ipv4(),
+    serialNumber: faker.string.numeric(9),
+    deviceTypeId: "controller",
+  },
+];
+
+export const devices = [
+  {
+    name: "CCTV 1",
+    mac: faker.internet.mac(),
+    ip: faker.internet.ipv4(),
+    serialNumber: faker.string.numeric(9),
+    deviceTypeId: "cctv",
+  },
+  {
+    name: "CCTV 2",
+    mac: faker.internet.mac(),
+    ip: faker.internet.ipv4(),
+    serialNumber: faker.string.numeric(9),
+    deviceTypeId: "cctv",
+  },
+];

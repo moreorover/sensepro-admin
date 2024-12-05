@@ -1,6 +1,12 @@
 import { auth } from "@/lib/auth";
 import { PrismaClient } from "@prisma/client";
-import { customers, deviceTypes, locations } from "./data";
+import {
+  controllers,
+  customers,
+  devices,
+  deviceTypes,
+  locations,
+} from "./data";
 
 const prisma = new PrismaClient();
 
@@ -44,6 +50,25 @@ for (const customer of customers) {
       data: {
         ...location,
         customerId: c.id,
+      },
+    });
+  }
+}
+
+await prisma.device.deleteMany();
+
+for (const controller of controllers) {
+  const c = await prisma.device.create({
+    data: {
+      ...controller,
+    },
+  });
+
+  for (const device of devices) {
+    await prisma.device.create({
+      data: {
+        ...device,
+        controllerId: c.id,
       },
     });
   }

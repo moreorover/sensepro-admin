@@ -121,5 +121,9 @@ model Device {
   deviceType   DeviceType @relation(fields: [deviceTypeId], references: [id], onDelete: Restrict)
   deviceTypeId String
 
+  controller   Device?  @relation("ControllerDevices", fields: [controllerId], references: [id], onDelete: Cascade)
+  controllerId String?
+  devices      Device[] @relation("ControllerDevices")
+
   @@map("device")
 }
