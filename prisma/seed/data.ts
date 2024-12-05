@@ -5,11 +5,11 @@ faker.seed(628533);
 export const deviceBrands = [{ name: "Dahua" }, { name: "Raspberry Pi" }];
 
 export const deviceTypes = [
-  { name: "Controller" },
-  { name: "Network Video Recorder" },
-  { name: "CCTV Camera" },
-  { name: "Detector" },
-  { name: "Light Strip" },
+  { id: "controller", name: "Controller" },
+  { id: "nvr", name: "Network Video Recorder" },
+  { id: "cctv", name: "CCTV Camera" },
+  { id: "motion_sensor", name: "Motion Sensor" },
+  { id: "light_strip", name: "Light Strip" },
 ];
 
 export const customers = [
@@ -20,10 +20,10 @@ export const customers = [
 ];
 
 export const locations = [
-  { address: faker.location.streetAddress() },
-  { address: faker.location.streetAddress() },
-  { address: faker.location.streetAddress() },
-  { address: faker.location.streetAddress() },
-  { address: faker.location.streetAddress() },
-  { address: faker.location.streetAddress() },
+  { name: faker.location.city() },
+  { name: faker.location.city() },
+  { name: faker.location.city() },
+  { name: faker.location.city() },
+  { name: faker.location.city() },
+  { name: faker.location.city() },
 ];

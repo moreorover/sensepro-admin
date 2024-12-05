@@ -85,12 +85,41 @@ model Customer {
 
 model Location {
   id        String    @id @default(cuid())
-  name      String    @unique
+  name      String
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-  customer Customer @relation(fields: [customerId], references: [id])
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
   customerId String
+  Device     Device[]
 
+  @@unique([name, customerId])
   @@map("location")
+}
+
+model DeviceType {
+  id   String @id
+  name String
+
+  devices Device[]
+
+  @@map("device_type")
+}
+
+model Device {
+  id           String    @id @default(cuid())
+  name         String
+  mac          String    @unique
+  ip           String
+  serialNumber String    @unique
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
+
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  locationId String?
+
+  deviceType   DeviceType @relation(fields: [deviceTypeId], references: [id], onDelete: Restrict)
+  deviceTypeId String
+
+  @@map("device")
 }

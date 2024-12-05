@@ -2,12 +2,12 @@
 
 import "server-only";
 
-import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { ActionResponse, Location, locationSchema } from "@/lib/schemas";
+import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export async function getLocations() {
   const session = await auth.api.getSession({
@@ -33,8 +33,20 @@ export async function getLocation(id: string) {
   return prisma.location.findFirst({ where: { id } });
 }
 
+export async function getLocationsByCustomerId(id: string) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return redirect("/");
+  }
+
+  return prisma.location.findMany({ where: { customerId: id } });
+}
+
 export async function createLocation(
-  location: Location,
+  location: Location
 ): Promise<ActionResponse> {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -71,7 +83,7 @@ export async function createLocation(
 }
 
 export async function updateLocation(
-  location: Location,
+  location: Location
 ): Promise<ActionResponse> {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -109,7 +121,7 @@ export async function updateLocation(
 }
 
 export async function deleteLocation(
-  location: Location,
+  location: Location
 ): Promise<ActionResponse> {
   const session = await auth.api.getSession({
     headers: await headers(),

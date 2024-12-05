@@ -19,12 +19,14 @@ export function NextBreadcrumb() {
       <BreadcrumbList>
         {pathNames.map((link, index) => {
           const href = `/${pathNames.slice(0, index + 1).join("/")}`;
+          const linkSegment = link
+            .split("-")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
           return (
             <React.Fragment key={index}>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href={href}>
-                  {link[0].toUpperCase() + link.slice(1, link.length)}
-                </BreadcrumbLink>
+                <BreadcrumbLink href={href}>{linkSegment}</BreadcrumbLink>
               </BreadcrumbItem>
               {pathNames.length !== index + 1 && (
                 <BreadcrumbSeparator className="hidden md:block" />

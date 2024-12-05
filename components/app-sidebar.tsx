@@ -1,8 +1,6 @@
 "use client";
 
 import {
-  BookOpen,
-  Bot,
   Frame,
   LifeBuoy,
   Map,
@@ -10,6 +8,7 @@ import {
   Send,
   Settings2,
   SquareTerminal,
+  Users,
 } from "lucide-react";
 import * as React from "react";
 
@@ -32,88 +31,80 @@ import Image from "next/image";
 const data = {
   navMain: [
     {
-      title: "Playground",
-      url: "#",
+      title: "Admin",
+      // url: "#",
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
+          title: "Customers",
+          url: "/dashboard/customers",
         },
       ],
     },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
+    // {
+    //   title: "Models",
+    //   url: "#",
+    //   icon: Bot,
+    //   items: [
+    //     {
+    //       title: "Genesis",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Explorer",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Quantum",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
+    // {
+    //   title: "Documentation",
+    //   url: "#",
+    //   icon: BookOpen,
+    //   items: [
+    //     {
+    //       title: "Introduction",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Get Started",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Tutorials",
+    //       url: "#",
+    //     },
+    //     {
+    //       title: "Changelog",
+    //       url: "#",
+    //     },
+    //   ],
+    // },
     {
       title: "Settings",
-      url: "#",
+      // url: "#",
       icon: Settings2,
       items: [
         {
-          title: "General",
-          url: "#",
+          title: "Device Types",
+          url: "/dashboard/device-types",
         },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
+        // {
+        //   title: "Team",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Billing",
+        //   url: "#",
+        // },
+        // {
+        //   title: "Limits",
+        //   url: "#",
+        // },
       ],
     },
   ],
