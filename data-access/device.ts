@@ -43,7 +43,7 @@ export async function getDevice(id: string) {
 //   return prisma.device.findMany({ where: { customerId: id } });
 // }
 
-export async function getControllersByLocationId(id: string) {
+export async function getDevicesByLocationId(id: string) {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -53,7 +53,7 @@ export async function getControllersByLocationId(id: string) {
   }
 
   return prisma.device.findMany({
-    where: { locationId: id, deviceTypeId: "controller" },
+    where: { locationId: id },
   });
 }
 
