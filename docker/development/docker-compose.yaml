@@ -7,7 +7,7 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entryPoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=admin@salon.rocks"
+      - "--certificatesresolvers.myresolver.acme.email=${ACME_EMAIL}"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
@@ -57,7 +57,7 @@ services:
       dockerfile: docker/local/Dockerfile
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.sensepro.rule=Host(`salon.rocks`)"
+      - "traefik.http.routers.sensepro.rule=Host(`${DOMAIN_NAME}`)"
       - "traefik.http.routers.sensepro.entrypoints=websecure"
       - "traefik.http.routers.sensepro.tls.certresolver=myresolver"
     restart: always
