@@ -24,10 +24,8 @@ services:
     image: postgres:17.0
     container_name: sense_pro_pg
     restart: always
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: sensepro
+    env_file:
+      - ../../.env.development.sample
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -47,26 +45,22 @@ services:
     ports:
       - "5672:5672"  # RabbitMQ main port
       - "15672:15672"  # RabbitMQ management UI port
-    environment:
-      RABBITMQ_DEFAULT_USER: user  # Default username
-      RABBITMQ_DEFAULT_PASS: password  # Default password
+    env_file:
+      - ../../.env.development.sample
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
   sensepro:
     image: ghcr.io/moreorover/sensepro-admin-panel:latest
-#    build:
-#      context: .  # Path to the directory containing the Dockerfile
-#      dockerfile: Dockerfile  # Dockerfile name (if it's named Dockerfile, you can omit this line)
+    build:
+      context: ../../
+      dockerfile: docker/local/Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sensepro.rule=Host(`salon.rocks`)"
       - "traefik.http.routers.sensepro.entrypoints=websecure"
       - "traefik.http.routers.sensepro.tls.certresolver=myresolver"
     restart: always
-    environment:
-      DATABASE_URL: "postgresql://admin:admin@db:5432/sensepro"
-      RABBITMQ_URL: "amqp://user:password@rabbitmq:5672"
     deploy:
       mode: replicated
       replicas: 3

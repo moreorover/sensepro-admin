@@ -8,7 +8,6 @@ import {
   Send,
   Settings2,
   SquareTerminal,
-  Users,
 } from "lucide-react";
 import * as React from "react";
 
@@ -32,7 +31,7 @@ const data = {
   navMain: [
     {
       title: "Admin",
-      // url: "#",
+      url: "/dashboard",
       icon: SquareTerminal,
       isActive: true,
       items: [
@@ -86,7 +85,7 @@ const data = {
     // },
     {
       title: "Settings",
-      // url: "#",
+      url: "/dashboard",
       icon: Settings2,
       items: [
         {

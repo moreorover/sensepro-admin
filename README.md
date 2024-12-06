@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sense Pro
 
-## Getting Started
+## Running Locally
 
-First, run the development server:
+Make sure you have npm or Bun installed.
+
+### Start Docker Containers
+
+```bash
+docker compose -f ./docker-compose.local.yaml up -d
+```
+
+### Database Migrations and Seeding
+
+Make sure `env.local` has the `DATABASE_URL` set.
+
+To seed the database, run the following:
+
+```bash
+npm run db:dev
+# or
+bun db:dev
+```
+
+This will create a user to access the UI with the following credentials:
+
+- Email: x@x.com
+- Password: password123
+
+### Run the Development Server
+
+Run the development server:
 
 ```bash
 npm run dev
 # or
-yarn dev
-# or
-pnpm dev
-# or
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Running Production like locally
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Make sure you have npm or Bun installed. Also Make
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Start Docker Containers
 
-## Learn More
+```bash
+make build-local
+make start-local
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Database Migrations and Seeding
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Make sure `env.local` has the `DATABASE_URL` set.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To seed the database, run the following:
 
-## Deploy on Vercel
+```bash
+npm run db:dev
+# or
+bun db:dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Stop Docker Containers
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+make stop-local
+```

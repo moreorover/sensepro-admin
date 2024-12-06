@@ -3,10 +3,8 @@ services:
     image: postgres:17.0
     container_name: sense_pro_pg
     restart: always
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: sensepro
+    env_file:
+      - ./.env.local.sample
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -26,9 +24,8 @@ services:
     ports:
       - "5672:5672"  # RabbitMQ main port
       - "15672:15672"  # RabbitMQ management UI port
-    environment:
-      RABBITMQ_DEFAULT_USER: user  # Default username
-      RABBITMQ_DEFAULT_PASS: password  # Default password
+    env_file:
+      - ./.env
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
