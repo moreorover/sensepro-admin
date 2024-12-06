@@ -7,12 +7,12 @@ Make sure you have npm or Bun installed.
 ### Start Docker Containers
 
 ```bash
-docker compose -f ./docker-compose.local.yaml up -d
+docker compose up -d
 ```
 
 ### Database Migrations and Seeding
 
-Make sure `env.local` has the `DATABASE_URL` set.
+Make sure `.env` has the `DATABASE_URL` set.
 
 To seed the database, run the following:
 
@@ -50,7 +50,7 @@ make start-local
 
 ### Database Migrations and Seeding
 
-Make sure `env.local` has the `DATABASE_URL` set.
+Make sure `.env` has the `DATABASE_URL` set.
 
 To seed the database, run the following:
 
