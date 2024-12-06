@@ -19,7 +19,7 @@ export function DeviceCard({ device, isController = false }: DeviceCardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <dl className="grid grid-cols-2 gap-2 text-sm">
+        <dl className="grid gap-2 text-sm">
           <div>
             <dt className="font-medium">MAC:</dt>
             <dd>{device.mac}</dd>

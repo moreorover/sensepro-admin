@@ -4,7 +4,7 @@ services:
     container_name: sense_pro_pg
     restart: always
     env_file:
-      - ./.env.local.sample
+      - ./.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
