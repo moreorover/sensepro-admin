@@ -70,7 +70,6 @@ export async function createDevice(device: Device): Promise<ActionResponse> {
 
   try {
     const parse = deviceSchema.safeParse(device);
-    console.log({ parse: parse.data });
     if (!parse.success) {
       return {
         type: "ERROR",

@@ -31,6 +31,7 @@ const generateController = (controllerIndex: number, deviceCount: number) => ({
     ip: generateIp("controller", controllerIndex),
     serialNumber: faker.string.ulid(),
     deviceTypeId: "controller",
+    controllerId: null,
   },
   devices:
     deviceCount > 0
