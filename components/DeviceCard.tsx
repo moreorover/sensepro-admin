@@ -1,21 +1,29 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Device } from "@/lib/schemas";
+import Link from "next/link";
+import { buttonVariants } from "./ui/button";
 
 interface DeviceCardProps {
   device: Device;
-  isController?: boolean;
+  deviceType: string;
 }
 
-export function DeviceCard({ device, isController = false }: DeviceCardProps) {
+export function DeviceCard({ device, deviceType }: DeviceCardProps) {
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>{device.name}</span>
-          <Badge variant={isController ? "default" : "secondary"}>
-            {isController ? "Controller" : "Controlled"}
+          <Badge variant={device.controllerId ? "secondary" : "default"}>
+            {deviceType}
           </Badge>
+          <Link
+            href={`/devices/edit/${device.id}`}
+            className={buttonVariants({ size: "sm" })}
+          >
+            Edit
+          </Link>
         </CardTitle>
       </CardHeader>
       <CardContent>

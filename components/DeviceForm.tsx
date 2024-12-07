@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
-import { createDevice } from "@/data-access/device";
+import { createDevice, updateDevice } from "@/data-access/device";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -41,10 +41,7 @@ export default function DeviceForm({ device, className }: Props) {
   async function onSubmit(values: Device) {
     setSubmitting(true);
     const response = device.id
-      ? {
-          message: `Can not update Device Type`,
-          type: "ERROR",
-        }
+      ? await updateDevice(values)
       : await createDevice(values);
     setSubmitting(false);
 

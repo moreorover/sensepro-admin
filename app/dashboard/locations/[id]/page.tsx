@@ -40,6 +40,11 @@ export default async function LocationsPage({ params }: Props) {
   const devices = await getDevicesByLocationId(location.id);
   const deviceTypes = await getDeviceTypes();
 
+  const getDeviceTypeById = (id: string) => {
+    const deviceType = deviceTypes.find((dt) => dt.id === id);
+    return deviceType ? deviceType.name : "";
+  };
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-6">
@@ -92,7 +97,7 @@ export default async function LocationsPage({ params }: Props) {
                 </DropdownMenu>
               </div>
               <div className="grid gap-4 xl:grid-cols-3 2xl:grid-cols-4">
-                <DeviceCard device={controllerDevice} isController={true} />
+                <DeviceCard device={controllerDevice} deviceType="Controller" />
                 {devices
                   .filter(
                     (device) => device.controllerId === controllerDevice.id
@@ -101,6 +106,9 @@ export default async function LocationsPage({ params }: Props) {
                     <DeviceCard
                       key={controlledDevice.id}
                       device={controlledDevice}
+                      deviceType={getDeviceTypeById(
+                        controlledDevice.deviceTypeId
+                      )}
                     />
                   ))}
               </div>
