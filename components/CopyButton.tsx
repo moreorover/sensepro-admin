@@ -7,14 +7,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Copy } from "lucide-react";
+import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
   text: string;
+  label?: string;
 };
 
-export default function CopyButton({ text }: Props) {
+export default function CopyButton({ text, label = "Copy" }: Props) {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = async () => {
@@ -35,14 +36,18 @@ export default function CopyButton({ text }: Props) {
             variant="ghost"
             size="icon"
             className="h-6 w-6 p-0"
-            onClick={() => copyToClipboard()}
+            onClick={copyToClipboard}
+            aria-label={label}
           >
-            <Copy className="h-4 w-4" />
-            <span className="sr-only">Copy IP address</span>
+            {copied ? (
+              <Check className="h-4 w-4" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{copied ? "Copied!" : "Copy IP address"}</p>
+          <p>{copied ? "Copied!" : label}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
