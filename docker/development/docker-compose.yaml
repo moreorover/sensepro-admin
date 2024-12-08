@@ -54,7 +54,7 @@ services:
     image: ghcr.io/moreorover/sensepro-admin-panel:latest
     build:
       context: ../../
-      dockerfile: docker/local/Dockerfile
+      dockerfile: docker/development/Dockerfile
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sensepro.rule=Host(`${DOMAIN_NAME}`)"
