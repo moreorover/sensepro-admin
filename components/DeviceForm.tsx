@@ -149,6 +149,20 @@ export default function DeviceForm({ device, className }: Props) {
             </FormItem>
           )}
         />
+        {device.deviceTypeId === "controller" && (
+          <FormField
+            control={form.control}
+            name="tailscaleIp"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tail Scale IP address</FormLabel>
+                <FormControl>
+                  <Input placeholder="127.0.0.1" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="serialNumber"

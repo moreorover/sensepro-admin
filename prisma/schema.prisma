@@ -111,6 +111,7 @@ model Device {
   name         String
   mac          String    @unique
   ip           String
+  tailscaleIp String?
   serialNumber String    @unique
   createdAt    DateTime  @default(now())
   updatedAt    DateTime? @updatedAt
