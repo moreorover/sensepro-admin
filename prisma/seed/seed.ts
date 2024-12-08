@@ -1,44 +1,90 @@
-import { createId } from "@paralleldrive/cuid2";
+import { auth } from "@/lib/auth";
 import { PrismaClient } from "@prisma/client";
-import { customers, locations } from "./data";
+import { customers, deviceTypes } from "./data";
 
 const prisma = new PrismaClient();
 
-await prisma.user.upsert({
-  where: {
-    email: "t@t.com",
-  },
-  create: {
-    id: createId(),
-    email: "t@t.com",
-    hashedPassword:
-      "26c8aa91b05fe486256f00bca556d635:5d84e5a4972548c97dd8853245b76719fd19c665ed8441d5cdf35e7eb1f47264ee4a84f80a7eb21201b3814005a89b71ea5a50dd9970a10e884cc45716d4ccca",
-  },
-  update: {
-    email: "t@t.com",
-    hashedPassword:
-      "26c8aa91b05fe486256f00bca556d635:5d84e5a4972548c97dd8853245b76719fd19c665ed8441d5cdf35e7eb1f47264ee4a84f80a7eb21201b3814005a89b71ea5a50dd9970a10e884cc45716d4ccca",
-  },
-});
-
-await prisma.customer.deleteMany({
-  where: {},
-});
-
-for (const customer of customers) {
-  await prisma.customer.create({
-    data: {
-      ...customer,
-    },
+async function seedUsers() {
+  const userEmail = "x@x.com";
+  const existingUser = await prisma.user.findUnique({
+    where: { email: userEmail },
   });
 
-  for (const location of locations) {
-    await prisma.location.create({
-      data: {
-        id: createId(),
-        address: location.address,
-        customerId: customer.id,
+  if (!existingUser) {
+    await auth.api.signUpEmail({
+      body: {
+        email: "x@x.com",
+        password: "password123",
+        name: "X",
       },
     });
   }
 }
+
+async function seedDeviceTypes() {
+  for (const deviceType of deviceTypes) {
+    await prisma.deviceType.upsert({
+      where: { id: deviceType.id },
+      update: {},
+      create: deviceType,
+    });
+  }
+}
+
+async function seedCustomersAndLocations() {
+  await prisma.customer.deleteMany();
+  await prisma.device.deleteMany();
+
+  for (const customer of customers) {
+    const createdCustomer = await prisma.customer.create({
+      data: { ...customer.customer },
+    });
+
+    for (const location of customer.locations) {
+      const createdLocation = await prisma.location.create({
+        data: {
+          ...location.location,
+          customerId: createdCustomer.id,
+        },
+      });
+
+      for (const controller of location.controllers) {
+        const createdDevice = await prisma.device.create({
+          data: {
+            ...controller.controller,
+            locationId: createdLocation.id,
+          },
+        });
+
+        for (const device of controller.devices) {
+          await prisma.device.create({
+            data: {
+              ...device.device,
+              locationId: createdLocation.id,
+              controllerId: createdDevice.id,
+            },
+          });
+        }
+      }
+    }
+  }
+}
+
+async function main() {
+  console.log("Seeding database...");
+
+  await seedUsers();
+  await seedDeviceTypes();
+  await seedCustomersAndLocations();
+
+  console.log("Database seeded successfully!");
+}
+
+main()
+  .catch((error) => {
+    console.error("Error seeding database:", error);
+    process.exit(1);
+  })
+  .finally(() => {
+    prisma.$disconnect();
+  });

@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,102 +14,116 @@ datasource db {
 }
 
 model User {
-  id             String    @id
-  email          String    @unique
-  hashedPassword String
-  sessions       Session[]
+  id            String    @id
+  email         String    @unique
+  name          String?
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  Session       Session[]
+  Account       Account[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  @@map("user")
 }
 
 model Session {
   id        String   @id
-  userId    String
   expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
 }
 
 model Customer {
-  id        String     @id
-  name      String     @unique
-  createdAt DateTime   @default(now())
-  updatedAt DateTime?  @updatedAt
+  id        String    @id @default(cuid())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
   locations Location[]
+
+  @@map("customer")
 }
 
 model Location {
-  id         String    @id
-  address    String
-  customerId String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime? @updatedAt
-  devices    Device[]
-  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  Group      Group[]
+  id        String    @id @default(cuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId String
+  Device     Device[]
+
+  @@unique([name, customerId])
+  @@map("location")
 }
 
-model Group {
+model DeviceType {
   id   String @id
   name String
 
-  locationId String
-  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
-
   devices Device[]
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime?     @updatedAt
-  rules       Rule[]
-  deviceRules DeviceRules[]
-}
-
-enum DeviceType {
-  Controller
-  NVR
-  CCTV_Camera
-  Detector
+  @@map("device_type")
 }
 
 model Device {
-  id           String     @id
+  id           String    @id @default(cuid())
   name         String
-  mac          String     @unique
+  mac          String    @unique
   ip           String
-  pin          Int
-  serialNumber String     @unique
-  deviceType   DeviceType
-  groupId      String?
-  locationId   String?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime?  @updatedAt
-  location     Location?  @relation(fields: [locationId], references: [id], onDelete: Cascade)
-  group        Group?     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  serialNumber String    @unique
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
 
-  rules DeviceRules[]
-}
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  locationId String?
 
-enum RuleType {
-  AND
-  OR
-}
+  deviceType   DeviceType @relation(fields: [deviceTypeId], references: [id], onDelete: Restrict)
+  deviceTypeId String
 
-model Rule {
-  id      String        @id
-  name    String
-  groupId String
-  group   Group         @relation(fields: [groupId], references: [id])
-  devices DeviceRules[]
-}
+  controller   Device?  @relation("ControllerDevices", fields: [controllerId], references: [id], onDelete: Cascade)
+  controllerId String?
+  devices      Device[] @relation("ControllerDevices")
 
-model DeviceRules {
-  device   Device  @relation(fields: [deviceId], references: [id])
-  deviceId String
-  rule     Rule    @relation(fields: [ruleId], references: [id])
-  ruleId   String
-  Group    Group?  @relation(fields: [groupId], references: [id])
-  groupId  String?
-
-  @@id([deviceId, ruleId])
+  @@map("device")
 }

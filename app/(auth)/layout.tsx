@@ -1,9 +1,13 @@
-import type { ReactNode } from "react";
-
-const AuthLayout = ({ children }: { children: ReactNode }) => {
+export default function AuthLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <div className="grid min-h-screen place-items-center p-4">{children}</div>
+    <main>
+      <div className="h-screen flex flex-col items-center justify-center">
+        {children}
+      </div>
+    </main>
   );
-};
-
-export default AuthLayout;
+}

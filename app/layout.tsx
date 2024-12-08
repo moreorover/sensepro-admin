@@ -1,28 +1,27 @@
-import { Toaster } from "@/components/ui/sonner";
-import { QueryProvider } from "@/providers/query-provider";
+import { ScreenSize } from "@/components/screensize";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "Sense Pro",
-  description: "Sense Pro Admin Dashboard",
+  title: "SensePro",
+  description: "CCTV Security",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <QueryProvider>
-          <Toaster />
-          {children}
-        </QueryProvider>
+      <body className={`antialiased`}>
+        {children}
+        {modal}
+        <Toaster />
+        {process.env.NODE_ENV === "development" && <ScreenSize />}
       </body>
     </html>
   );
