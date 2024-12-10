@@ -24,7 +24,7 @@ model User {
   Session       Session[]
   Account       Account[]
 
-  @@map("user")
+  @@map("users")
 }
 
 model Session {
@@ -39,7 +39,7 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
-  @@map("session")
+  @@map("sessions")
 }
 
 model Account {
@@ -58,7 +58,7 @@ model Account {
   createdAt             DateTime
   updatedAt             DateTime
 
-  @@map("account")
+  @@map("accounts")
 }
 
 model Verification {
@@ -69,7 +69,7 @@ model Verification {
   createdAt  DateTime?
   updatedAt  DateTime?
 
-  @@map("verification")
+  @@map("verifications")
 }
 
 model Customer {
@@ -80,7 +80,7 @@ model Customer {
 
   locations Location[]
 
-  @@map("customer")
+  @@map("customers")
 }
 
 model Location {
@@ -94,7 +94,7 @@ model Location {
   Device     Device[]
 
   @@unique([name, customerId])
-  @@map("location")
+  @@map("locations")
 }
 
 model DeviceType {
@@ -104,7 +104,7 @@ model DeviceType {
 
   devices Device[]
 
-  @@map("device_type")
+  @@map("device_types")
 }
 
 model Device {
@@ -127,5 +127,40 @@ model Device {
   controllerId String?
   devices      Device[] @relation("ControllerDevices")
 
-  @@map("device")
+  rules      Rule[]       @relation("DeviceRules")
+  RuleDevice RuleDevice[]
+
+  @@map("devices")
+}
+
+enum RuleType {
+  AND
+  OR
+}
+
+model Rule {
+  id        String    @id @default(cuid())
+  type      RuleType
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  controller   Device @relation("DeviceRules", fields: [controllerId], references: [id], onDelete: Cascade)
+  controllerId String
+
+  devices RuleDevice[]
+
+  @@map("rules")
+}
+
+model RuleDevice {
+  id        String   @id @default(cuid())
+  ruleId    String
+  deviceId  String
+  createdAt DateTime @default(now())
+
+  rule   Rule   @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  device Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+
+  @@unique([ruleId, deviceId])
+  @@map("rule_devices")
 }

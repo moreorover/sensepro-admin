@@ -28,6 +28,7 @@ const generateController = (controllerIndex: number, deviceCount: number) => ({
     deviceCount > 0
       ? Array.from({ length: deviceCount }, (_, i) => generateDevice(i, "cctv"))
       : [],
+  rules: [generateRule("AND"), generateRule("OR")],
 });
 
 // Generate a location with controllers and devices
@@ -39,6 +40,10 @@ const generateLocation = (
   controllers: Array.from({ length: controllerCount }, (_, i) =>
     generateController(i, devicesPerController)
   ),
+});
+
+const generateRule = (ruleType: "AND" | "OR") => ({
+  type: ruleType,
 });
 
 // Device brands and types

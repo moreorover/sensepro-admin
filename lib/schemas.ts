@@ -49,7 +49,8 @@ export const deviceSchema = z.object({
   tailscaleIp: z
     .string()
     .regex(ipv4Regex, "Invalid IP address format")
-    .or(z.literal("")),
+    .or(z.literal(""))
+    .nullable(),
   serialNumber: z.string().min(1),
   locationId: z.string().cuid().nullable(),
   deviceTypeId: z.string(),
