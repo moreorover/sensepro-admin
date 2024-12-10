@@ -82,6 +82,16 @@ export function DeviceCard({ device, deviceType }: Props) {
             <dd className="font-mono">{device.ip}</dd>
             <CopyButton text={device.ip} />
           </div>
+          {device.deviceTypeId === "controller" && (
+            <div className="flex items-center space-x-2">
+              <Network className="h-4 w-4 text-muted-foreground" />
+              <dt className="font-medium text-muted-foreground">
+                Tailscale IP:
+              </dt>
+              <dd className="font-mono">{device.tailscaleIp}</dd>
+              {device.tailscaleIp && <CopyButton text={device.tailscaleIp} />}
+            </div>
+          )}
           <div className="flex items-center space-x-2">
             <Activity className="h-4 w-4 text-muted-foreground" />
             <dt className="font-medium text-muted-foreground">Serial:</dt>

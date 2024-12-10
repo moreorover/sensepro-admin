@@ -2,22 +2,12 @@ import { faker } from "@faker-js/faker";
 
 faker.seed(628533);
 
-// Helper function to generate unique IP addresses based on device type
-const generateIp = (deviceType: string, index: number): string => {
-  const baseIp = "192.168";
-  if (deviceType === "controller") {
-    return `${baseIp}.0.${index + 1}`;
-  } else {
-    return `${baseIp}.1.${index + 1}`;
-  }
-};
-
 // Generate a device with a unique IP, serial number, and other details
 const generateDevice = (deviceIndex: number, deviceType: string) => ({
   device: {
     name: `Device ${deviceIndex + 1}`,
     mac: faker.internet.mac(),
-    ip: generateIp(deviceType, deviceIndex),
+    ip: faker.internet.ipv4(),
     serialNumber: faker.string.ulid(),
     deviceTypeId: deviceType,
   },
@@ -28,7 +18,8 @@ const generateController = (controllerIndex: number, deviceCount: number) => ({
   controller: {
     name: `Controller ${controllerIndex + 1}`,
     mac: faker.internet.mac(),
-    ip: generateIp("controller", controllerIndex),
+    ip: faker.internet.ipv4(),
+    tailscaleIp: faker.internet.ipv4(),
     serialNumber: faker.string.ulid(),
     deviceTypeId: "controller",
     controllerId: null,
@@ -42,11 +33,11 @@ const generateController = (controllerIndex: number, deviceCount: number) => ({
 // Generate a location with controllers and devices
 const generateLocation = (
   controllerCount: number,
-  devicesPerController: number
+  devicesPerController: number,
 ) => ({
   location: { name: faker.location.city() },
   controllers: Array.from({ length: controllerCount }, (_, i) =>
-    generateController(i, devicesPerController)
+    generateController(i, devicesPerController),
   ),
 });
 

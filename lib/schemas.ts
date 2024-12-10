@@ -46,6 +46,10 @@ export const deviceSchema = z.object({
   name: z.string().min(1),
   mac: z.string().min(1).regex(macAddressRegex, "Invalid MAC address format"),
   ip: z.string().min(1).regex(ipv4Regex, "Invalid IP address format"),
+  tailscaleIp: z
+    .string()
+    .regex(ipv4Regex, "Invalid IP address format")
+    .or(z.literal("")),
   serialNumber: z.string().min(1),
   locationId: z.string().cuid().nullable(),
   deviceTypeId: z.string(),
