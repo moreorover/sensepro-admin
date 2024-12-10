@@ -8,7 +8,7 @@ const generateDevice = (deviceIndex: number, deviceType: string) => ({
     name: `Device ${deviceIndex + 1}`,
     mac: faker.internet.mac(),
     ip: faker.internet.ipv4(),
-    serialNumber: faker.string.ulid(),
+    serialNumber: faker.string.alpha(10),
     deviceTypeId: deviceType,
   },
 });
@@ -20,7 +20,7 @@ const generateController = (controllerIndex: number, deviceCount: number) => ({
     mac: faker.internet.mac(),
     ip: faker.internet.ipv4(),
     tailscaleIp: faker.internet.ipv4(),
-    serialNumber: faker.string.ulid(),
+    serialNumber: faker.string.alpha(10),
     deviceTypeId: "controller",
     controllerId: null,
   },
@@ -33,11 +33,11 @@ const generateController = (controllerIndex: number, deviceCount: number) => ({
 // Generate a location with controllers and devices
 const generateLocation = (
   controllerCount: number,
-  devicesPerController: number,
+  devicesPerController: number
 ) => ({
   location: { name: faker.location.city() },
   controllers: Array.from({ length: controllerCount }, (_, i) =>
-    generateController(i, devicesPerController),
+    generateController(i, devicesPerController)
   ),
 });
 
@@ -45,11 +45,11 @@ const generateLocation = (
 export const deviceBrands = [{ name: "Dahua" }, { name: "Raspberry Pi" }];
 
 export const deviceTypes = [
-  { id: "controller", name: "Controller" },
-  { id: "nvr", name: "Network Video Recorder" },
-  { id: "cctv", name: "CCTV Camera" },
-  { id: "motion_sensor", name: "Motion Sensor" },
-  { id: "light_strip", name: "Light Strip" },
+  { id: "controller", name: "Controller", allowInRules: false },
+  { id: "nvr", name: "Network Video Recorder", allowInRules: false },
+  { id: "cctv", name: "CCTV Camera", allowInRules: true },
+  { id: "motion_sensor", name: "Motion Sensor", allowInRules: true },
+  { id: "light_strip", name: "Light Strip", allowInRules: false },
 ];
 
 // Customers with locations, controllers, and devices

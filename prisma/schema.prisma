@@ -98,8 +98,9 @@ model Location {
 }
 
 model DeviceType {
-  id   String @id
-  name String
+  id           String  @id
+  name         String
+  allowInRules Boolean @default(false)
 
   devices Device[]
 
@@ -111,7 +112,7 @@ model Device {
   name         String
   mac          String    @unique
   ip           String
-  tailscaleIp String?
+  tailscaleIp  String?
   serialNumber String    @unique
   createdAt    DateTime  @default(now())
   updatedAt    DateTime? @updatedAt

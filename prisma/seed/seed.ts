@@ -22,6 +22,7 @@ async function seedUsers() {
 }
 
 async function seedDeviceTypes() {
+  await prisma.deviceType.deleteMany();
   for (const deviceType of deviceTypes) {
     await prisma.deviceType.upsert({
       where: { id: deviceType.id },
