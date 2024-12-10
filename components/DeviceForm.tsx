@@ -157,7 +157,11 @@ export default function DeviceForm({ device, className }: Props) {
               <FormItem>
                 <FormLabel>Tail Scale IP address</FormLabel>
                 <FormControl>
-                  <Input placeholder="127.0.0.1" {...field} />
+                  <Input
+                    placeholder="127.0.0.1"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
                 </FormControl>
               </FormItem>
             )}
