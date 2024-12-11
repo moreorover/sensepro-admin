@@ -1,5 +1,7 @@
 import { DeviceCard } from "@/components/DeviceCard";
 import { NewDeviceLink } from "@/components/NewDeviceLink";
+import { NewRuleLink } from "@/components/NewRuleLink";
+import { RuleCard } from "@/components/RuleCard";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,6 +11,7 @@ import {
 import { getDevicesByLocationId } from "@/data-access/device";
 import { getDeviceTypes } from "@/data-access/deviceType";
 import { getLocation } from "@/data-access/location";
+import { getRulesByLocationId } from "@/data-access/rule";
 import { auth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
@@ -39,10 +42,23 @@ export default async function LocationsPage({ params }: Props) {
 
   const devices = await getDevicesByLocationId(location.id);
   const deviceTypes = await getDeviceTypes();
+  const rules = await getRulesByLocationId(location.id);
 
   const getDeviceTypeById = (id: string) => {
     const deviceType = deviceTypes.find((dt) => dt.id === id);
     return deviceType ? deviceType.name : "";
+  };
+
+  const getDevicesDetailsForRule = (
+    ruleDevices: {
+      id: string;
+      createdAt: Date;
+      ruleId: string;
+      deviceId: string;
+    }[]
+  ) => {
+    const ruleDeviceIds = new Set(ruleDevices.map((device) => device.deviceId));
+    return devices.filter((device) => ruleDeviceIds.has(device.id));
   };
 
   return (
@@ -67,34 +83,69 @@ export default async function LocationsPage({ params }: Props) {
                   <Server className="h-6 w-6 text-white" />
                   <h2 className="text-xl font-bold">{controllerDevice.name}</h2>
                 </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      className={cn(
-                        buttonVariants(),
-                        "bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition-colors"
-                      )}
-                    >
-                      <PlusCircle className="mr-2 h-4 w-4" />
-                      Add Device
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    {deviceTypes
-                      .filter((deviceType) => deviceType.id !== "controller")
-                      .map((deviceType) => (
-                        <DropdownMenuItem key={deviceType.id} asChild>
-                          <NewDeviceLink
-                            text={`New ${deviceType.name}`}
-                            className="bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition-colors"
-                            locationId={location.id}
-                            controllerId={controllerDevice.id}
-                            deviceType={deviceType.id}
-                          />
-                        </DropdownMenuItem>
-                      ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="space-x-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        className={cn(
+                          buttonVariants(),
+                          "bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition-colors"
+                        )}
+                      >
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Add Device
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {deviceTypes
+                        .filter((deviceType) => deviceType.id !== "controller")
+                        .map((deviceType) => (
+                          <DropdownMenuItem key={deviceType.id} asChild>
+                            <NewDeviceLink
+                              text={`New ${deviceType.name}`}
+                              className="bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition-colors"
+                              locationId={location.id}
+                              controllerId={controllerDevice.id}
+                              deviceType={deviceType.id}
+                            />
+                          </DropdownMenuItem>
+                        ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        className={cn(
+                          buttonVariants(),
+                          "bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition-colors"
+                        )}
+                      >
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Add Rule
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem key="AND" asChild>
+                        <NewRuleLink
+                          text={`New AND rule`}
+                          className="bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition-colors"
+                          locationId={location.id}
+                          controllerId={controllerDevice.id}
+                          type="AND"
+                        />
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <NewRuleLink
+                          text={`New OR rule`}
+                          className="bg-white text-blue-600 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition-colors"
+                          locationId={location.id}
+                          controllerId={controllerDevice.id}
+                          type="OR"
+                        />
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
               <div className="grid gap-4 xl:grid-cols-3 2xl:grid-cols-4">
                 <DeviceCard device={controllerDevice} deviceType="Controller" />
@@ -109,6 +160,15 @@ export default async function LocationsPage({ params }: Props) {
                       deviceType={getDeviceTypeById(
                         controlledDevice.deviceTypeId
                       )}
+                    />
+                  ))}
+                {rules
+                  .filter((rule) => rule.controllerId === controllerDevice.id)
+                  .map((rule) => (
+                    <RuleCard
+                      key={rule.id}
+                      rule={rule}
+                      devices={getDevicesDetailsForRule(rule.devices)}
                     />
                   ))}
               </div>

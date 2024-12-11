@@ -72,6 +72,7 @@ async function seedCustomersAndLocations() {
             data: {
               ...rule,
               controllerId: createdController.id,
+              locationId: createdLocation.id,
             },
           });
 

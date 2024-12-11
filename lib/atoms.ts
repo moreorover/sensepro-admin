@@ -5,3 +5,13 @@ export const newDeviceAtom = atom<{
   controllerId: string | null;
   deviceType: string;
 }>({ locationId: "", controllerId: null, deviceType: "controller" });
+
+export const newRuleAtom = atom<{
+  type: "AND" | "OR";
+  controllerId: string;
+  locationId: string;
+}>({
+  type: "AND",
+  controllerId: "",
+  locationId: "",
+});

@@ -59,8 +59,17 @@ export const deviceSchema = z.object({
 
 export type Device = z.infer<typeof deviceSchema>;
 
-export const deviceFormSchema = deviceSchema.extend({
-  locationId: z.string(),
+export const ruleSchema = z.object({
+  id: z.string().cuid().optional(),
+  type: z.enum(["AND", "OR"]),
+  locationId: z.string().cuid(),
+  controllerId: z.string().cuid(),
 });
 
-export type DeviceForm = z.infer<typeof deviceFormSchema>;
+export type Rule = z.infer<typeof ruleSchema>;
+
+export const ruleDevicesSchema = z.object({
+  selectedDevices: z.array(z.string()),
+});
+
+export type RuleDevices = z.infer<typeof ruleDevicesSchema>;
