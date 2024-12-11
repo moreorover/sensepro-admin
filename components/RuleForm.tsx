@@ -112,6 +112,18 @@ export default function RuleForm({ rule, className }: Props) {
         )}
         <FormField
           control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="type"
           render={({ field }) => (
             <FormItem>

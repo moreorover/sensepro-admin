@@ -61,6 +61,7 @@ export type Device = z.infer<typeof deviceSchema>;
 
 export const ruleSchema = z.object({
   id: z.string().cuid().optional(),
+  name: z.string().min(1),
   type: z.enum(["AND", "OR"]),
   locationId: z.string().cuid(),
   controllerId: z.string().cuid(),

@@ -43,6 +43,12 @@ const generateLocation = (
 });
 
 const generateRule = (ruleType: "AND" | "OR") => ({
+  name: faker.helpers.arrayElement([
+    "Front Porch",
+    "Back Porch",
+    "Garden",
+    "Driveway",
+  ]),
   type: ruleType,
 });
 

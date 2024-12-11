@@ -142,6 +142,7 @@ enum RuleType {
 
 model Rule {
   id        String    @id @default(cuid())
+  name      String
   type      RuleType
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt

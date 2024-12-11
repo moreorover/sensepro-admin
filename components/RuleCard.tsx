@@ -20,7 +20,13 @@ export function RuleCard({ rule, devices }: Props) {
     <Card className="w-full hover:shadow-lg transition-shadow duration-300">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between">
-          {rule.type}
+          <div className="flex items-center space-x-2">
+            {rule.type}
+            <span>
+              {" - "}
+              {rule.name}
+            </span>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent>
