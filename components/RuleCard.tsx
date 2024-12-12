@@ -21,11 +21,7 @@ export function RuleCard({ rule, devices }: Props) {
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            {rule.type}
-            <span>
-              {" - "}
-              {rule.name}
-            </span>
+            <span>{`${rule.type} - ${rule.name}`}</span>
           </div>
         </CardTitle>
       </CardHeader>
