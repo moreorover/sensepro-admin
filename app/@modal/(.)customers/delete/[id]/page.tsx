@@ -1,4 +1,4 @@
-import CustomerDeleteForm from "@/app/customers/CustomerDeleteForm";
+import CustomerDeleteForm from "@/app/dashboard/customers/CustomerDeleteForm";
 import { Modal } from "@/components/Modal";
 import { getCustomer } from "@/data-access/customer";
 

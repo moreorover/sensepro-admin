@@ -49,7 +49,8 @@ export const deviceSchema = z.object({
   tailscaleIp: z
     .string()
     .regex(ipv4Regex, "Invalid IP address format")
-    .or(z.literal("")),
+    .or(z.literal(""))
+    .nullable(),
   serialNumber: z.string().min(1),
   locationId: z.string().cuid().nullable(),
   deviceTypeId: z.string(),
@@ -58,8 +59,18 @@ export const deviceSchema = z.object({
 
 export type Device = z.infer<typeof deviceSchema>;
 
-export const deviceFormSchema = deviceSchema.extend({
-  locationId: z.string(),
+export const ruleSchema = z.object({
+  id: z.string().cuid().optional(),
+  name: z.string().min(1),
+  type: z.enum(["AND", "OR"]),
+  locationId: z.string().cuid(),
+  controllerId: z.string().cuid(),
 });
 
-export type DeviceForm = z.infer<typeof deviceFormSchema>;
+export type Rule = z.infer<typeof ruleSchema>;
+
+export const ruleDevicesSchema = z.object({
+  selectedDevices: z.array(z.string()),
+});
+
+export type RuleDevices = z.infer<typeof ruleDevicesSchema>;

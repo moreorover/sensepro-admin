@@ -2,11 +2,11 @@ import LocationForm from "@/app/locations/LocationForm";
 import { Modal } from "@/components/Modal";
 
 type Props = {
-  params: Promise<{ customerId: string }>;
+  params: Promise<{ locationId: string }>;
 };
 
 export default async function NewLocationModal({ params }: Props) {
-  const { customerId } = await params;
+  const { locationId: customerId } = await params;
 
   const location = { name: "", customerId };
 

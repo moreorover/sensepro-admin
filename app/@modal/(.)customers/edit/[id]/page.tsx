@@ -1,4 +1,4 @@
-import CustomerForm from "@/app/customers/CustomerForm";
+import CustomerForm from "@/app/dashboard/customers/CustomerForm";
 import { Modal } from "@/components/Modal";
 import { getCustomer } from "@/data-access/customer";
 

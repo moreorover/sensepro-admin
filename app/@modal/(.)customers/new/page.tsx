@@ -1,6 +1,6 @@
 "use client";
 
-import CustomerForm from "@/app/customers/CustomerForm";
+import CustomerForm from "@/app/dashboard/customers/CustomerForm";
 import { Modal } from "@/components/Modal";
 import { newDeviceAtom } from "@/lib/atoms";
 import { useAtomValue } from "jotai";

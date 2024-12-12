@@ -32,9 +32,6 @@ async function seedDeviceTypes() {
 }
 
 async function seedCustomersAndLocations() {
-  await prisma.customer.deleteMany();
-  await prisma.device.deleteMany();
-
   for (const customer of customers) {
     const createdCustomer = await prisma.customer.create({
       data: { ...customer.customer },
@@ -49,21 +46,49 @@ async function seedCustomersAndLocations() {
       });
 
       for (const controller of location.controllers) {
-        const createdDevice = await prisma.device.create({
+        const createdController = await prisma.device.create({
           data: {
             ...controller.controller,
             locationId: createdLocation.id,
           },
         });
 
+        const createdDevices = [];
+
         for (const device of controller.devices) {
-          await prisma.device.create({
+          const createdDevice = await prisma.device.create({
             data: {
               ...device.device,
               locationId: createdLocation.id,
-              controllerId: createdDevice.id,
+              controllerId: createdController.id,
             },
           });
+
+          createdDevices.push(createdDevice);
+        }
+
+        for (const rule of controller.rules) {
+          const createdRule = await prisma.rule.create({
+            data: {
+              ...rule,
+              controllerId: createdController.id,
+              locationId: createdLocation.id,
+            },
+          });
+
+          for (const createdDevice of createdDevices) {
+            if (
+              createdDevice.deviceTypeId === "cctv" ||
+              createdDevice.deviceTypeId === "motion_sensor"
+            ) {
+              await prisma.ruleDevice.create({
+                data: {
+                  ruleId: createdRule.id,
+                  deviceId: createdDevice.id,
+                },
+              });
+            }
+          }
         }
       }
     }
@@ -72,6 +97,12 @@ async function seedCustomersAndLocations() {
 
 async function main() {
   console.log("Seeding database...");
+
+  await prisma.rule.deleteMany();
+  await prisma.ruleDevice.deleteMany();
+  await prisma.customer.deleteMany();
+  await prisma.device.deleteMany();
+  await prisma.deviceType.deleteMany();
 
   await seedUsers();
   await seedDeviceTypes();
