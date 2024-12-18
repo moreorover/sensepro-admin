@@ -80,7 +80,7 @@ export function DeviceCard({ device, deviceType }: Props) {
             <Network className="h-4 w-4 text-muted-foreground" />
             <dt className="font-medium text-muted-foreground">IP:</dt>
             <dd className="font-mono">{device.ip}</dd>
-            <CopyButton text={device.ip} />
+            <CopyButton text={device.ip} variant="icon" />
           </div>
           {device.deviceTypeId === "controller" && (
             <div className="flex items-center space-x-2">
@@ -89,7 +89,9 @@ export function DeviceCard({ device, deviceType }: Props) {
                 Tailscale IP:
               </dt>
               <dd className="font-mono">{device.tailscaleIp}</dd>
-              {device.tailscaleIp && <CopyButton text={device.tailscaleIp} />}
+              {device.tailscaleIp && (
+                <CopyButton text={device.tailscaleIp} variant="icon" />
+              )}
             </div>
           )}
           <div className="flex items-center space-x-2">
