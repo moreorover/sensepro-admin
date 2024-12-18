@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { PlusCircle, Server } from "lucide-react";
 import { headers } from "next/headers";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 type Props = {
@@ -84,6 +85,12 @@ export default async function LocationsPage({ params }: Props) {
                   <h2 className="text-xl font-bold">{controllerDevice.name}</h2>
                 </div>
                 <div className="space-x-2">
+                  <Link
+                    className={cn(buttonVariants())}
+                    href={`/controllers/json/${controllerDevice.id}`}
+                  >
+                    View JSON
+                  </Link>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
