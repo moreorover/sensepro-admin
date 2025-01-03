@@ -1,7 +1,4 @@
-import {
-  IconComponents,
-  IconDashboard,
-} from "@tabler/icons-react";
+import { IconComponents, IconDashboard } from "@tabler/icons-react";
 import type { NavItem } from "@/types/nav-item";
 
 export const navLinks: NavItem[] = [
@@ -16,8 +13,8 @@ export const navLinks: NavItem[] = [
         link: "/dashboard/customers",
       },
       {
-        label: "Devices",
-        link: "/dashboard/devices",
+        label: "Locations",
+        link: "/dashboard/locations",
       },
     ],
   },

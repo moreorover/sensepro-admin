@@ -3,22 +3,23 @@
 import { Button, Grid, GridCol, Paper, Title } from "@mantine/core";
 import { PageContainer } from "@/components/page_container/PageContainer";
 import { useSetAtom } from "jotai";
-import { editCustomerDrawerAtom } from "@/components/dashboard/customers/customer.atom";
-import { Customer } from "@/components/dashboard/customers/customer.schema";
+import {
+  editLocationDrawerAtom,
+  newLocationDrawerAtom,
+} from "@/components/dashboard/locations/location.atom";
 import { Location } from "@/components/dashboard/locations/location.schema";
-import LocationsTable from "@/components/dashboard/locations/LocationsTable";
-import { newLocationDrawerAtom } from "@/components/dashboard/locations/location.atom";
+import { Customer } from "@/components/dashboard/customers/customer.schema";
 
 interface Props {
+  location: Location;
   customer: Customer;
-  locations: Location[];
 }
 
-export default function CustomerPage({ customer, locations }: Props) {
-  const showEditCustomerDrawer = useSetAtom(editCustomerDrawerAtom);
+export default function LocationPage({ location, customer }: Props) {
   const showNewLocationDrawer = useSetAtom(newLocationDrawerAtom);
+  const showEditLocationDrawer = useSetAtom(editLocationDrawerAtom);
   return (
-    <PageContainer title={customer.name}>
+    <PageContainer title={location.name}>
       <Grid>
         <GridCol span={{ sm: 12, md: 12, lg: 12 }}>
           <Paper
@@ -30,7 +31,7 @@ export default function CustomerPage({ customer, locations }: Props) {
           >
             <Button
               onClick={() => {
-                showEditCustomerDrawer({ isOpen: true, customer });
+                showEditLocationDrawer({ isOpen: true, location });
               }}
             >
               Edit
@@ -52,7 +53,7 @@ export default function CustomerPage({ customer, locations }: Props) {
                 marginBottom: "16px",
               }}
             >
-              <Title order={4}>Locations</Title>
+              <Title order={4}>Devices</Title>
               <Button
                 onClick={() => {
                   showNewLocationDrawer({
@@ -64,7 +65,7 @@ export default function CustomerPage({ customer, locations }: Props) {
                 New
               </Button>
             </div>
-            <LocationsTable locations={locations} />
+            {/*<SimpleOrdersTable orders={orders} />*/}
           </Paper>
         </GridCol>
       </Grid>
