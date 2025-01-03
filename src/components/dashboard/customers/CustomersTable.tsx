@@ -1,7 +1,8 @@
 "use client";
 
 import { Table, Paper } from "@mantine/core";
-import { Customer } from "@/lib/schemas";
+import { Customer } from "@/components/dashboard/customers/customer.schema";
+
 import { useRouter } from "next/navigation";
 
 interface Props {

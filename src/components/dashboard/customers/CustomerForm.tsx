@@ -2,9 +2,10 @@
 
 import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
-import { Customer, customerSchema, type ActionResponse } from "@/lib/schemas";
+import { type ActionResponse } from "@/lib/schemas";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { Button, TextInput } from "@mantine/core";
+import {Customer, customerSchema} from "@/components/dashboard/customers/customer.schema"
 
 type Props = {
   customer: Customer;

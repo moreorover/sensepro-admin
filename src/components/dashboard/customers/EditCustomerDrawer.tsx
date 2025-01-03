@@ -1,12 +1,12 @@
 "use client";
 
 import CustomerForm from "@/components/dashboard/customers/CustomerForm";
-import { Customer } from "@/lib/schemas";
+import { Customer } from "@/components/dashboard/customers/customer.schema";
 import { notifications } from "@mantine/notifications";
 import { updateCustomer } from "@/data-access/customer";
 import { Drawer } from "@mantine/core";
 import { useAtom } from "jotai";
-import { editCustomerDrawerAtom } from "@/lib/atoms";
+import { editCustomerDrawerAtom } from "@/components/dashboard/customers/customer.atom";
 
 export default function EditCustomerDrawer() {
   const [value, setOpen] = useAtom(editCustomerDrawerAtom);

@@ -7,7 +7,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { ActionResponse, Customer, customerSchema } from "@/lib/schemas";
+import { ActionResponse } from "@/lib/schemas";
+import {Customer, customerSchema} from "@/components/dashboard/customers/customer.schema"
 
 export async function getCustomers() {
   const session = await auth.api.getSession({
