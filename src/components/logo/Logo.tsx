@@ -17,7 +17,7 @@ export const Logo: React.FC<Props> = () => {
         className={classes.heading}
       >
         <Text fw="bolder" size="xl">
-          PRIVÉ
+          SensePro
           <Text component="span" fw="normal" className={classes.subheading}>
             Admin
           </Text>

@@ -27,8 +27,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "PRIVÉ Admin dashboard",
-  description: "PRIVÉ Admin dashboard",
+  title: "SensePro Admin dashboard",
+  description: "SensePro Admin dashboard",
 };
 
 const theme = mergeMantineTheme(

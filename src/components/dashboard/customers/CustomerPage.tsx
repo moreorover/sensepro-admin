@@ -1,20 +1,17 @@
 "use client";
 
 import { Button, Grid, GridCol, Paper, Title } from "@mantine/core";
-import { Customer, Order } from "@/lib/schemas";
+import { Customer } from "@/lib/schemas";
 import { PageContainer } from "@/components/page_container/PageContainer";
 import { useSetAtom } from "jotai";
-import { editCustomerDrawerAtom, newOrderDrawerAtom } from "@/lib/atoms";
-import SimpleOrdersTable from "@/components/dashboard/orders/SimpleOrdersTable";
+import { editCustomerDrawerAtom } from "@/lib/atoms";
 
 interface Props {
   customer: Customer;
-  orders: Order[];
 }
 
-export default function CustomerPage({ customer, orders }: Props) {
+export default function CustomerPage({ customer }: Props) {
   const showEditCustomerDrawer = useSetAtom(editCustomerDrawerAtom);
-  const showNewOrderDrawer = useSetAtom(newOrderDrawerAtom);
   return (
     <PageContainer title={customer.name}>
       <Grid>
@@ -50,19 +47,19 @@ export default function CustomerPage({ customer, orders }: Props) {
                 marginBottom: "16px",
               }}
             >
-              <Title order={4}>Orders</Title>
+              <Title order={4}>Locations</Title>
               <Button
-                onClick={() => {
-                  showNewOrderDrawer({
-                    isOpen: true,
-                    customerId: customer.id!,
-                  });
-                }}
+                // onClick={() => {
+                //   showNewLocationDrawer({
+                //     isOpen: true,
+                //     customerId: customer.id!,
+                //   });
+                // }}
               >
                 New
               </Button>
             </div>
-            <SimpleOrdersTable orders={orders} />
+            {/*<SimpleOrdersTable orders={orders} />*/}
           </Paper>
         </GridCol>
       </Grid>

@@ -4,11 +4,8 @@ import { useSession } from "@/hooks/use-session";
 import { authClient } from "@/lib/auth-client";
 import { signInFormSchema } from "@/lib/auth-schema";
 import {
-  Anchor,
   Button,
   Card,
-  Checkbox,
-  Group,
   PasswordInput,
   TextInput,
 } from "@mantine/core";
@@ -84,12 +81,12 @@ export function LoginForm() {
           key={form.key("password")}
           {...form.getInputProps("password")}
         />
-        <Group mt="md" justify="space-between">
-          <Checkbox label="Remember me" />
-          <Anchor size="sm" href="#">
-            Forgot Password？
-          </Anchor>
-        </Group>
+        {/*<Group mt="md" justify="space-between">*/}
+          {/*<Checkbox label="Remember me" />*/}
+          {/*<Anchor size="sm" href="#">*/}
+          {/*  Forgot Password？*/}
+          {/*</Anchor>*/}
+        {/*</Group>*/}
         <Button fullWidth mt="xl" type="submit">
           Sign In
         </Button>
