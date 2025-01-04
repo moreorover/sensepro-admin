@@ -4,15 +4,15 @@ import "server-only";
 
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import {
-  ActionResponse,
-  Rule,
-  ruleDevicesSchema,
-  ruleSchema,
-} from "@/lib/schemas";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { ActionResponse } from "@/data-access/serverAction.schema";
+import {
+  Rule,
+  ruleDevicesSchema,
+  ruleSchema,
+} from "@/components/dashboard/devices/device.schema";
 
 export async function getRules() {
   const session = await auth.api.getSession({
@@ -69,7 +69,7 @@ export async function getRuleDevices(id: string) {
 
 export async function updateRuleDevices(
   ruleId: string,
-  devices: string[]
+  devices: string[],
 ): Promise<ActionResponse> {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -106,35 +106,13 @@ export async function updateRuleDevices(
       message: `Updated rule: ${ruleId} devices`,
       type: "SUCCESS",
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     return {
       type: "ERROR",
       message: "Something went wrong!",
     };
   }
-}
-
-export async function getDevicesAllowdInRulesForControllerId(
-  controllerId: string
-) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session) {
-    return redirect("/");
-  }
-
-  const deviceTypes = await prisma.deviceType.findMany({
-    where: { allowInRules: true },
-    select: { id: true },
-  });
-
-  const x = deviceTypes.map((deviceType) => deviceType.id);
-
-  return await prisma.device.findMany({
-    where: { controllerId, deviceTypeId: { in: x } },
-  });
 }
 
 export async function createRule(rule: Rule): Promise<ActionResponse> {
@@ -157,6 +135,7 @@ export async function createRule(rule: Rule): Promise<ActionResponse> {
     }
     const c = await prisma.rule.create({
       data: {
+        name: parse.data.name,
         type: parse.data.type,
         locationId: parse.data.locationId,
         controllerId: parse.data.controllerId,

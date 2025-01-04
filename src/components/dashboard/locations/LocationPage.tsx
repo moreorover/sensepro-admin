@@ -19,8 +19,10 @@ import DeviceCard from "@/components/dashboard/devices/DeviceCard";
 import {
   Device,
   DeviceType,
+  Rule,
 } from "@/components/dashboard/devices/device.schema";
 import { newDeviceDrawerAtom } from "@/components/dashboard/devices/device.atom";
+import RuleCard from "@/components/dashboard/devices/RuleCard";
 
 interface Props {
   location: Location;
@@ -29,6 +31,8 @@ interface Props {
     controllerId: string;
     controller: Device;
     devices: Device[];
+    rules: { rule: Rule; devices: Device[] }[];
+    devicesAllowedInRules: Device[];
   }[];
   deviceTypes: DeviceType[];
 }
@@ -137,6 +141,13 @@ export default function LocationPage({
                 />
                 {deviceGroup.devices.map((device) => (
                   <DeviceCard key={device.id} device={device} />
+                ))}
+                {deviceGroup.rules.map((deviceGroupRule) => (
+                  <RuleCard
+                    key={deviceGroupRule.rule.id!}
+                    rule={deviceGroupRule.rule}
+                    devices={deviceGroupRule.devices}
+                  />
                 ))}
               </SimpleGrid>
             </Paper>
