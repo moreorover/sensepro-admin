@@ -3,7 +3,7 @@
 import DeviceForm from "@/components/dashboard/devices/DeviceForm";
 import { Device } from "@/components/dashboard/devices/device.schema";
 import { notifications } from "@mantine/notifications";
-import { updateDevice } from "@/data-access/device";
+import { deleteDevice, updateDevice } from "@/data-access/device";
 import { Drawer } from "@mantine/core";
 import { useAtom } from "jotai";
 import { editDeviceDrawerAtom } from "@/components/dashboard/devices/device.atom";
@@ -23,6 +23,7 @@ export default function EditDeviceDrawer() {
     } else {
       setOpen({
         isOpen: false,
+        isDeleteEnabled: false,
         device: {
           name: "",
           mac: "",
@@ -43,8 +44,37 @@ export default function EditDeviceDrawer() {
     return response;
   }
 
-  function onDelete() {
-    console.log("onDelete");
+  async function onDelete() {
+    const response = await deleteDevice(value.device);
+
+    if (response.type === "ERROR") {
+      notifications.show({
+        color: "red",
+        title: "Failed to delete Device",
+        message: "Please try again.",
+      });
+    } else {
+      setOpen({
+        isOpen: false,
+        isDeleteEnabled: false,
+        device: {
+          name: "",
+          mac: "",
+          ip: null,
+          tailscaleIp: null,
+          serialNumber: "",
+          locationId: null,
+          deviceTypeId: "",
+          controllerId: null,
+        },
+      });
+      notifications.show({
+        color: "green",
+        title: "Success!",
+        message: "Device deleted.",
+      });
+    }
+    return response;
   }
 
   return (
@@ -53,6 +83,7 @@ export default function EditDeviceDrawer() {
       onClose={() =>
         setOpen({
           isOpen: false,
+          isDeleteEnabled: false,
           device: {
             name: "",
             mac: "",
@@ -72,6 +103,7 @@ export default function EditDeviceDrawer() {
         onSubmitAction={onSubmit}
         onDelete={onDelete}
         device={value.device}
+        isDeleteEnabled={value.isDeleteEnabled}
       />
     </Drawer>
   );

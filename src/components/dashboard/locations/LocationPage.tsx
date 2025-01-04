@@ -131,7 +131,10 @@ export default function LocationPage({
                 </Menu>
               </div>
               <SimpleGrid cols={{ base: 1, md: 3 }}>
-                <DeviceCard device={deviceGroup.controller} />
+                <DeviceCard
+                  device={deviceGroup.controller}
+                  isDeleteEnabled={deviceGroup.devices.length == 0}
+                />
                 {deviceGroup.devices.map((device) => (
                   <DeviceCard key={device.id} device={device} />
                 ))}

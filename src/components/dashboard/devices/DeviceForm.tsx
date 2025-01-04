@@ -14,12 +14,14 @@ type Props = {
   device: Device;
   onSubmitAction: (values: Device) => Promise<ActionResponse>;
   onDelete?: () => void;
+  isDeleteEnabled: boolean;
 };
 
 export default function DeviceForm({
   device,
   onSubmitAction,
   onDelete,
+  isDeleteEnabled,
 }: Props) {
   const form = useForm({
     mode: "uncontrolled",
@@ -69,7 +71,7 @@ export default function DeviceForm({
       <Button fullWidth mt="xl" type="submit">
         {device.id ? "Update" : "Create"}
       </Button>
-      {device.id && (
+      {isDeleteEnabled && (
         <Button
           leftSection={<IconTrash />}
           fullWidth

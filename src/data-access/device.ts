@@ -133,37 +133,37 @@ export async function updateDevice(device: Device): Promise<ActionResponse> {
   }
 }
 
-// export async function deleteDevice(device: Device): Promise<ActionResponse> {
-//   const session = await auth.api.getSession({
-//     headers: await headers(),
-//   });
+export async function deleteDevice(device: Device): Promise<ActionResponse> {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-//   if (!session) {
-//     return redirect("/");
-//   }
+  if (!session) {
+    return redirect("/");
+  }
 
-//   try {
-//     const parse = deviceSchema.safeParse(device);
+  try {
+    const parse = deviceSchema.safeParse(device);
 
-//     if (!parse.success) {
-//       return {
-//         type: "ERROR",
-//         message: "Incorrect data received.",
-//       };
-//     }
-//     const c = await prisma.device.delete({
-//       where: { id: parse.data.id },
-//     });
-//     revalidatePath("/devices");
-//     return {
-//       message: `Deleted Device: ${c.name}`,
-//       type: "SUCCESS",
-//     };
-//     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//   } catch (e) {
-//     return {
-//       type: "ERROR",
-//       message: "Something went wrong!",
-//     };
-//   }
-// }
+    if (!parse.success) {
+      return {
+        type: "ERROR",
+        message: "Incorrect data received.",
+      };
+    }
+    const c = await prisma.device.delete({
+      where: { id: parse.data.id },
+    });
+    revalidatePath("/devices");
+    return {
+      message: `Deleted Device: ${c.name}`,
+      type: "SUCCESS",
+    };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (e) {
+    return {
+      type: "ERROR",
+      message: "Something went wrong!",
+    };
+  }
+}

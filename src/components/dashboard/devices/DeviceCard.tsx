@@ -7,9 +7,10 @@ import { useSetAtom } from "jotai";
 
 interface Props {
   device: Device;
+  isDeleteEnabled?: boolean;
 }
 
-export default function DeviceCard({ device }: Props) {
+export default function DeviceCard({ device, isDeleteEnabled = true }: Props) {
   const showEditDeviceDrawer = useSetAtom(editDeviceDrawerAtom);
   return (
     <Card padding="lg" radius="md" withBorder>
@@ -18,7 +19,11 @@ export default function DeviceCard({ device }: Props) {
         <Badge color="blue" variant="light">
           {device.serialNumber}
         </Badge>
-        <Button onClick={() => showEditDeviceDrawer({ isOpen: true, device })}>
+        <Button
+          onClick={() =>
+            showEditDeviceDrawer({ isOpen: true, isDeleteEnabled, device })
+          }
+        >
           Edit
         </Button>
       </Group>

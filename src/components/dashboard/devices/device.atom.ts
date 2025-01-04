@@ -10,9 +10,11 @@ export const newDeviceDrawerAtom = atom<{
 
 export const editDeviceDrawerAtom = atom<{
   isOpen: boolean;
+  isDeleteEnabled: boolean;
   device: Device;
 }>({
   isOpen: false,
+  isDeleteEnabled: false,
   device: {
     name: "",
     mac: "",
