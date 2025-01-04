@@ -1,13 +1,16 @@
 "use client";
 
 import { Device } from "@/components/dashboard/devices/device.schema";
-import { Card, Group, Text, Badge, Divider } from "@mantine/core";
+import { Card, Group, Text, Badge, Divider, Button } from "@mantine/core";
+import { editDeviceDrawerAtom } from "@/components/dashboard/devices/device.atom";
+import { useSetAtom } from "jotai";
 
 interface Props {
   device: Device;
 }
 
 export default function DeviceCard({ device }: Props) {
+  const showEditDeviceDrawer = useSetAtom(editDeviceDrawerAtom);
   return (
     <Card padding="lg" radius="md" withBorder>
       <Group justify="space-between" align="center" gap="sm">
@@ -15,6 +18,9 @@ export default function DeviceCard({ device }: Props) {
         <Badge color="blue" variant="light">
           {device.serialNumber}
         </Badge>
+        <Button onClick={() => showEditDeviceDrawer({ isOpen: true, device })}>
+          Edit
+        </Button>
       </Group>
 
       <Divider my="sm" />
