@@ -80,7 +80,6 @@ export default function DeviceForm({
           Delete
         </Button>
       )}
-      {JSON.stringify(device, null, 2)}
     </form>
   );
 }

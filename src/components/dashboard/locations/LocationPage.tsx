@@ -4,6 +4,7 @@ import {
   Button,
   Grid,
   GridCol,
+  Group,
   Menu,
   Paper,
   SimpleGrid,
@@ -42,7 +43,7 @@ export default function LocationPage({
   const showEditLocationDrawer = useSetAtom(editLocationDrawerAtom);
 
   return (
-    <PageContainer title={`${location.name} - ${location.id}`}>
+    <PageContainer title={`${customer.name} / ${location.name}`}>
       <Grid>
         <GridCol span={{ sm: 12, md: 12, lg: 12 }}>
           <Paper
@@ -52,13 +53,27 @@ export default function LocationPage({
               width: "100%",
             }}
           >
-            <Button
-              onClick={() => {
-                showEditLocationDrawer({ isOpen: true, location });
-              }}
-            >
-              Edit
-            </Button>
+            <Group>
+              <Button
+                onClick={() => {
+                  showNewDeviceDrawer({
+                    isOpen: true,
+                    locationId: location.id!,
+                    deviceTypeId: "controller",
+                    controllerId: null,
+                  });
+                }}
+              >
+                Add Controller
+              </Button>
+              <Button
+                onClick={() => {
+                  showEditLocationDrawer({ isOpen: true, location });
+                }}
+              >
+                Edit
+              </Button>
+            </Group>
           </Paper>
         </GridCol>
         {deviceGroups.map((deviceGroup) => (
