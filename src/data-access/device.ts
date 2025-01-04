@@ -4,10 +4,14 @@ import "server-only";
 
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { ActionResponse, Device, deviceSchema } from "@/lib/schemas";
+import {
+  Device,
+  deviceSchema,
+} from "@/components/dashboard/devices/device.schema";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { ActionResponse } from "@/data-access/serverAction.schema";
 
 export async function getDevices() {
   const session = await auth.api.getSession({

@@ -4,10 +4,12 @@ import "server-only";
 
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { ActionResponse, DeviceType, deviceTypeSchema } from "@/lib/schemas";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { DeviceType } from "@prisma/client";
+import { ActionResponse } from "@/data-access/serverAction.schema";
+import { deviceTypeSchema } from "@/components/dashboard/devices/device.schema";
 
 export async function getDeviceTypes() {
   const session = await auth.api.getSession({
@@ -34,7 +36,7 @@ export async function getDeviceType(id: string) {
 }
 
 export async function createDeviceType(
-  deviceType: DeviceType
+  deviceType: DeviceType,
 ): Promise<ActionResponse> {
   const session = await auth.api.getSession({
     headers: await headers(),
