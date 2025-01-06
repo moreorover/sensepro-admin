@@ -174,7 +174,7 @@ export async function updateRule(rule: Rule): Promise<ActionResponse> {
       };
     }
     const c = await prisma.rule.update({
-      data: { type: parse.data.type },
+      data: { name: parse.data.name, type: parse.data.type },
       where: { id: parse.data.id },
     });
     revalidatePath("/rules");

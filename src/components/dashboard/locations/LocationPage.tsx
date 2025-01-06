@@ -150,7 +150,7 @@ export default function LocationPage({
                             showNewRuleDrawer({
                               isOpen: true,
                               locationId: location.id!,
-                              ruleTypeId: ruleType,
+                              ruleTypeId: ruleType as "AND" | "OR",
                               controllerId: deviceGroup.controllerId,
                             });
                           }}

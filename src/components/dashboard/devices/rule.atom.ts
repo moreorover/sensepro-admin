@@ -8,6 +8,20 @@ export const newRuleDrawerAtom = atom<{
   controllerId: string;
 }>({ isOpen: false, locationId: "", ruleTypeId: "AND", controllerId: "" });
 
+export const editRuleDrawerAtom = atom<{
+  isOpen: boolean;
+  rule: Rule;
+}>({
+  isOpen: false,
+  rule: {
+    id: "",
+    name: "",
+    type: "AND",
+    locationId: null,
+    controllerId: null,
+  },
+});
+
 export const editRuleDevicesDrawerAtom = atom<{
   isOpen: boolean;
   rule: Rule;

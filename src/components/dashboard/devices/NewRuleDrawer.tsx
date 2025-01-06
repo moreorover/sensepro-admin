@@ -24,7 +24,7 @@ export default function NewRuleDrawer() {
       setOpen({
         isOpen: false,
         locationId: "",
-        deviceTypeId: "AND",
+        ruleTypeId: "AND",
         controllerId: "",
       });
       notifications.show({
@@ -36,10 +36,6 @@ export default function NewRuleDrawer() {
     return response;
   }
 
-  function onDelete() {
-    console.log("onDelete");
-  }
-
   return (
     <Drawer
       opened={value.isOpen}
@@ -47,7 +43,7 @@ export default function NewRuleDrawer() {
         setOpen({
           isOpen: false,
           locationId: "",
-          deviceTypeId: "AND",
+          ruleTypeId: "AND",
           controllerId: "",
         })
       }
@@ -56,7 +52,6 @@ export default function NewRuleDrawer() {
     >
       <RuleForm
         onSubmitAction={onSubmit}
-        onDelete={onDelete}
         rule={{
           name: "",
           type: value.ruleTypeId,
