@@ -14,14 +14,14 @@ type Props = {
   device: Device;
   onSubmitAction: (values: Device) => Promise<ActionResponse>;
   onDelete?: () => void;
-  isDeleteEnabled: boolean;
+  isDeleteEnabled?: boolean;
 };
 
 export default function DeviceForm({
   device,
   onSubmitAction,
   onDelete,
-  isDeleteEnabled,
+  isDeleteEnabled = false,
 }: Props) {
   const form = useForm({
     mode: "uncontrolled",

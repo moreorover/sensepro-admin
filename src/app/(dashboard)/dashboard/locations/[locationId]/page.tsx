@@ -57,6 +57,7 @@ export default async function Page({ params }: Props) {
               devices.find((device) => device.id === ruleDevice.deviceId),
             )
             .filter((device) => device !== undefined),
+          selectedDevices: rule.devices.map((device) => device.deviceId),
         })),
       devicesAllowedInRules: devices.filter(
         (device) =>

@@ -31,7 +31,7 @@ interface Props {
     controllerId: string;
     controller: Device;
     devices: Device[];
-    rules: { rule: Rule; devices: Device[] }[];
+    rules: { rule: Rule; devices: Device[]; selectedDevices: string[] }[];
     devicesAllowedInRules: Device[];
   }[];
   deviceTypes: DeviceType[];
@@ -147,6 +147,8 @@ export default function LocationPage({
                     key={deviceGroupRule.rule.id!}
                     rule={deviceGroupRule.rule}
                     devices={deviceGroupRule.devices}
+                    selectedDevices={deviceGroupRule.selectedDevices}
+                    deviceOptions={deviceGroup.devicesAllowedInRules}
                   />
                 ))}
               </SimpleGrid>
