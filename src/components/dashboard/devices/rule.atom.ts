@@ -17,8 +17,8 @@ export const editRuleDrawerAtom = atom<{
     id: "",
     name: "",
     type: "AND",
-    locationId: null,
-    controllerId: null,
+    locationId: "",
+    controllerId: "",
   },
 });
 
