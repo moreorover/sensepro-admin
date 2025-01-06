@@ -7,6 +7,7 @@ import EditLocationDrawer from "@/components/dashboard/locations/EditLocationDra
 import NewDeviceDrawer from "@/components/dashboard/devices/NewDeviceDrawer";
 import EditDeviceDrawer from "@/components/dashboard/devices/EditDeviceDrawer";
 import EditRuleDevicesDrawer from "@/components/dashboard/devices/EditRuleDevicesDrawer";
+import NewRuleDrawer from "@/components/dashboard/devices/NewRuleDrawer";
 
 export default function DrawerProvider() {
   return (
@@ -20,6 +21,7 @@ export default function DrawerProvider() {
       <NewDeviceDrawer />
       <EditDeviceDrawer />
 
+      <NewRuleDrawer />
       <EditRuleDevicesDrawer />
     </>
   );

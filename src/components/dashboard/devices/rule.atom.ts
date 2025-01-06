@@ -4,9 +4,9 @@ import { Device, Rule } from "@/components/dashboard/devices/device.schema";
 export const newRuleDrawerAtom = atom<{
   isOpen: boolean;
   locationId: string;
-  deviceTypeId: string;
-  controllerId: string | null;
-}>({ isOpen: false, locationId: "", deviceTypeId: "", controllerId: null });
+  ruleTypeId: "AND" | "OR";
+  controllerId: string;
+}>({ isOpen: false, locationId: "", ruleTypeId: "AND", controllerId: "" });
 
 export const editRuleDevicesDrawerAtom = atom<{
   isOpen: boolean;

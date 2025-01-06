@@ -23,6 +23,7 @@ import {
 } from "@/components/dashboard/devices/device.schema";
 import { newDeviceDrawerAtom } from "@/components/dashboard/devices/device.atom";
 import RuleCard from "@/components/dashboard/devices/RuleCard";
+import { newRuleDrawerAtom } from "@/components/dashboard/devices/rule.atom";
 
 interface Props {
   location: Location;
@@ -44,6 +45,7 @@ export default function LocationPage({
   deviceTypes,
 }: Props) {
   const showNewDeviceDrawer = useSetAtom(newDeviceDrawerAtom);
+  const showNewRuleDrawer = useSetAtom(newRuleDrawerAtom);
   const showEditLocationDrawer = useSetAtom(editLocationDrawerAtom);
 
   return (
@@ -102,37 +104,63 @@ export default function LocationPage({
                 <Title
                   order={4}
                 >{`${deviceGroup.controller.name} Devices`}</Title>
-                <Menu>
-                  <Menu.Target>
-                    <Button>Add Device</Button>
-                  </Menu.Target>
-                  <Menu.Dropdown>
-                    <Menu.Label>Device Types</Menu.Label>
-                    {deviceTypes.map((deviceType) => (
-                      <Menu.Item
-                        disabled={
-                          (!!deviceGroup.controllerId &&
-                            deviceType.id === "controller") ||
-                          (!deviceGroup.controllerId &&
-                            deviceType.id !== "controller")
-                        }
-                        key={deviceType.id}
-                        onClick={() => {
-                          showNewDeviceDrawer({
-                            isOpen: true,
-                            locationId: location.id!,
-                            deviceTypeId: deviceType.id!,
-                            controllerId: deviceGroup.controllerId
-                              ? deviceGroup.controllerId
-                              : null,
-                          });
-                        }}
-                      >
-                        {deviceType.name}
-                      </Menu.Item>
-                    ))}
-                  </Menu.Dropdown>
-                </Menu>
+                <Group>
+                  <Menu>
+                    <Menu.Target>
+                      <Button>Add Device</Button>
+                    </Menu.Target>
+                    <Menu.Dropdown>
+                      <Menu.Label>Device Types</Menu.Label>
+                      {deviceTypes.map((deviceType) => (
+                        <Menu.Item
+                          disabled={
+                            (!!deviceGroup.controllerId &&
+                              deviceType.id === "controller") ||
+                            (!deviceGroup.controllerId &&
+                              deviceType.id !== "controller")
+                          }
+                          key={deviceType.id}
+                          onClick={() => {
+                            showNewDeviceDrawer({
+                              isOpen: true,
+                              locationId: location.id!,
+                              deviceTypeId: deviceType.id!,
+                              controllerId: deviceGroup.controllerId
+                                ? deviceGroup.controllerId
+                                : null,
+                            });
+                          }}
+                        >
+                          {deviceType.name}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Dropdown>
+                  </Menu>
+                  <Menu>
+                    <Menu.Target>
+                      <Button>Add Rule</Button>
+                    </Menu.Target>
+                    <Menu.Dropdown>
+                      <Menu.Label>Rule Types</Menu.Label>
+                      {["AND", "OR"].map((ruleType) => (
+                        <Menu.Item
+                          key={ruleType}
+                          disabled={!deviceGroup.controllerId}
+                          onClick={() => {
+                            showNewRuleDrawer({
+                              isOpen: true,
+                              locationId: location.id!,
+                              ruleTypeId: ruleType,
+                              controllerId: deviceGroup.controllerId,
+                            });
+                          }}
+                        >
+                          {`${ruleType} - Rule`}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Dropdown>
+                  </Menu>
+                </Group>
               </div>
               <SimpleGrid cols={{ base: 1, md: 3 }}>
                 <DeviceCard

@@ -54,7 +54,6 @@ export default function EditRuleDevicesDrawer() {
       title="Edit Rule Devices"
     >
       <RuleDevicesForm
-        rule={value.rule}
         selectedDevices={value.selectedDevices}
         deviceOptions={value.deviceOptions}
         onSubmitAction={onSubmit}

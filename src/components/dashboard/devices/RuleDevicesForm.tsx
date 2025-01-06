@@ -13,14 +13,12 @@ import {
 } from "@/components/dashboard/devices/device.schema";
 
 type Props = {
-  rule: Rule;
   selectedDevices: string[];
   deviceOptions: Device[];
   onSubmitAction: (values: RuleDevices) => Promise<ActionResponse>;
 };
 
 export default function RuleDevicesForm({
-  rule,
   selectedDevices,
   deviceOptions,
   onSubmitAction,
@@ -32,7 +30,6 @@ export default function RuleDevicesForm({
   });
 
   async function handleSubmit(values: typeof form.values) {
-    console.log(values);
     await onSubmitAction(values);
   }
 
