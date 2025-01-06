@@ -93,7 +93,7 @@ model Location {
   customerId String
   Device     Device[]
 
-  rules      Rule[]       @relation("LocationRules")
+  rules Rule[] @relation("LocationRules")
 
   @@unique([name, customerId])
   @@map("locations")
@@ -113,7 +113,7 @@ model Device {
   id           String    @id @default(cuid())
   name         String
   mac          String    @unique
-  ip           String
+  ip           String?
   tailscaleIp  String?
   serialNumber String    @unique
   createdAt    DateTime  @default(now())
@@ -129,7 +129,7 @@ model Device {
   controllerId String?
   devices      Device[] @relation("ControllerDevices")
 
-  rules      Rule[]       @relation("DeviceRules")
+  rules       Rule[]       @relation("DeviceRules")
   ruleDevices RuleDevice[]
 
   @@map("devices")
@@ -150,7 +150,7 @@ model Rule {
   controller   Device @relation("DeviceRules", fields: [controllerId], references: [id], onDelete: Cascade)
   controllerId String
 
-  location Location @relation("LocationRules", fields: [locationId], references: [id], onDelete: Cascade)
+  location   Location @relation("LocationRules", fields: [locationId], references: [id], onDelete: Cascade)
   locationId String
 
   devices RuleDevice[]
