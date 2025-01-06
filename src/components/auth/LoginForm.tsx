@@ -3,12 +3,7 @@
 import { useSession } from "@/hooks/use-session";
 import { authClient } from "@/lib/auth-client";
 import { signInFormSchema } from "@/lib/auth-schema";
-import {
-  Button,
-  Card,
-  PasswordInput,
-  TextInput,
-} from "@mantine/core";
+import { Button, Card, PasswordInput, TextInput } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
@@ -17,12 +12,14 @@ import { redirect } from "next/navigation";
 export function LoginForm() {
   const { session, isLoading } = useSession();
 
+  const initialValues =
+    process.env.NODE_ENV === "development"
+      ? { email: "x@x.com", password: "password123" }
+      : { email: "", password: "" };
+
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: {
-      email: "x@x.com",
-      password: "password123",
-    },
+    initialValues,
 
     validate: zodResolver(signInFormSchema),
   });
@@ -82,10 +79,10 @@ export function LoginForm() {
           {...form.getInputProps("password")}
         />
         {/*<Group mt="md" justify="space-between">*/}
-          {/*<Checkbox label="Remember me" />*/}
-          {/*<Anchor size="sm" href="#">*/}
-          {/*  Forgot Password？*/}
-          {/*</Anchor>*/}
+        {/*<Checkbox label="Remember me" />*/}
+        {/*<Anchor size="sm" href="#">*/}
+        {/*  Forgot Password？*/}
+        {/*</Anchor>*/}
         {/*</Group>*/}
         <Button fullWidth mt="xl" type="submit">
           Sign In

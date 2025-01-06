@@ -1,6 +1,6 @@
 services:
   reverse-proxy:
-    image: traefik:v3.2.1
+    image: traefik:v3.3.0
     command:
       - "--api.insecure=true"
       - "--providers.docker"
@@ -21,7 +21,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - letsencrypt:/letsencrypt
   db:
-    image: postgres:17.0
+    image: postgres:17.2
     container_name: sense_pro_pg
     restart: always
     env_file:
@@ -40,7 +40,7 @@ services:
       - db
 
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:4.0.5-management
     container_name: rabbitmq
     ports:
       - "5672:5672"  # RabbitMQ main port
@@ -51,7 +51,6 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
 
   sensepro:
-    image: ghcr.io/moreorover/sensepro-admin-panel:latest
     build:
       context: ../../
       dockerfile: docker/development/Dockerfile
