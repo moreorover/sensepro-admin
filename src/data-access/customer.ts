@@ -7,11 +7,11 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { ActionResponse } from "@/data-access/serverAction.schema";
 import {
   Customer,
   customerSchema,
 } from "@/components/dashboard/customers/customer.schema";
-import { ActionResponse } from "@/data-access/serverAction.schema";
 
 export async function getCustomers() {
   const session = await auth.api.getSession({
