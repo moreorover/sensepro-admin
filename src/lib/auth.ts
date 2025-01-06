@@ -10,4 +10,5 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: false,
   },
+  trustedOrigins: [process.env.DOMAIN_NAME as string],
 });
