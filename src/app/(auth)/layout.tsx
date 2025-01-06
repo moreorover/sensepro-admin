@@ -1,4 +1,4 @@
-import { Anchor, Box, Text, Title, Center } from "@mantine/core";
+import { Box, Title, Center } from "@mantine/core";
 import classes from "./layout.module.css";
 import React from "react";
 

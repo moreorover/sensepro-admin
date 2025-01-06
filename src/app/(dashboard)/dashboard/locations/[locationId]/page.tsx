@@ -7,7 +7,6 @@ import { getCustomer } from "@/data-access/customer";
 import { getDevicesByLocationId } from "@/data-access/device";
 import { getDeviceTypes } from "@/data-access/deviceType";
 import { getRulesByLocationId } from "@/data-access/rule";
-import { Device } from "@/components/dashboard/devices/device.schema";
 
 type Props = {
   params: Promise<{ locationId: string }>;
