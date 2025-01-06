@@ -1,12 +1,10 @@
 "use client";
 
 import { useForm } from "@mantine/form";
-import { IconTrash } from "@tabler/icons-react";
 import { type ActionResponse } from "@/data-access/serverAction.schema";
 import { zodResolver } from "mantine-form-zod-resolver";
-import { Button, MultiSelect, TextInput } from "@mantine/core";
+import { Button, MultiSelect } from "@mantine/core";
 import {
-  Rule,
   Device,
   ruleDevicesSchema,
   RuleDevices,

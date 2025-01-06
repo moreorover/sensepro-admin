@@ -15,7 +15,7 @@ import React, { useState } from "react";
 import classes from "./NavLinksGroup.module.css";
 
 interface LinksGroupProps {
-  icon: React.FC<any>;
+  icon: React.FC<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
   label: string;
   link?: string;
   initiallyOpened?: boolean;
