@@ -27,8 +27,8 @@ export default function EditRuleDrawer() {
           id: "",
           name: "",
           type: "AND",
-          locationId: null,
-          controllerId: null,
+          locationId: "",
+          controllerId: "",
         },
       });
       notifications.show({
@@ -56,8 +56,8 @@ export default function EditRuleDrawer() {
           id: "",
           name: "",
           type: "AND",
-          locationId: null,
-          controllerId: null,
+          locationId: "",
+          controllerId: "",
         },
       });
       notifications.show({
@@ -79,8 +79,8 @@ export default function EditRuleDrawer() {
             id: "",
             name: "",
             type: "AND",
-            locationId: null,
-            controllerId: null,
+            locationId: "",
+            controllerId: "",
           },
         })
       }
