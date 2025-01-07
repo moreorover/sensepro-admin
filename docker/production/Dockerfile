@@ -29,8 +29,22 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# This will do the trick, use the corresponding env file for each environment.
-COPY docker/production/.env .env.production
+
+# Accept environment variables as build arguments
+ARG BETTER_AUTH_SECRET
+ARG DATABASE_URL
+ARG RABBITMQ_URL
+ARG DOMAIN_NAME
+ARG NEXT_PUBLIC_APP_URL
+
+# Set environment variables for the application
+ENV BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+ENV BETTER_AUTH_URL=${NEXT_PUBLIC_APP_URL}
+ENV DATABASE_URL=${DATABASE_URL}
+ENV RABBITMQ_URL=${RABBITMQ_URL}
+ENV DOMAIN_NAME=${DOMAIN_NAME}
+ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+
 RUN npm run build
 
 # 3. Production image, copy all the files and run next
@@ -48,7 +62,6 @@ COPY --from=builder /app/public ./public
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
 
 USER nextjs
 
