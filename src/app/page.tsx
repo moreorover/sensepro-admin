@@ -4,23 +4,19 @@ import {
   AppShellHeader,
   AppShellMain,
   Group,
+  NavLink,
   Text,
   Title,
 } from "@mantine/core";
-import Image from "next/image";
+import { Logo } from "@/components/logo/Logo";
+import { IconActivity, IconChevronRight } from "@tabler/icons-react";
 
 export default function Home() {
   return (
     <AppShell header={{ height: 60 }} padding="md">
       <AppShellHeader>
         <Group className="h-full px-md">
-          <Image
-            className="dark:invert"
-            src="https://nextjs.org/icons/next.svg"
-            alt="logo"
-            width={100}
-            height={100}
-          />
+          <Logo />
         </Group>
       </AppShellHeader>
       <AppShellMain>
@@ -32,16 +28,15 @@ export default function Home() {
             component="span"
             gradient={{ from: "pink", to: "yellow" }}
           >
-            Mantine
+            SensePro
           </Text>{" "}
-          +
           <Text
             inherit
             variant="gradient"
             component="span"
             gradient={{ from: "blue", to: "green" }}
           >
-            TailwindCSS
+            Admin
           </Text>
         </Title>
         <Text
@@ -52,10 +47,25 @@ export default function Home() {
           mx="auto"
           mt="xl"
         >
-          This starter Next.js project includes a minimal setup for Mantine with
-          TailwindCSS. To get started edit page.tsx file.
+          This is Admin portal to manage SensePro devices.
         </Text>
-
+        <div className="flex justify-center mt-10">
+          <Group>
+            <NavLink
+              href="/signin"
+              label="Sign In"
+              leftSection={<IconActivity size="1rem" stroke={1.5} />}
+              rightSection={
+                <IconChevronRight
+                  size="0.8rem"
+                  stroke={1.5}
+                  className="mantine-rotate-rtl"
+                />
+              }
+              active
+            />
+          </Group>
+        </div>
         <div className="flex justify-center mt-10">
           <ColorSchemesSwitcher />
         </div>
