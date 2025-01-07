@@ -43,6 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: release
     if: needs.release.outputs.published == 'true'
+    env:
+      VERSION: ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
     strategy:
       fail-fast: true
       matrix:
@@ -81,4 +83,4 @@ jobs:
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}-panel-${{ matrix.environment }}:latest
-            ${{ env.IMAGE_NAME }}-panel-${{ matrix.environment }}:${{ github.ref_name }}
+            ${{ env.IMAGE_NAME }}-panel-${{ matrix.environment }}:${{ env.VERSION }}
