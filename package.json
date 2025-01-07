@@ -16,7 +16,7 @@
     "db:dev": "prisma generate && prisma db push && prisma db seed",
     "db:studio": "prisma studio",
     "changeset": "changeset",
-    "release": "changeset publish"
+    "publish": "changeset publish"
   },
   "prisma": {
     "seed": "tsx prisma/seed/seed.ts"
