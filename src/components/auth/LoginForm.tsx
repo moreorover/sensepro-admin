@@ -7,11 +7,8 @@ import { Button, Card, PasswordInput, TextInput } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
-import { redirect } from "next/navigation";
 
 export function LoginForm() {
-  const { session, isLoading } = useSession();
-
   const initialValues =
     process.env.NODE_ENV === "development"
       ? { email: "x@x.com", password: "password123" }
@@ -23,12 +20,6 @@ export function LoginForm() {
 
     validate: zodResolver(signInFormSchema),
   });
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (session) redirect("/dashboard");
 
   async function handleSubmit(values: typeof form.values) {
     const { email, password } = values;
