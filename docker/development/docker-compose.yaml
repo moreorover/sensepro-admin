@@ -57,6 +57,8 @@ services:
       - "traefik.http.routers.sensepro.rule=Host(`${DOMAIN_NAME}`)"
       - "traefik.http.routers.sensepro.entrypoints=websecure"
       - "traefik.http.routers.sensepro.tls.certresolver=myresolver"
+    env_file:
+      - .env
     restart: always
     deploy:
       mode: replicated
