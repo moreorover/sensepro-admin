@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.34
+
+### Patch Changes
+
+- cbfd5aa: fix: github action should perform release automatically
+
 ## 0.1.33
 
 ### Patch Changes
