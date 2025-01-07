@@ -51,9 +51,7 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
 
   sensepro:
-    build:
-      context: ../../
-      dockerfile: docker/production/Dockerfile
+    image: ghcr.io/moreorover/sensepro-admin-panel-production:latest
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sensepro.rule=Host(`${DOMAIN_NAME}`)"
