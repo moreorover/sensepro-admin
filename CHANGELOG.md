@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.39
+
+### Patch Changes
+
+- [#87](https://github.com/moreorover/sensepro-admin/pull/87) [`d48d370`](https://github.com/moreorover/sensepro-admin/commit/d48d37092ad4c617e503247599c2573161d461da) Thanks [@moreorover](https://github.com/moreorover)! - fix: changesets now builds images after publishing release
+
 ## 0.1.38
 
 ### Patch Changes
