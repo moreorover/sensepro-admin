@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.41
+
+### Patch Changes
+
+- [#91](https://github.com/moreorover/sensepro-admin/pull/91) [`45535c6`](https://github.com/moreorover/sensepro-admin/commit/45535c66cbee80dbbcd117ccd3bf674ff878a36b) Thanks [@moreorover](https://github.com/moreorover)! - fix: adjust docker environment variables
+
 ## 0.1.40
 
 ### Patch Changes
