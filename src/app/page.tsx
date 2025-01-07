@@ -9,7 +9,6 @@ import {
   Title,
 } from "@mantine/core";
 import { Logo } from "@/components/logo/Logo";
-import Link from "next/link";
 import { IconActivity, IconChevronRight } from "@tabler/icons-react";
 
 export default function Home() {
@@ -31,7 +30,6 @@ export default function Home() {
           >
             SensePro
           </Text>{" "}
-          +{" "}
           <Text
             inherit
             variant="gradient"
@@ -49,22 +47,25 @@ export default function Home() {
           mx="auto"
           mt="xl"
         >
-          This starter Next.js project includes a minimal setup for Mantine with
-          TailwindCSS. To get started edit page.tsx file.
+          This is Admin portal to manage SensePro devices.
         </Text>
-        <NavLink
-          href="/signin"
-          label="Sign In"
-          leftSection={<IconActivity size="1rem" stroke={1.5} />}
-          rightSection={
-            <IconChevronRight
-              size="0.8rem"
-              stroke={1.5}
-              className="mantine-rotate-rtl"
+        <div className="flex justify-center mt-10">
+          <Group>
+            <NavLink
+              href="/signin"
+              label="Sign In"
+              leftSection={<IconActivity size="1rem" stroke={1.5} />}
+              rightSection={
+                <IconChevronRight
+                  size="0.8rem"
+                  stroke={1.5}
+                  className="mantine-rotate-rtl"
+                />
+              }
+              active
             />
-          }
-          active
-        />
+          </Group>
+        </div>
         <div className="flex justify-center mt-10">
           <ColorSchemesSwitcher />
         </div>

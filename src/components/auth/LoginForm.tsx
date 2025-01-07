@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "@/hooks/use-session";
 import { authClient } from "@/lib/auth-client";
 import { signInFormSchema } from "@/lib/auth-schema";
 import { Button, Card, PasswordInput, TextInput } from "@mantine/core";
