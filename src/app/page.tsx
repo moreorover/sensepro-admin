@@ -1,4 +1,3 @@
-import { ColorSchemesSwitcher } from "@/components/color-schemes-switcher";
 import {
   AppShell,
   AppShellHeader,
@@ -66,9 +65,9 @@ export default function Home() {
             />
           </Group>
         </div>
-        <div className="flex justify-center mt-10">
-          <ColorSchemesSwitcher />
-        </div>
+        {/*<div className="flex justify-center mt-10">*/}
+        {/*  <ColorSchemesSwitcher />*/}
+        {/*</div>*/}
       </AppShellMain>
     </AppShell>
   );
