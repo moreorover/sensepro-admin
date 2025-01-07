@@ -58,12 +58,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.IMAGE_NAME }}
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -86,8 +80,5 @@ jobs:
             NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL }}
           push: true
           tags: |
-            ${{ steps.meta.outputs.tags }}
-          #            ${{ env.REGISTRY }}/${{ github.repository_owner }}/sensepro-admin-panel-${{ matrix.environment }}:latest
-          #            ${{ env.REGISTRY }}/${{ github.repository_owner }}/sensepro-admin-panel-${{ matrix.environment }}:${{ github.ref_name }}
-          labels: |
-            ${{ steps.meta.outputs.labels }}
+            ${{ env.IMAGE_NAME }}-panel-${{ matrix.environment }}:latest
+            ${{ env.IMAGE_NAME }}-panel-${{ matrix.environment }}:${{ github.ref_name }}
