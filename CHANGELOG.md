@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.36
+
+### Patch Changes
+
+- [#76](https://github.com/moreorover/sensepro-admin/pull/76) [`2bc2e54`](https://github.com/moreorover/sensepro-admin/commit/2bc2e54cef7e32d7a73ea333f3ef9209a0f18dd6) Thanks [@moreorover](https://github.com/moreorover)! - fix: changesets
+
 ## 0.1.35
 
 ### Patch Changes
