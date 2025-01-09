@@ -1,5 +1,13 @@
 # sensepro-admin
 
+## 0.1.42
+
+### Patch Changes
+
+- [#94](https://github.com/moreorover/sensepro-admin/pull/94) [`df0b71f`](https://github.com/moreorover/sensepro-admin/commit/df0b71f172adb80fc8e4e66d7793d0664dcccd06) Thanks [@moreorover](https://github.com/moreorover)! - fix: action permissions rolled back to default
+
+- [#93](https://github.com/moreorover/sensepro-admin/pull/93) [`ba5645a`](https://github.com/moreorover/sensepro-admin/commit/ba5645af82b4650b4589c4a7a6748a34000f07bb) Thanks [@moreorover](https://github.com/moreorover)! - feature: GitHub Action deployment through Docker Stack
+
 ## 0.1.41
 
 ### Patch Changes
