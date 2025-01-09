@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.48
+
+### Patch Changes
+
+- [#106](https://github.com/moreorover/sensepro-admin/pull/106) [`541cf59`](https://github.com/moreorover/sensepro-admin/commit/541cf59549fd33bd0532147a935df6ec8ca7d6fc) Thanks [@moreorover](https://github.com/moreorover)! - fix: pipeline DOMAIN conditional value
+
 ## 0.1.47
 
 ### Patch Changes
