@@ -45,6 +45,7 @@ jobs:
     if: needs.release.outputs.published == 'true'
     env:
       VERSION: ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
+      DOMAIN: ${{ matrix.environment == 'development' && vars.DOMAIN_NAME_DEVELOPMENT || vars.DOMAIN_NAME_PRODUCTION }}
     strategy:
       fail-fast: true
       matrix:
@@ -71,7 +72,7 @@ jobs:
         with:
           #          platforms: linux/amd64,linux/arm64
           build-args: |
-            NEXT_PUBLIC_APP_URL=https://${{ vars.DOMAIN_NAME }}
+            NEXT_PUBLIC_APP_URL=https://${{ env.DOMAIN }}
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}-panel-${{ matrix.environment }}:latest
