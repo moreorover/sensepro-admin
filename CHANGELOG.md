@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.46
+
+### Patch Changes
+
+- [#102](https://github.com/moreorover/sensepro-admin/pull/102) [`854a198`](https://github.com/moreorover/sensepro-admin/commit/854a1987ba0f646a8d8dfa703764dc943cf95dd0) Thanks [@moreorover](https://github.com/moreorover)! - fix: traefik port
+
 ## 0.1.45
 
 ### Patch Changes
