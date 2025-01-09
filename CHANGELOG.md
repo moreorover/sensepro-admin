@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.43
+
+### Patch Changes
+
+- [#96](https://github.com/moreorover/sensepro-admin/pull/96) [`5873f8f`](https://github.com/moreorover/sensepro-admin/commit/5873f8f99324b158bf6e4cfe7ea4148a7a34430d) Thanks [@moreorover](https://github.com/moreorover)! - fix: action needs
+
 ## 0.1.42
 
 ### Patch Changes
