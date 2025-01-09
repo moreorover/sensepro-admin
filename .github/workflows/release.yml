@@ -77,7 +77,7 @@ jobs:
           file: |
             ./docker/${{ matrix.environment }}/Dockerfile
           build-args: |
-            TAG=${{ env.VERSION }}
+            VERSION=${{ env.VERSION }}
             NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL }}
           push: true
           tags: |

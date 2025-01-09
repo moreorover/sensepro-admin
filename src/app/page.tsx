@@ -11,11 +11,12 @@ import { Logo } from "@/components/logo/Logo";
 import { IconActivity, IconChevronRight } from "@tabler/icons-react";
 
 export default function Home() {
+  const version = process.env.VERSION;
   return (
     <AppShell header={{ height: 60 }} padding="md">
       <AppShellHeader>
         <Group className="h-full px-md">
-          <Logo />
+          <Logo version={version} />
         </Group>
       </AppShellHeader>
       <AppShellMain>
