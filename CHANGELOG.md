@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.50
+
+### Patch Changes
+
+- [#110](https://github.com/moreorover/sensepro-admin/pull/110) [`01381a5`](https://github.com/moreorover/sensepro-admin/commit/01381a5b4950ca3d003373efc986ab2eef3cced5) Thanks [@moreorover](https://github.com/moreorover)! - fix: pipeline database host name
+
 ## 0.1.49
 
 ### Patch Changes
