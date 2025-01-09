@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.47
+
+### Patch Changes
+
+- [#104](https://github.com/moreorover/sensepro-admin/pull/104) [`0c55cec`](https://github.com/moreorover/sensepro-admin/commit/0c55ceccb134e2ee2aaee6e017b2157784406630) Thanks [@moreorover](https://github.com/moreorover)! - fix: better auth base url
+
 ## 0.1.46
 
 ### Patch Changes
