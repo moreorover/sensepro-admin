@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.44
+
+### Patch Changes
+
+- [#98](https://github.com/moreorover/sensepro-admin/pull/98) [`8f8c75b`](https://github.com/moreorover/sensepro-admin/commit/8f8c75bc3744396fd9b671d1fd093415191378f6) Thanks [@moreorover](https://github.com/moreorover)! - chore: bump versions
+
 ## 0.1.43
 
 ### Patch Changes
