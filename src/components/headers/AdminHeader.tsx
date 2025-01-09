@@ -10,15 +10,16 @@ import React from "react";
 
 interface Props {
   burger?: React.ReactNode;
+  version?: string | undefined;
 }
 
-export function AdminHeader({ burger }: Props) {
+export function AdminHeader({ burger, version }: Props) {
   const [opened, { close, open }] = useDisclosure(false);
 
   return (
     <header className={classes.header}>
       {burger && burger}
-      <Logo />
+      <Logo version={version} />
       <Box style={{ flex: 1 }} />
       <TextInput
         placeholder="Search"

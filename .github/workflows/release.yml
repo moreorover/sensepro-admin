@@ -7,6 +7,9 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+permissions:
+  packages: write
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ghcr.io/${{ github.repository }}
@@ -38,7 +41,7 @@ jobs:
         with:
           publish: npm run publish
 
-  publish-docker:
+  build-and-push-image:
     name: Publish Docker Images
     runs-on: ubuntu-latest
     needs: release
@@ -67,16 +70,85 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build and push image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           #          platforms: linux/amd64,linux/arm64
-          context: .
-          file: |
-            ./docker/${{ matrix.environment }}/Dockerfile
           build-args: |
-            TAG=${{ env.VERSION }}
-            NEXT_PUBLIC_APP_URL=${{ vars.NEXT_PUBLIC_APP_URL }}
+            NEXT_PUBLIC_APP_URL=https://${{ vars.DOMAIN_NAME }}
           push: true
           tags: |
             ${{ env.IMAGE_NAME }}-panel-${{ matrix.environment }}:latest
             ${{ env.IMAGE_NAME }}-panel-${{ matrix.environment }}:${{ env.VERSION }}
+            ${{ env.IMAGE_NAME }}-panel-${{ matrix.environment }}:${{ github.sha }}
+
+  deploy-development:
+    name: Deploy to development
+    environment:
+      name: development
+      url: https://ptatosol.com
+    env:
+      VERSION: ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-push-image
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: create env file
+        run: |
+          echo "ENVIRONMENT=development" >> ./envfile
+          echo "VERSION=${{ env.VERSION }}" >> ./envfile
+          echo "DOMAIN_NAME=${{ vars.DOMAIN_NAME }}" >> ./envfile
+          echo "BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}" >> ./envfile
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> ./envfile
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> ./envfile
+          echo "POSTGRES_DATABASE=${{ secrets.POSTGRES_DATABASE }}" >> ./envfile
+          echo "RABBITMQ_USER=${{ secrets.RABBITMQ_USER }}" >> ./envfile
+          echo "RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}" >> ./envfile
+
+      - name: Docker Stack Deploy
+        uses: cssnr/stack-deploy-action@v1
+        with:
+          name: ${{ vars.DOCKER_STACK_NAME }}
+          file: docker-stack.yaml
+          host: ${{ vars.DOMAIN_NAME }}
+          user: cicd
+          ssh_key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
+          env_file: ./envfile
+
+  deploy-production:
+    name: Deploy to production
+    environment:
+      name: production
+      url: https://sensepro.io
+    env:
+      VERSION: ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
+    runs-on: ubuntu-latest
+    needs:
+      - deploy-development
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: create env file
+        run: |
+          echo "ENVIRONMENT=production" >> ./envfile
+          echo "VERSION=${{ env.VERSION }}" >> ./envfile
+          echo "DOMAIN_NAME=${{ vars.DOMAIN_NAME }}" >> ./envfile
+          echo "BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}" >> ./envfile
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> ./envfile
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> ./envfile
+          echo "POSTGRES_DATABASE=${{ secrets.POSTGRES_DATABASE }}" >> ./envfile
+          echo "RABBITMQ_USER=${{ secrets.RABBITMQ_USER }}" >> ./envfile
+          echo "RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}" >> ./envfile
+
+      - name: Docker Stack Deploy
+        uses: cssnr/stack-deploy-action@v1
+        with:
+          name: ${{ vars.DOCKER_STACK_NAME }}
+          file: docker-stack.yaml
+          host: ${{ vars.DOMAIN_NAME }}
+          user: cicd
+          ssh_key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
+          env_file: ./envfile

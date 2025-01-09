@@ -7,7 +7,7 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entryPoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.myresolver.acme.email=admin@${DOMAIN_NAME}"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
@@ -20,47 +20,50 @@ services:
       # So that Traefik can listen to Docker events
       - /var/run/docker.sock:/var/run/docker.sock
       - letsencrypt:/letsencrypt
+
   db:
     image: postgres:17.2
-    container_name: sense_pro_pg
-    restart: always
-    env_file:
-      - ./.env
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
     ports:
       - "5432:5432"
-
-  adminer:
-    image: adminer:latest
-    restart: always
-    ports:
-      - "7070:8080"
-    depends_on:
-      - db
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   rabbitmq:
     image: rabbitmq:4.0.5-management
     container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
     ports:
       - "5672:5672"  # RabbitMQ main port
       - "15672:15672"  # RabbitMQ management UI port
-    env_file:
-      - ./.env
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
   sensepro:
-    image: ghcr.io/moreorover/sensepro-admin-panel-production:latest
+    image: ghcr.io/moreorover/sensepro-admin-panel-${ENVIRONMENT}:${VERSION:-latest}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sensepro.rule=Host(`${DOMAIN_NAME}`)"
       - "traefik.http.routers.sensepro.entrypoints=websecure"
       - "traefik.http.routers.sensepro.tls.certresolver=myresolver"
-    env_file:
-      - .env
-    restart: always
+    environment:
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@$db:5432/${POSTGRES_DB}
+      - RABBITMQ_URL=amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672
+      - VERSION=v${VERSION}
     deploy:
+      update_config:
+        order: start-first
       mode: replicated
       replicas: 3
     depends_on:
