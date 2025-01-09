@@ -98,6 +98,7 @@ jobs:
 
       - name: create env file
         run: |
+          echo "ENVIRONMENT=development" >> ./envfile
           echo "VERSION=${{ env.VERSION }}" >> ./envfile
           echo "ACME_EMAIL=${{ vars.ACME_EMAIL }}" >> ./envfile
           echo "DOMAIN_NAME=${{ vars.DOMAIN_NAME }}" >> ./envfile
@@ -133,6 +134,7 @@ jobs:
 
       - name: create env file
         run: |
+          echo "ENVIRONMENT=production" >> ./envfile
           echo "VERSION=${{ env.VERSION }}" >> ./envfile
           echo "ACME_EMAIL=${{ vars.ACME_EMAIL }}" >> ./envfile
           echo "DOMAIN_NAME=${{ vars.DOMAIN_NAME }}" >> ./envfile
