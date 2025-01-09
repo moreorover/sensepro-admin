@@ -28,7 +28,7 @@ export const Logo: React.FC<Props> = ({ version }) => {
       </Link>
       {version && (
         <Text size="sm" c="dimmed">
-          v{version}
+          {version}
         </Text>
       )}
     </Flex>

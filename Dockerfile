@@ -32,12 +32,10 @@ COPY . .
 
 # Accept environment variables as build arguments
 ARG NEXT_PUBLIC_APP_URL
-ARG VERSION
 
 # Set environment variables for the application
 ENV BETTER_AUTH_URL=${NEXT_PUBLIC_APP_URL}
 ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
-ENV VERSION=${VERSION}
 
 RUN npm run build
 
