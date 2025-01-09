@@ -87,6 +87,7 @@ jobs:
       VERSION: ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
     runs-on: ubuntu-latest
     needs:
+      - release
       - build-and-push-image
     steps:
       - name: Checkout code
@@ -123,6 +124,7 @@ jobs:
       VERSION: ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
     runs-on: ubuntu-latest
     needs:
+      - release
       - deploy-development
     steps:
       - name: Checkout code
