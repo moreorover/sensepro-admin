@@ -34,7 +34,6 @@ COPY . .
 ARG NEXT_PUBLIC_APP_URL
 
 # Set environment variables for the application
-ENV BETTER_AUTH_URL=${NEXT_PUBLIC_APP_URL}
 ENV NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
 
 RUN npm run build
