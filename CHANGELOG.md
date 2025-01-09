@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.49
+
+### Patch Changes
+
+- [#108](https://github.com/moreorover/sensepro-admin/pull/108) [`a58e3d5`](https://github.com/moreorover/sensepro-admin/commit/a58e3d5409d6fc3dc01bc01950bb535780c47582) Thanks [@moreorover](https://github.com/moreorover)! - fix: pipeline database variable
+
 ## 0.1.48
 
 ### Patch Changes
