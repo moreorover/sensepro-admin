@@ -74,7 +74,6 @@ jobs:
         with:
           #          platforms: linux/amd64,linux/arm64
           build-args: |
-            VERSION=${{ env.VERSION }}
             NEXT_PUBLIC_APP_URL=https://${{ vars.DOMAIN_NAME }}
           push: true
           tags: |
