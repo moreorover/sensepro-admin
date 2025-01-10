@@ -35,9 +35,6 @@ export default function DashboardShell({ children, profile, version }: Props) {
       transitionDuration={500}
       transitionTimingFunction="ease"
     >
-      <AppShell.Navbar>
-        <Navbar profile={profile} data={navLinks} hidden={!opened} />
-      </AppShell.Navbar>
       <AppShell.Header>
         <AdminHeader
           burger={
@@ -52,9 +49,12 @@ export default function DashboardShell({ children, profile, version }: Props) {
           version={version}
         />
       </AppShell.Header>
+      <AppShell.Navbar>
+        <Navbar profile={profile} data={navLinks} hidden={!opened} />
+      </AppShell.Navbar>
       <AppShell.Main bg={bg}>{children}</AppShell.Main>
       <AppShell.Footer>
-        <Text w="full" size="sm" c="gray">
+        <Text w="full" size="sm" c="gray" ta="right">
           CopyRight © 2024
         </Text>
       </AppShell.Footer>

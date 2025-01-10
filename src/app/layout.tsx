@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import {
-  ColorSchemeScript,
   createTheme,
   DEFAULT_THEME,
   MantineProvider,
@@ -8,7 +7,6 @@ import {
 } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import localFont from "next/font/local";
-import Head from "next/head";
 import "./globals.css";
 import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
@@ -48,9 +46,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head>
-        <ColorSchemeScript />
-      </Head>
       <body className="antialiased">
         <MantineProvider theme={theme}>
           {children}
