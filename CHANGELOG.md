@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.51
+
+### Patch Changes
+
+- [#112](https://github.com/moreorover/sensepro-admin/pull/112) [`7b1b9de`](https://github.com/moreorover/sensepro-admin/commit/7b1b9debfd0b138a491a50fea5ec203629d7049c) Thanks [@moreorover](https://github.com/moreorover)! - fix: footer text aligned to right
+
 ## 0.1.50
 
 ### Patch Changes
