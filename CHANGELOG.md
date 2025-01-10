@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.52
+
+### Patch Changes
+
+- [#114](https://github.com/moreorover/sensepro-admin/pull/114) [`f783fe8`](https://github.com/moreorover/sensepro-admin/commit/f783fe86758f4881c5dcd15923766b397959b331) Thanks [@moreorover](https://github.com/moreorover)! - fix: test env file
+
 ## 0.1.51
 
 ### Patch Changes
