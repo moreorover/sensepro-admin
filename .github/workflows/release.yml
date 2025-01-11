@@ -86,7 +86,6 @@ jobs:
       url: https://ptatosol.com
     env:
       VERSION: ${{ fromJson(needs.release.outputs.publishedPackages)[0].version }}
-      DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DATABASE }}
     runs-on: ubuntu-latest
     needs:
       - release
@@ -128,7 +127,7 @@ jobs:
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
-          printf "%s" "${{ secrets.CICD_SSH_PRIVATE_KEY }}" > ~/.ssh/remote.key
+          echo "$SSH_KEY" > ~/.ssh/staging.key
           chmod 600 ~/.ssh/remote.key
           cat >>~/.ssh/config <<END
           Host remote
@@ -138,14 +137,16 @@ jobs:
             StrictHostKeyChecking no
           END
         env:
-          SSH_USER: ${{ secrets.STAGING_SSH_USER }}
-          SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
-          SSH_HOST: ${{ secrets.STAGING_SSH_HOST }}
+          SSH_USER: cicd
+          SSH_KEY: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ vars.DOMAIN_NAME }}
 
       - name: Forward Postgres Port
         run: ssh -f -N -L 5432:localhost:5432 remote
 
       - name: Reload database
+        env:
+          DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DATABASE }}
         run: npm run db:dev
 
   deploy-production:
