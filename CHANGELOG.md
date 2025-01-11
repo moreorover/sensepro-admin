@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.54
+
+### Patch Changes
+
+- [#118](https://github.com/moreorover/sensepro-admin/pull/118) [`4419d5a`](https://github.com/moreorover/sensepro-admin/commit/4419d5a6e89b2b54cc351bedf19530c708aaf7fa) Thanks [@moreorover](https://github.com/moreorover)! - feat: pipeline to seed development database
+
 ## 0.1.53
 
 ### Patch Changes
