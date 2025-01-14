@@ -36,8 +36,19 @@ export default function DeviceCard({ device, isDeleteEnabled = true }: Props) {
       <Text size="sm">IP Address</Text>
       <Text>{device.ip || "N/A"}</Text>
 
-      <Text size="sm">Tailscale IP</Text>
-      <Text>{device.tailscaleIp || "N/A"}</Text>
+      {device.deviceTypeId === "controller" && (
+        <>
+          <Text size="sm">Tailscale IP</Text>
+          <Text>{device.tailscaleIp || "N/A"}</Text>
+        </>
+      )}
+
+      {device.deviceTypeId !== "controller" && (
+        <>
+          <Text size="sm">Pin</Text>
+          <Text>{device.pin || "N/A"}</Text>
+        </>
+      )}
 
       {device.id && (
         <>
