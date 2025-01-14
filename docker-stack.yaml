@@ -14,22 +14,24 @@ services:
     ports:
       - "80:80"
       - "8080:8080" # Traefik panel
-      - "443:443" # HTTPS port
+      - "443:443"   # HTTPS port
     volumes:
-      # So that Traefik can listen to Docker events
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to Docker events
       - letsencrypt:/letsencrypt
 
   db:
     image: postgres:17.2
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    # Explicitly tell PostgreSQL to listen on all interfaces
+    command: >
+      postgres -c listen_addresses='*'
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DATABASE}
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 10s
@@ -43,7 +45,7 @@ services:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
     ports:
-      - "5672:5672"  # RabbitMQ main port
+      - "5672:5672"    # RabbitMQ main port
       - "15672:15672"  # RabbitMQ management UI port
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
