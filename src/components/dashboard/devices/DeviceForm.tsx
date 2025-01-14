@@ -4,7 +4,7 @@ import { useForm } from "@mantine/form";
 import { IconTrash } from "@tabler/icons-react";
 import { type ActionResponse } from "@/data-access/serverAction.schema";
 import { zodResolver } from "mantine-form-zod-resolver";
-import { Button, TextInput } from "@mantine/core";
+import { Button, NumberInput, TextInput } from "@mantine/core";
 import {
   Device,
   deviceSchema,
@@ -59,6 +59,14 @@ export default function DeviceForm({
           placeholder="100.73.55.87"
           key={form.key("tailscaleIp")}
           {...form.getInputProps("tailscaleIp")}
+        />
+      )}
+      {device.deviceTypeId !== "controller" && (
+        <NumberInput
+          label="Pin Number that it is connected to a controller."
+          placeholder="1"
+          key={form.key("pin")}
+          {...form.getInputProps("pin")}
         />
       )}
       <TextInput
