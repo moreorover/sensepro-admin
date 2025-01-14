@@ -2,6 +2,7 @@
 
 import {
   Button,
+  CopyButton,
   Grid,
   GridCol,
   Group,
@@ -160,6 +161,13 @@ export default function LocationPage({
                       ))}
                     </Menu.Dropdown>
                   </Menu>
+                  <CopyButton value={JSON.stringify(deviceGroup, null, 2)}>
+                    {({ copied, copy }) => (
+                      <Button color={copied ? "teal" : "blue"} onClick={copy}>
+                        {copied ? "Copied config" : "Copy config"}
+                      </Button>
+                    )}
+                  </CopyButton>
                 </Group>
               </div>
               <SimpleGrid cols={{ base: 1, md: 3 }}>
