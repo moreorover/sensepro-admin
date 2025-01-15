@@ -113,6 +113,16 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:dev-ci
 
+      - name: Prepare SSH Directory
+        run: |
+          mkdir -p ~/.ssh
+          chmod 0700 ~/.ssh
+          ssh-keyscan -p "22" -H "sensepro-server-dev" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Test SSH Connection
+        run: ssh -o ConnectTimeout=30 "cicd@sensepro-server-dev" "echo 'SSH connection successful!'"
+
       - name: Configure Docker Stack
         run: docker context create remote --docker "host=ssh://cicd@sensepro-server-dev"
 
