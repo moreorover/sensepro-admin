@@ -94,18 +94,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: create env file
-        run: |
-          echo "ENVIRONMENT=development" >> ./envfile
-          echo "VERSION=${{ env.VERSION }}" >> ./envfile
-          echo "DOMAIN_NAME=${{ vars.DOMAIN_NAME }}" >> ./envfile
-          echo "BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}" >> ./envfile
-          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> ./envfile
-          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> ./envfile
-          echo "POSTGRES_DATABASE=${{ secrets.POSTGRES_DATABASE }}" >> ./envfile
-          echo "RABBITMQ_USER=${{ secrets.RABBITMQ_USER }}" >> ./envfile
-          echo "RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}" >> ./envfile
-
       - name: Tailscale
         uses: tailscale/github-action@v3
         with:
@@ -136,6 +124,16 @@ jobs:
         run: source ./envfile
 
       - name: Docker Stack Deploy
+        env:
+          ENVIRONMENT: development
+          VERSION: ${{ env.VERSION }}
+          DOMAIN_NAME: ${{ vars.DOMAIN_NAME }}
+          BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DATABASE: ${{ secrets.POSTGRES_DATABASE }}
+          RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
+          RABBITMQ_PASSWORD: ${{ secrets.RABBITMQ_PASSWORD }}
         run: docker stack deploy -c docker-stack.yaml "${{ vars.DOCKER_STACK_NAME }}"
 
       - name: Setup Node.js 20
