@@ -65,6 +65,7 @@ export default function NewDeviceDrawer() {
           ip: null,
           tailscaleIp: null,
           serialNumber: "",
+          pin: null,
           locationId: value.locationId,
           deviceTypeId: value.deviceTypeId,
           controllerId: value.controllerId,
