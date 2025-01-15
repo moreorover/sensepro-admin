@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.60
+
+### Patch Changes
+
+- [#131](https://github.com/moreorover/sensepro-admin/pull/131) [`a8c5293`](https://github.com/moreorover/sensepro-admin/commit/a8c529321265a16f1a054de2260925aba814a066) Thanks [@moreorover](https://github.com/moreorover)! - chore: bump package.json dependency versions
+
 ## 0.1.59
 
 ### Patch Changes
