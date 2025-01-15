@@ -20,6 +20,7 @@ export const editDeviceDrawerAtom = atom<{
     mac: "",
     ip: null,
     tailscaleIp: null,
+    pin: null,
     serialNumber: "",
     locationId: null,
     deviceTypeId: "",
