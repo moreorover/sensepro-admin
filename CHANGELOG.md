@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.65
+
+### Patch Changes
+
+- [#141](https://github.com/moreorover/sensepro-admin/pull/141) [`8188992`](https://github.com/moreorover/sensepro-admin/commit/8188992e69d0a3d0f6f7bffa086f8ba38d07478c) Thanks [@moreorover](https://github.com/moreorover)! - fix: release pipeline deploy step environment variables
+
 ## 0.1.64
 
 ### Patch Changes
