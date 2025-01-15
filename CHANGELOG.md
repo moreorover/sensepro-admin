@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.64
+
+### Patch Changes
+
+- [#139](https://github.com/moreorover/sensepro-admin/pull/139) [`729c103`](https://github.com/moreorover/sensepro-admin/commit/729c1033555f107f9356199409f5bb29745b5161) Thanks [@moreorover](https://github.com/moreorover)! - fix: release pipeline ssh configuration
+
 ## 0.1.63
 
 ### Patch Changes
