@@ -114,7 +114,7 @@ jobs:
           tags: tag:dev-ci
 
       - name: Configure Docker Stack
-        run: docker context create remote --docker "host=ssh://cicd@$sensepro-server-dev"
+        run: docker context create remote --docker "host=ssh://cicd@sensepro-server-dev"
 
       - name: List Docker Contexts
         run: docker context ls
