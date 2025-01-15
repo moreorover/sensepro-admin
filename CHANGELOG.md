@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.59
+
+### Patch Changes
+
+- [#129](https://github.com/moreorover/sensepro-admin/pull/129) [`e9bc940`](https://github.com/moreorover/sensepro-admin/commit/e9bc9402d407c11f92201baf1b1cf1b3937d229e) Thanks [@moreorover](https://github.com/moreorover)! - fix: device typing errors
+
 ## 0.1.58
 
 ### Patch Changes
