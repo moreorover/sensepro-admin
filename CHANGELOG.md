@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.61
+
+### Patch Changes
+
+- [#133](https://github.com/moreorover/sensepro-admin/pull/133) [`529b2ce`](https://github.com/moreorover/sensepro-admin/commit/529b2ce63bae19ad81a7c59159c6e3f1388745bc) Thanks [@moreorover](https://github.com/moreorover)! - feat: deploy docker stack using tailscale network instead of public one
+
 ## 0.1.60
 
 ### Patch Changes
