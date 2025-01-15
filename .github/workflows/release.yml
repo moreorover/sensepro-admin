@@ -126,7 +126,7 @@ jobs:
         run: source ./envfile
 
       - name: Docker Stack Deploy
-        run: docker stack deploy -c "docker-stack.yaml" "${{ vars.DOCKER_STACK_NAME }}"
+        run: docker stack deploy -c docker-stack.yaml "${{ vars.DOCKER_STACK_NAME }}"
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v3
