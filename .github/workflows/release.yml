@@ -124,29 +124,16 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_KEY" > ~/.ssh/remote.key
-          chmod 600 ~/.ssh/remote.key
-          cat >>~/.ssh/config <<END
-          Host remote
-            HostName $SSH_HOST
-            User $SSH_USER
-            IdentityFile ~/.ssh/remote.key
-            StrictHostKeyChecking no
-          END
-        env:
-          SSH_USER: cicd
-          SSH_KEY: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
-          SSH_HOST: ${{ vars.DOMAIN_NAME }}
-
-      - name: Forward Postgres Port
-        run: ssh -f -N -L 5432:localhost:5432 remote
+      - name: Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:dev-ci
 
       - name: Reload database
         env:
-          DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DATABASE }}
+          DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@sensepro-server-dev:5432/${{ secrets.POSTGRES_DATABASE }}
         run: npm run db:dev
 
   deploy-production:
