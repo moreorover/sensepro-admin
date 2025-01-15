@@ -1,5 +1,13 @@
 # sensepro-admin
 
+## 0.1.58
+
+### Patch Changes
+
+- [#128](https://github.com/moreorover/sensepro-admin/pull/128) [`26a7988`](https://github.com/moreorover/sensepro-admin/commit/26a79886968b60c12545ac161ea400775bd4ee5e) Thanks [@moreorover](https://github.com/moreorover)! - feat: replace ssh db reload with tailscale
+
+- [#126](https://github.com/moreorover/sensepro-admin/pull/126) [`cdccb25`](https://github.com/moreorover/sensepro-admin/commit/cdccb251330fa2c8e98f09be046f752d25791fef) Thanks [@moreorover](https://github.com/moreorover)! - feat: allow device to be assing to specific pin on the controller and added a button to allow users to copy controller configuration
+
 ## 0.1.57
 
 ### Patch Changes
