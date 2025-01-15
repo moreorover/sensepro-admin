@@ -106,15 +106,27 @@ jobs:
           echo "RABBITMQ_USER=${{ secrets.RABBITMQ_USER }}" >> ./envfile
           echo "RABBITMQ_PASSWORD=${{ secrets.RABBITMQ_PASSWORD }}" >> ./envfile
 
-      - name: Docker Stack Deploy
-        uses: cssnr/stack-deploy-action@v1
+      - name: Tailscale
+        uses: tailscale/github-action@v3
         with:
-          name: ${{ vars.DOCKER_STACK_NAME }}
-          file: docker-stack.yaml
-          host: ${{ vars.DOMAIN_NAME }}
-          user: cicd
-          ssh_key: ${{ secrets.CICD_SSH_PRIVATE_KEY }}
-          env_file: ./envfile
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:dev-ci
+
+      - name: Configure Docker Stack
+        run: docker context create remote --docker "host=ssh://cicd@$sensepro-server-dev"
+
+      - name: List Docker Contexts
+        run: docker context ls
+
+      - name: Use Remote Docker Context
+        run: docker context use remote
+
+      - name: Source envFile
+        run: source ./envfile
+
+      - name: Docker Stack Deploy
+        run: docker stack deploy -c "docker-stack.yaml" "${{ vars.DOCKER_STACK_NAME }}"
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v3
@@ -123,13 +135,6 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
-
-      - name: Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:dev-ci
 
       - name: Reload database
         env:
