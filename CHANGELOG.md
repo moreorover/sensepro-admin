@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.67
+
+### Patch Changes
+
+- [#145](https://github.com/moreorover/sensepro-admin/pull/145) [`3770fbc`](https://github.com/moreorover/sensepro-admin/commit/3770fbc1fa5e34fe2a8d7b7f28dde5a408a6d7e8) Thanks [@moreorover](https://github.com/moreorover)! - feat: remove source .envfile step
+
 ## 0.1.66
 
 ### Patch Changes
