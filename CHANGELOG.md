@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.66
+
+### Patch Changes
+
+- [#143](https://github.com/moreorover/sensepro-admin/pull/143) [`204ad41`](https://github.com/moreorover/sensepro-admin/commit/204ad41cf522b5a4cda63854a8af8ff3a4ac2f89) Thanks [@moreorover](https://github.com/moreorover)! - feat: test hostname resolution
+
 ## 0.1.65
 
 ### Patch Changes
