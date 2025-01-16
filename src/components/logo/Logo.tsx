@@ -8,10 +8,9 @@ import React from "react";
 interface Props {
   width?: string;
   height?: string;
-  version?: string | undefined;
 }
 
-export const Logo: React.FC<Props> = ({ version }) => {
+export const Logo: React.FC<Props> = () => {
   return (
     <Flex direction="row" align="center" gap={4}>
       <Link
@@ -26,11 +25,6 @@ export const Logo: React.FC<Props> = ({ version }) => {
           </Text>
         </Text>
       </Link>
-      {version && (
-        <Text size="sm" c="dimmed">
-          {version}
-        </Text>
-      )}
     </Flex>
   );
 };

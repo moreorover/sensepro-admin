@@ -46,7 +46,6 @@ export default function DashboardShell({ children, profile, version }: Props) {
               mr="xl"
             />
           }
-          version={version}
         />
       </AppShell.Header>
       <AppShell.Navbar>
@@ -55,7 +54,7 @@ export default function DashboardShell({ children, profile, version }: Props) {
       <AppShell.Main bg={bg}>{children}</AppShell.Main>
       <AppShell.Footer>
         <Text w="full" size="sm" c="gray" ta="right">
-          CopyRight © 2024
+          {version}
         </Text>
       </AppShell.Footer>
     </AppShell>
