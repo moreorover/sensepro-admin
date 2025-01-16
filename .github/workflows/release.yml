@@ -125,9 +125,6 @@ jobs:
       - name: Use Remote Docker Context
         run: docker context use remote
 
-      - name: Source envFile
-        run: source ./envfile
-
       - name: Docker Stack Deploy
         env:
           ENVIRONMENT: development
