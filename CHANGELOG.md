@@ -1,5 +1,15 @@
 # sensepro-admin
 
+## 0.1.69
+
+### Patch Changes
+
+- [#149](https://github.com/moreorover/sensepro-admin/pull/149) [`e00f848`](https://github.com/moreorover/sensepro-admin/commit/e00f84894be06ef6f29b8f663e3e678bbc7c91dc) Thanks [@moreorover](https://github.com/moreorover)! - fix: docker stack configuration
+
+- [#149](https://github.com/moreorover/sensepro-admin/pull/149) [`e00f848`](https://github.com/moreorover/sensepro-admin/commit/e00f84894be06ef6f29b8f663e3e678bbc7c91dc) Thanks [@moreorover](https://github.com/moreorover)! - fix: ignore .env and .env.local
+
+- [#149](https://github.com/moreorover/sensepro-admin/pull/149) [`e00f848`](https://github.com/moreorover/sensepro-admin/commit/e00f84894be06ef6f29b8f663e3e678bbc7c91dc) Thanks [@moreorover](https://github.com/moreorover)! - fix: move app version to footer
+
 ## 0.1.68
 
 ### Patch Changes
