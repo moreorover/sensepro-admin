@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.70
+
+### Patch Changes
+
+- [#151](https://github.com/moreorover/sensepro-admin/pull/151) [`5821428`](https://github.com/moreorover/sensepro-admin/commit/5821428106ff251d03de0096bebe4a1c81084b8a) Thanks [@moreorover](https://github.com/moreorover)! - feat: PR build check
+
 ## 0.1.69
 
 ### Patch Changes
