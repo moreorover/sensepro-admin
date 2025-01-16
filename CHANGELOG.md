@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.71
+
+### Patch Changes
+
+- [#153](https://github.com/moreorover/sensepro-admin/pull/153) [`be9eef5`](https://github.com/moreorover/sensepro-admin/commit/be9eef5b382bfa3e3587ec0b6ed35441e4e9de0e) Thanks [@moreorover](https://github.com/moreorover)! - fix: docker stack deployment
+
 ## 0.1.70
 
 ### Patch Changes
