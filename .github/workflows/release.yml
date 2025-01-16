@@ -101,6 +101,11 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:dev-ci
 
+      - name: Test Hostname Resolution
+        run: |
+          ping -c 3 sensepro-server-dev
+          nc -zv sensepro-server-dev 22
+
       - name: Prepare SSH Directory
         run: |
           mkdir -p ~/.ssh
