@@ -1,5 +1,11 @@
 # sensepro-admin
 
+## 0.1.68
+
+### Patch Changes
+
+- [#147](https://github.com/moreorover/sensepro-admin/pull/147) [`84d829c`](https://github.com/moreorover/sensepro-admin/commit/84d829cc22a8edba68db37a839d2b1f9afeddc08) Thanks [@moreorover](https://github.com/moreorover)! - fix: release development pipeline
+
 ## 0.1.67
 
 ### Patch Changes
