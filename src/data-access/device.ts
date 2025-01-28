@@ -12,6 +12,8 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ActionResponse } from "@/data-access/serverAction.schema";
+import { getLocationPageData } from "@/data-access/locationPage";
+import { publishMessage } from "@/data-access/publishMessage";
 
 export async function getDevices() {
   const session = await auth.api.getSession({
@@ -84,6 +86,21 @@ export async function createDevice(device: Device): Promise<ActionResponse> {
       data: { ...parse.data },
     });
     revalidatePath("/devices");
+
+    if (c.locationId && c.controllerId) {
+      const { deviceGroups } = await getLocationPageData(c.locationId);
+
+      const filtered = deviceGroups.find(
+        (deviceGroup) => deviceGroup.controllerId === c.controllerId,
+      );
+
+      // TODO maybe publish a simple message to the queue and let more complex backend to deal with this logic
+      await publishMessage(
+        `controller-${filtered!.controller.serialNumber}`,
+        JSON.stringify(filtered),
+      );
+    }
+
     return {
       message: `Created Device: ${c.name}`,
       type: "SUCCESS",
@@ -120,6 +137,20 @@ export async function updateDevice(device: Device): Promise<ActionResponse> {
       where: { id: parse.data.id },
     });
     revalidatePath("/devices");
+
+    if (c.locationId && c.controllerId) {
+      const { deviceGroups } = await getLocationPageData(c.locationId);
+
+      const filtered = deviceGroups.find(
+        (deviceGroup) => deviceGroup.controllerId === c.controllerId,
+      );
+
+      // TODO maybe publish a simple message to the queue and let more complex backend to deal with this logic
+      await publishMessage(
+        `controller-${filtered!.controller.serialNumber}`,
+        JSON.stringify(filtered),
+      );
+    }
     return {
       message: `Updated Device: ${c.name}`,
       type: "SUCCESS",
@@ -155,6 +186,20 @@ export async function deleteDevice(device: Device): Promise<ActionResponse> {
       where: { id: parse.data.id },
     });
     revalidatePath("/devices");
+
+    if (device.locationId && device.controllerId) {
+      const { deviceGroups } = await getLocationPageData(device.locationId);
+
+      const filtered = deviceGroups.find(
+        (deviceGroup) => deviceGroup.controllerId === c.controllerId,
+      );
+
+      // TODO maybe publish a simple message to the queue and let more complex backend to deal with this logic
+      await publishMessage(
+        `controller-${filtered!.controller.serialNumber}`,
+        JSON.stringify(filtered),
+      );
+    }
     return {
       message: `Deleted Device: ${c.name}`,
       type: "SUCCESS",

@@ -64,7 +64,7 @@ export default function DeviceForm({
       {device.deviceTypeId !== "controller" && (
         <NumberInput
           label="Pin Number that it is connected to a controller."
-          placeholder="1"
+          placeholder=""
           key={form.key("pin")}
           {...form.getInputProps("pin")}
         />

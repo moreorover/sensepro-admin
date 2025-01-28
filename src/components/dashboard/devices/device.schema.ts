@@ -16,10 +16,14 @@ export const deviceSchema = z.object({
   ip: z.string().ip({ version: "v4" }).nullable(),
   tailscaleIp: z.string().ip({ version: "v4" }).nullable(),
   pin: z
-    .union([z.string(), z.number()])
-    .transform((val) =>
-      typeof val === "string" && val.trim() === "" ? null : Number(val),
-    )
+    .union([z.string(), z.number(), z.null()])
+    .transform((val) => {
+      if (val === null) return null;
+      if (typeof val === "string" && val.trim() === "") {
+        return null;
+      }
+      return typeof val === "number" ? val : Number(val);
+    })
     .refine((pin) => pin === null || pin >= 0, {
       message: "Pin number must be at least 0",
     })
