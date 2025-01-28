@@ -1,5 +1,13 @@
 # sensepro-admin
 
+## 0.1.72
+
+### Patch Changes
+
+- [#155](https://github.com/moreorover/sensepro-admin/pull/155) [`b794609`](https://github.com/moreorover/sensepro-admin/commit/b794609a34b1bf2f712b26a64d986b49d1eafb36) Thanks [@moreorover](https://github.com/moreorover)! - feature: send MQ message when device is created/updated/deleted
+
+- [#155](https://github.com/moreorover/sensepro-admin/pull/155) [`b794609`](https://github.com/moreorover/sensepro-admin/commit/b794609a34b1bf2f712b26a64d986b49d1eafb36) Thanks [@moreorover](https://github.com/moreorover)! - chore: bump npm packages
+
 ## 0.1.71
 
 ### Patch Changes
